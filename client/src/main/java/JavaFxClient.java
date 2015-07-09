@@ -46,8 +46,8 @@ public class JavaFxClient extends Application {
                 });
         }
 
-        this.message.setOnKeyPressed(this::messageInputKeybinding);
-        this.submit.setOnAction(this::send);
+        this.message.setOnAction(this::send);
+        this.submit.setDefaultButton(true);
         Platform.runLater(() -> message.requestFocus());
 
         Thread t = new Thread(() -> {
@@ -56,13 +56,6 @@ public class JavaFxClient extends Application {
                 }});
         t.setDaemon(true);      // ウインドウ閉じたら強制終了
         t.start();
-    }
-
-    private void messageInputKeybinding(final KeyEvent key) {
-        switch(key.getCode()) {
-        case ENTER:
-            this.send(null);
-        }
     }
 
     public void send(final ActionEvent evt) {
