@@ -46,9 +46,9 @@ public class JavaFxClient extends Application {
                 });
         }
 
-        this.messageInput.setOnKeyPressed(this::messageInputKeybinding);
-        this.messageSubmit.setOnAction(this::send);
-        Platform.runLater(() -> messageInput.requestFocus());
+        this.message.setOnKeyPressed(this::messageInputKeybinding);
+        this.submit.setOnAction(this::send);
+        Platform.runLater(() -> message.requestFocus());
 
         Thread t = new Thread(() -> {
                 for(;;) {
@@ -67,8 +67,8 @@ public class JavaFxClient extends Application {
 
     public void send(final ActionEvent evt) {
         try {
-            this.connector.writeln(this.messageInput.getText());
-            this.messageInput.clear();
+            this.connector.writeln(this.message.getText());
+            this.message.clear();
         }
         catch(final IOException err) {
             System.err.println(err);
@@ -88,9 +88,9 @@ public class JavaFxClient extends Application {
     @FXML
     private ListView<HBox> timeline;
     @FXML
-    private TextField messageInput;
+    private TextField message;
     @FXML
-    private Button messageSubmit;
+    private Button submit;
 
     private Connector connector;
 }

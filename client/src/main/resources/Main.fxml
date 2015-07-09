@@ -10,10 +10,10 @@
   <ListView fx:id="timeline">
   </ListView>
 
-  <TextField fx:id="messageInput">
+  <TextField fx:id="message">
   </TextField>
 
-  <Button fx:id="messageSubmit">
+  <Button fx:id="submit">
     発言
   </Button>
 
