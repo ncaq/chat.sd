@@ -1,4 +1,4 @@
-package net.ncaq.chat.client;
+package net.ncaq.chat.sd.client;
 
 import java.io.*;
 import java.net.*;
@@ -18,14 +18,14 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
-public class ChatClient extends Application implements Initializable {
+public class Main extends Application implements Initializable {
     public static void main(final String[] args) throws Exception {
         launch(args);
     }
 
     @Override
     public void start(final Stage stage) throws IOException {
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("ChatClient.fxml"))));
+        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/Main.fxml"))));
         stage.show();
     }
 
@@ -42,8 +42,7 @@ public class ChatClient extends Application implements Initializable {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("Error");
-            alert.setContentText(err.toString()
-                                 "終了します");
+            alert.setContentText(err.toString() + "\n" + "終了します");
 
             Platform.runLater(() -> {
                     alert.showAndWait();
