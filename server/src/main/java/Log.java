@@ -16,17 +16,30 @@ public class Log {
             System.err.println(err);
             System.exit(-1);
         }
-        this.co = coNotFinal;
+        this.chat = coNotFinal;
+
+        this.makeTableWhenNothing();
     }
 
-    private void makeTable() {
-
+    private void makeTableWhenNothing() {
+        try {
+            if(!this.chat.getMetaData().getTables(null, null, "log", null).next()){ // log table don't exist
+                this.chat.prepareStatement("create table log(" +
+                                           "id integer primary key not null," +
+                                           "utc timestamp default current_timestamp not null," +
+                                           "message text not null" +
+                                           ")").executeUpdate();
+            }
+        }
+        catch(final SQLException err) {
+            System.err.println(err);
+        }
     }
 
     public void write(final String message) {
         this.single.execute(() -> {
                 try {
-                    final PreparedStatement st = co.prepareStatement("insert into chat(message) values(?)");
+                    final PreparedStatement st = chat.prepareStatement("insert into log(message) values(?)");
                     st.setString(1, message);
                     st.executeUpdate();
                 }
@@ -42,6 +55,6 @@ public class Log {
 
     private static Log self;
 
-    private final Connection co;
+    private final Connection chat;
     private final ExecutorService single = Executors.newSingleThreadExecutor();
 }
