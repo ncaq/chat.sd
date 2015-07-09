@@ -1,14 +1,16 @@
 allprojects {
     apply plugin: 'java'
+
+    apply plugin: 'checkstyle'
+    checkstyle.toolVersion = 6.6
+    checkstyle.reportsDir = rootProject.file('build/reports/checkstyle')
+    [checkstyleMain, checkstyleTest]*.configFile = rootProject.file('config/checkstyle/checkstyle.xml')
 }
 
 subprojects {
     repositories {
         mavenCentral()
     }
-}
-
-project(':util') {
 }
 
 project(':server') {
@@ -31,4 +33,7 @@ project(':client') {
     run {
         mainClassName = 'net.ncaq.chat.sd.client.Main'
     }
+}
+
+project(':util') {
 }
