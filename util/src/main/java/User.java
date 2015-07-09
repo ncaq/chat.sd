@@ -1,9 +1,9 @@
-package net.ncaq.chat.sd.client;
+package net.ncaq.chat.sd.util;
 
 import java.net.*;
 import java.security.*;
 
-class User {
+public class User {
     public User(final String username, final String rawPassword) {
         String passwordStash = null;
         try {

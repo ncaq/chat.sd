@@ -3,6 +3,7 @@ package net.ncaq.chat.sd.client;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import net.ncaq.chat.sd.util.*;
 
 public class Connector {
     public Connector(final InetAddress address, final User user) throws IOException {

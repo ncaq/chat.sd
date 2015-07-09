@@ -1,0 +1,34 @@
+allprojects {
+    apply plugin: 'java'
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+project(':util') {
+}
+
+project(':server') {
+    apply plugin: 'application'
+    dependencies {
+        compile project(':util')
+        compile files('/usr/share/sqlite-jdbc/lib/sqlite-jdbc.jar')
+    }
+    run {
+        mainClassName = 'net.ncaq.chat.sd.server.Main'
+        systemProperty "java.library.path", "/usr/lib/sqlite-jdbc"
+    }
+}
+
+project(':client') {
+    apply plugin: 'application'
+    dependencies {
+        compile project(':util')
+    }
+    run {
+        mainClassName = 'net.ncaq.chat.sd.client.Main'
+    }
+}

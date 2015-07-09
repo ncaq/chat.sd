@@ -17,6 +17,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import javafx.util.*;
+import net.ncaq.chat.sd.util.*;
 
 // Dialogが本格的に使用できるのはJDK9から
 

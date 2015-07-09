@@ -17,6 +17,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import javafx.util.*;
+import net.ncaq.chat.sd.util.*;
 
 public class JavaFxClient extends Application {
     @Override
