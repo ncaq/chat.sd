@@ -17,10 +17,7 @@ public class ChatServer {
                             newSession.start();
                             sessions.put(newSession);
                         }
-                        catch(final IOException err) {
-                            System.err.println(err);
-                        }
-                        catch(final InterruptedException err) {
+                        catch(IOException|InterruptedException err) {
                             System.err.println(err);
                         }
                     }}).start();

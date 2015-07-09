@@ -37,10 +37,7 @@ public class SessionHandler extends Thread {
                     this.server.broadcast(l);
                 }
             }
-            catch(final IOException err) {
-                System.err.println(err);
-            }
-            catch(final InterruptedException err) {
+            catch(IOException|InterruptedException err) {
                 System.err.println(err);
             }};
 
