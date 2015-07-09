@@ -39,7 +39,7 @@ public class SessionHandler extends Thread {
             }
             catch(IOException|InterruptedException err) {
                 System.err.println(err);
-            }};
+            }}
 
         e.shutdown();
     }
