@@ -10,15 +10,15 @@ public class Auth {
     public Auth() {
         final User anonymous = new User("anonymous", "");
         final User root = new User("root", "特に特権とかない");
-        this.userPassword.put(anonymous.username, anonymous.password);
-        this.userPassword.put(root.username, root.password);
+        this.userPassword.put(anonymous.getUsername(), anonymous.getPassword());
+        this.userPassword.put(root.getUsername(), root.getPassword());
     }
 
     public StatusCode login(User u) {
-        if(!userPassword.get(u.username).equals(u.password)) {
+        if(!userPassword.get(u.getUsername()).equals(u.getPassword())) {
             return new StatusCode(100);
         }
-        else if(userLogined.contains(u.username) || !userLogined.add(u.username)){
+        else if(userLogined.contains(u.getUsername()) || !userLogined.add(u.getUsername())){
             return new StatusCode(101);
         }
         else{

@@ -18,6 +18,15 @@ public class User {
         this.username = username;
         this.password = passwordStash;
     }
-    public final String username;
-    public final String password;
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    private final String username;
+    private final String password;
 }
