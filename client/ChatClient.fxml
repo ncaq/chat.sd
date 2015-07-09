@@ -1,0 +1,20 @@
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/fxml" xmlns:fx="http://javafx.com/fxml" fx:controller="net.ncaq.chat.client.ChatClient" fx:id="document">
+  <ListView fx:id="timeline">
+  </ListView>
+
+  <TextField fx:id="messageInput">
+  </TextField>
+
+  <Button fx:id="messageSubmit">
+    発言
+  </Button>
+
+</VBox>

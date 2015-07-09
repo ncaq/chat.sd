@@ -1,0 +1,2 @@
+Main-Class: net.ncaq.chat.server.ChatServer
+Class-Path: . sqlite-jdbc.jar
