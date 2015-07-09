@@ -8,13 +8,10 @@ import net.ncaq.chat.sd.util.*;
 
 public class Auth {
     public Auth() {
-        this.userPassword = new ConcurrentSkipListMap<>();
         final User anonymous = new User("anonymous", "");
         final User root = new User("root", "特に特権とかない");
         this.userPassword.put(anonymous.username, anonymous.password);
         this.userPassword.put(root.username, root.password);
-
-        this.userLogined = new ConcurrentSkipListSet<>();
     }
 
     public String login(User u) {
@@ -29,6 +26,6 @@ public class Auth {
         }
     };
 
-    private final Map<String, String> userPassword;
-    private final Set<String> userLogined;
+    private final Map<String, String> userPassword = new ConcurrentSkipListMap<>();
+    private final Set<String> userLogined = new ConcurrentSkipListSet<>();
 }
