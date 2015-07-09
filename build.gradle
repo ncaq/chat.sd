@@ -2,7 +2,6 @@ allprojects {
     apply plugin: 'java'
 
     apply plugin: 'checkstyle'
-    checkstyle.toolVersion = 6.6
     checkstyle.reportsDir = rootProject.file('build/reports/checkstyle')
     [checkstyleMain, checkstyleTest]*.configFile = rootProject.file('config/checkstyle/checkstyle.xml')
 }
