@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/fxml" xmlns:fx="http://javafx.com/fxml" fx:controller="net.ncaq.chat.sd.client.Main" fx:id="document">
+<VBox xmlns="http://javafx.com/fxml" xmlns:fx="http://javafx.com/fxml" fx:controller="net.ncaq.chat.sd.client.JavaFxClient" fx:id="document">
   <ListView fx:id="timeline">
   </ListView>
 
