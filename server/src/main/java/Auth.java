@@ -14,15 +14,15 @@ public class Auth {
         this.userPassword.put(root.username, root.password);
     }
 
-    public String login(User u) {
+    public StatusCode login(User u) {
         if(!userPassword.get(u.username).equals(u.password)) {
-            return "100 password invalid";
+            return new StatusCode(100);
         }
         else if(userLogined.contains(u.username) || !userLogined.add(u.username)){
-            return "101 multiple login";
+            return new StatusCode(101);
         }
         else{
-            return "0 login succeed";
+            return new StatusCode(0);
         }
     };
 
