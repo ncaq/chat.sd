@@ -3,7 +3,6 @@ package net.ncaq.chat.sd.client;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.util.regex.*;
 import java.util.stream.*;
 import javafx.application.*;
 import javafx.beans.value.*;
@@ -17,8 +16,9 @@ import javafx.scene.control.Alert.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
+import javafx.util.*;
 
-public class JavaFxClient extends Application implements Initializable {
+public class JavaFxClient extends Application {
     @Override
     public void start(final Stage stage) throws IOException {
         stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/Main.fxml"))));
@@ -26,13 +26,12 @@ public class JavaFxClient extends Application implements Initializable {
     }
 
     @FXML
-    public void initialize(final URL location, final ResourceBundle resources) {
+    public void initialize() {
         this.timeline.setItems(FXCollections.<HBox>observableArrayList());
 
-        final TextInputDialog requestRemoteHost = new TextInputDialog();
-        requestRemoteHost.setHeaderText("please input remote host");
         try {
-            this.connector = new Connector(InetAddress.getByName(requestRemoteHost.showAndWait().orElse("localhost")));
+            final Pair<InetAddress, User> input = new LoginDialog().showAndWait().orElse(new Pair<>(InetAddress.getByName("localhost"), new User("anonymous", "")));
+            this.connector = new Connector(input.getKey(), input.getValue());
         }
         catch(final IOException err) { // 接続できなければエラーアラートを表示して終了します
             Alert alert = new Alert(AlertType.ERROR);
