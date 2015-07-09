@@ -1,4 +1,4 @@
-package net.ncaq.chat.server;
+package net.ncaq.chat.sd.server;
 
 import java.io.*;
 import java.net.*;
@@ -6,10 +6,6 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class ChatServer {
-    public static void main(final String[] args) throws IOException {
-        new ChatServer((args.length == 0) ? 50000 : Integer.parseInt(args[0]));
-    }
-
     public ChatServer(final Integer port) {
         try {
             final ServerSocket server = new ServerSocket(port);
