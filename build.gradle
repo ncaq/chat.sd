@@ -1,7 +1,18 @@
 allprojects {
     defaultTasks 'build'
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
 
     apply plugin: 'java'
+
+    dependencies {
+        testCompile 'junit:junit:4.11'
+        testCompile "org.mockito:mockito-core:1.9.5"
+    }
 
     apply plugin: 'checkstyle'
     checkstyle.toolVersion = 6.6
@@ -9,17 +20,6 @@ allprojects {
 
     apply plugin: 'pmd'
     pmd.ignoreFailures = true
-
-    dependencies {
-        testCompile 'junit:junit:4.11'
-        testCompile "org.mockito:mockito-core:1.9.5"
-    }
-}
-
-subprojects {
-    repositories {
-        mavenCentral()
-    }
 }
 
 project(':server') {
@@ -38,9 +38,17 @@ project(':client') {
     apply plugin: 'application'
     dependencies {
         compile project(':util')
+        compile files('/usr/share/java-getopt-1/lib/gnu.getopt.jar')
+        testCompile project(':server')
     }
     run {
         mainClassName = 'net.ncaq.chat.sd.client.Main'
+        if(project.hasProperty('args')) {
+            args project.args.split('\\s+')
+        }
+    }
+    test {
+        systemProperty "java.library.path", "/usr/lib/sqlite-jdbc"
     }
 }
 
