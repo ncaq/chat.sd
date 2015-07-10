@@ -15,6 +15,7 @@ subprojects {
     }
 
     apply plugin: 'checkstyle'
+    checkstyle.ignoreFailures = true
     checkstyle.toolVersion = 6.6
     [checkstyleMain, checkstyleTest]*.configFile = rootProject.file('config/checkstyle/checkstyle.xml')
 
