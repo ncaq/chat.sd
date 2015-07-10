@@ -4,7 +4,7 @@ import java.net.*;
 import java.security.*;
 
 /**
- * ユーザー情報保存クラス
+ * ユーザー情報保存クラス.
  * 一応パスワードをハッシュ化するが,
  * 今後セキュリティ強化を可能な設計にすることが目的なので,
  * 現在はSHA-256を1回行うだけの全く無意味なものです.
@@ -26,12 +26,25 @@ public class User {
         this.password = passwordStash;
     }
 
+    /**
+     * ユーザー名.
+     */
     public String getUsername() {
         return this.username;
     }
 
+    /**
+     * パスワード(ハッシュ).
+     */
     public String getPassword() {
         return this.password;
+    }
+
+    /**
+     * ログイン用文字列.
+     */
+    public String toString() {
+        return "user " + this.getUsername() + " pass " + this.getPassword();
     }
 
     private final String username;
