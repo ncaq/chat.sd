@@ -1,13 +1,15 @@
+apply plugin: 'java'
+
+defaultTasks 'build', 'javadoc'
+
 allprojects {
-    defaultTasks 'build'
+    apply plugin: 'java'
 }
 
 subprojects {
     repositories {
         mavenCentral()
     }
-
-    apply plugin: 'java'
 
     dependencies {
         testCompile 'junit:junit:4.11'
@@ -49,4 +51,10 @@ project(':client') {
 }
 
 project(':util') {
+}
+
+javadoc {
+    source subprojects*.sourceSets.main.allJava
+    classpath = files(subprojects*.sourceSets.main.compileClasspath)
+    options.encoding = 'UTF-8'
 }
