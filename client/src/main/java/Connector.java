@@ -7,11 +7,15 @@ import net.ncaq.chat.sd.util.*;
 
 /**
  * クライアント側の通信を担います.
- * CUIとGUIがある以上,なるべくこちらに集約させます.
+ * フロントエンドにCUIとGUIがある以上,なるべくこちらに集約させること.
  */
 public class Connector {
-    public Connector(final InetAddress address, final User user) throws IOException {
-        this.server = this.makeSocket(address, new Integer[]{12345, 50000});
+    /**
+     * ソケット生成.
+     * 失敗すると例外吐くので再試行するかプログラム落とすこと.
+     */
+    public Connector(final String address, final User user) throws ConnectException, IOException {
+        this.server = this.makeSocket(InetAddress.getByName(address), new Integer[]{80, 8080, 12345, 50000});
         this.reader = new BufferedReader(new InputStreamReader(this.server.getInputStream()));
         this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.server.getOutputStream())), true);
     }

@@ -45,7 +45,7 @@ public class LoginDialog extends Dialog<Pair<String, User>> {
 
         this.setResultConverter(dialogButton -> {
                 try {
-                    return new Pair<>(InetAddress.getByName(hostname.getText()), new User(username.getText(), password.getText()));
+                    return new Pair<>(hostname.getText(), new User(username.getText(), password.getText()));
                 }
                 catch(final Exception err) {
                     return null;

@@ -31,7 +31,7 @@ public class JavaFxClient extends Application {
         this.timeline.setItems(FXCollections.<HBox>observableArrayList());
 
         try {
-            final Pair<InetAddress, User> input = new LoginDialog().showAndWait().orElse(new Pair<>(InetAddress.getByName("localhost"), new User("anonymous", "")));
+            final Pair<String, User> input = new LoginDialog().showAndWait().orElse(new Pair<>("localhost", new User("anonymous", "")));
             this.connector = new Connector(input.getKey(), input.getValue());
         }
         catch(final IOException err) { // 接続できなければエラーアラートを表示して終了します
