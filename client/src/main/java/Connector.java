@@ -5,6 +5,9 @@ import java.net.*;
 import java.util.*;
 import net.ncaq.chat.sd.util.*;
 
+/**
+ * クライアント側の通信を担います.
+ */
 public class Connector {
     public Connector(final InetAddress address, final User user) throws IOException {
         this.server = this.makeSocket(address, new Integer[]{12345, 50000});
@@ -12,10 +15,16 @@ public class Connector {
         this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.server.getOutputStream())), true);
     }
 
+    /**
+     * サーバから送られるデータを一行取得
+     */
     public String readLine() throws IOException {
         return this.reader.readLine();
     }
 
+    /**
+     * サーバに一行送信
+     */
     public void writeln(final String message) throws IOException {
         this.writer.println(message);
     }
