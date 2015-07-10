@@ -14,11 +14,6 @@ subprojects {
         testCompile "org.mockito:mockito-core:1.9.5"
     }
 
-    apply plugin: 'checkstyle'
-    checkstyle.ignoreFailures = true
-    checkstyle.toolVersion = 6.6
-    [checkstyleMain, checkstyleTest]*.configFile = rootProject.file('config/checkstyle/checkstyle.xml')
-
     apply plugin: 'pmd'
     pmd.ignoreFailures = true
 }
