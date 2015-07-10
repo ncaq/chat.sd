@@ -1,6 +1,6 @@
-defaultTasks 'build'
-
 allprojects {
+    defaultTasks 'build'
+
     apply plugin: 'java'
 
     apply plugin: 'checkstyle'
