@@ -19,9 +19,11 @@ import javafx.stage.*;
 import javafx.util.*;
 import net.ncaq.chat.sd.util.*;
 
-// Dialogが本格的に使用できるのはJDK9から
-
-public class LoginDialog extends Dialog<Pair<InetAddress, User>> {
+/**
+ * ログイン用ダイアログ.
+ * Dialogの機能が本格的に使用できるのはJDK9からなので,その場凌ぎが多いです
+ */
+public class LoginDialog extends Dialog<Pair<String, User>> {
     public LoginDialog() {
         this.setTitle("Login Dialog");
 

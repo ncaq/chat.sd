@@ -7,6 +7,7 @@ import net.ncaq.chat.sd.util.*;
 
 /**
  * クライアント側の通信を担います.
+ * CUIとGUIがある以上,なるべくこちらに集約させます.
  */
 public class Connector {
     public Connector(final InetAddress address, final User user) throws IOException {
