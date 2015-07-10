@@ -2,6 +2,7 @@ package net.ncaq.chat.sd.util;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.regex.*;
 
 public class StatusCode {
     public StatusCode(final Integer code) {
@@ -9,7 +10,13 @@ public class StatusCode {
     }
 
     public StatusCode(final String full) {
-        this.code = Integer.parseInt(full.substring(0, 2));
+        final Matcher m = Pattern.compile("^\\d+").matcher(full);
+        m.find();
+        this.code = Integer.parseInt(m.group());
+    }
+
+    public Integer getCode() {
+        return this.code;
     }
 
     public String toString() {
