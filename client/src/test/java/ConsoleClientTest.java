@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class ConsoleClientTest {
     @Test
-    public void ConsoleClient() throws IOException, UnknownHostException {
+    public void testConsoleClient() throws IOException, UnknownHostException {
         InputStream stdin = System.in;
         try {
             new ChatServer(50000);
