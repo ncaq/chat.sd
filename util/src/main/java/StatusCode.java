@@ -44,8 +44,16 @@ public class StatusCode {
      */
     @Override
     public boolean equals(final Object take) {
-        return (take instanceof StatusCode) ? this.getCode().equals(((StatusCode)take).getCode()) :
+        return take instanceof StatusCode ? this.getCode().equals(((StatusCode)take).getCode()) :
             false;
+    }
+
+    /**
+     * @return hashcode == code
+     */
+    @Override
+    public int hashcode() {
+        return this.getCode();
     }
 
     private final Integer code;
