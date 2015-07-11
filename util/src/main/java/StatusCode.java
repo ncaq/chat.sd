@@ -49,10 +49,10 @@ public class StatusCode {
     }
 
     /**
-     * @return hashcode == code
+     * @return hashCode == code
      */
     @Override
-    public int hashcode() {
+    public int hashCode() {
         return this.getCode();
     }
 
