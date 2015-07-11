@@ -13,7 +13,10 @@ public class UserTest {
 
     @Test
     public void testGetPassword() {
-        assertThat(new User("ユーザー名", "生パスワード").getPassword(), is(not("生パスワード")));
+        final User u = new User("ユーザー名", "生パスワード");
+        assertThat(u.getPassword(), is(not("生パスワード")));
+        final User n = new User("ユーザー名", "生パスワード");
+        assertThat(n.getPassword(), is(u.getPassword()));
     }
 
     @Test

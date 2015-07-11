@@ -18,4 +18,10 @@ public class StatusCodeTest {
         assertThat(new StatusCode("100 login succeed").getCode(), is(new Integer(100)));
         assertThat(new StatusCode("101 login succeed").getCode(), is(new Integer(101)));
     }
+
+    @Test
+    public void testEquals() {
+        assertThat(new StatusCode(0), is(new StatusCode(0)));
+        assertThat(new StatusCode(0), equalTo(new StatusCode(0)));
+    }
 }

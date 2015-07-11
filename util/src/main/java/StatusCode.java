@@ -34,8 +34,18 @@ public class StatusCode {
     /**
      * @return フルメッセージ文字列
      */
+    @Override
     public String toString() {
         return this.code.toString() + " " + message.get(this.code);
+    }
+
+    /**
+     * @return codeが等しければ同一
+     */
+    @Override
+    public boolean equals(final Object take) {
+        return (take instanceof StatusCode) ? this.getCode().equals(((StatusCode)take).getCode()) :
+            false;
     }
 
     private final Integer code;
