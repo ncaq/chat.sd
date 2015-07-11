@@ -18,6 +18,8 @@ public class Connector {
         this.server = this.makeSocket(InetAddress.getByName(address), new Integer[]{80, 8080, 12345, 50000});
         this.reader = new BufferedReader(new InputStreamReader(this.server.getInputStream()));
         this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.server.getOutputStream())), true);
+
+        this.login(user);
     }
 
     /**
@@ -45,6 +47,10 @@ public class Connector {
             }
         }
         throw new ConnectException(errStash.stream().map(e -> e.toString()).reduce("", (a, t) -> a + t));
+    }
+
+    private void login(final User u) {
+        this.writer.println(u.toString());
     }
 
     private final Socket server;
