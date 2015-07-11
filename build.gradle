@@ -28,7 +28,6 @@ project(':server') {
     }
     run {
         mainClassName = 'net.ncaq.chat.sd.server.Main'
-        systemProperty "java.library.path", "/usr/lib/sqlite-jdbc"
     }
 }
 
@@ -44,9 +43,6 @@ project(':client') {
         if(project.hasProperty('args')) {
             args project.args.split('\\s+')
         }
-    }
-    test {
-        systemProperty "java.library.path", "/usr/lib/sqlite-jdbc"
     }
 }
 
