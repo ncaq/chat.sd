@@ -4,9 +4,7 @@ defaultTasks 'build', 'javadoc'
 
 allprojects {
     apply plugin: 'java'
-}
 
-subprojects {
     repositories {
         mavenCentral()
     }
@@ -18,6 +16,9 @@ subprojects {
 
     apply plugin: 'pmd'
     pmd.ignoreFailures = true
+}
+
+subprojects {
 }
 
 project(':server') {
@@ -36,7 +37,6 @@ project(':client') {
     dependencies {
         compile project(':util')
         compile 'gnu.getopt:java-getopt:1.0.13'
-        testCompile project(':server')
     }
     run {
         mainClassName = 'net.ncaq.chat.sd.client.Main'
@@ -47,6 +47,12 @@ project(':client') {
 }
 
 project(':util') {
+}
+
+dependencies {
+    testCompile project(':server')
+    testCompile project(':client')
+    testCompile project(':util')
 }
 
 javadoc {
