@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-defaultTasks 'clean', 'build', 'javadoc'
+defaultTasks 'build', 'javadoc'
 
 allprojects {
     apply plugin: 'java'
