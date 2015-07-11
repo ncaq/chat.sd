@@ -1,7 +1,8 @@
 package net.ncaq.chat.sd.util;
 
 import org.junit.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 public class UserTest {
     @Test
@@ -12,7 +13,7 @@ public class UserTest {
 
     @Test
     public void testGetPassword() {
-        assertThat(new User("ユーザー名", "生パスワード").getUsername(), isNot("生パスワード"));
+        assertThat(new User("ユーザー名", "生パスワード").getUsername(), is(not("生パスワード")));
     }
 
     @Test

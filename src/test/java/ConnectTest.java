@@ -6,7 +6,8 @@ import net.ncaq.chat.sd.client.*;
 import net.ncaq.chat.sd.server.*;
 import net.ncaq.chat.sd.util.*;
 import org.junit.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 public class ConnectTest {
     @Test
@@ -14,6 +15,6 @@ public class ConnectTest {
         new ChatServer(50000);
         final User u = new User("anonymous", "");
         final Connector c = new Connector("localhost", u);
-        assertThat(is(c.readLine()), new StatusCode(0).toString());
+        assertThat(c.readLine(), is(new StatusCode(0).toString()));
     }
 }
