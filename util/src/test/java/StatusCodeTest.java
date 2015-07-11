@@ -6,15 +6,15 @@ import static org.junit.Assert.*;
 public class StatusCodeTest {
     @Test
     public void testStatusCodeInteger() {
-        assertEquals("0 login succeed", new StatusCode(0).toString());
-        assertEquals("100 password invalid", new StatusCode(100).toString());
-        assertEquals("101 multiple login", new StatusCode(101).toString());
+        assertThat(new StatusCode(0).toString() is("0 login succeed"));
+        assertThat(new StatusCode(100).toString() is("100 password invalid"));
+        assertThat(new StatusCode(101).toString() is("101 multiple login"));
     }
 
     @Test
     public void testStatusCodeString() {
-        assertEquals(new Integer(0), new StatusCode("0 login succeed").getCode());
-        assertEquals(new Integer(100), new StatusCode("100 login succeed").getCode());
-        assertEquals(new Integer(101), new StatusCode("101 login succeed").getCode());
+        assertThat(new StatusCode("0 login succeed").getCode(), is(new Integer(0)));
+        assertThat(new StatusCode("100 login succeed").getCode(), is(new Integer(100)));
+        assertThat(new StatusCode("101 login succeed").getCode(), is(new Integer(101)));
     }
 }
