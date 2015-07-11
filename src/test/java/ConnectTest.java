@@ -14,6 +14,6 @@ public class ConnectTest {
         new ChatServer(50000);
         final User u = new User("anonymous", "");
         final Connector c = new Connector("localhost", u);
-        assertEquals(c.readLine(), new StatusCode(0).toString());
+        assertEquals(new StatusCode(0).toString(), c.readLine());
     }
 }
