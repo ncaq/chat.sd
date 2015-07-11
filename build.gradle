@@ -24,7 +24,7 @@ project(':server') {
     apply plugin: 'application'
     dependencies {
         compile project(':util')
-        compile files('/usr/share/sqlite-jdbc/lib/sqlite-jdbc.jar')
+        compile 'org.xerial:sqlite-jdbc:3.8.10.1'
     }
     run {
         mainClassName = 'net.ncaq.chat.sd.server.Main'
