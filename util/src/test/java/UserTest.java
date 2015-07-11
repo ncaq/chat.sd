@@ -13,7 +13,7 @@ public class UserTest {
 
     @Test
     public void testGetPassword() {
-        assertThat(new User("ユーザー名", "生パスワード").getUsername(), is(not("生パスワード")));
+        assertThat(new User("ユーザー名", "生パスワード").getPassword(), is(not("生パスワード")));
     }
 
     @Test
