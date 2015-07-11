@@ -15,7 +15,7 @@ public class Auth {
     }
 
     public StatusCode login(User u) {
-        if(!userPassword.get(u.getUsername()).equals(u.getPassword())) {
+        if(!u.getPassword().equals(userPassword.get(u.getUsername()))) {
             return new StatusCode(100);
         }
         else if(userLogined.contains(u.getUsername()) || !userLogined.add(u.getUsername())){
