@@ -26,6 +26,10 @@ public class Auth {
         }
     };
 
+    public void addUser(User u) {
+        userPassword.put(u.getUsername(), u.getPassword());
+    }
+
     private final Map<String, String> userPassword = new ConcurrentSkipListMap<>();
     private final Set<String> userLogined = new ConcurrentSkipListSet<>();
 }
