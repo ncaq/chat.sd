@@ -9,10 +9,10 @@ import static org.hamcrest.Matchers.*;
 
 public class AuthTest {
     @Test
-    public void existUserIs1() throws Exception {
+    public void existUserIs0() throws Exception {
         final Auth a = new Auth();
         a.addUser(new User("sampleUser", "pass"));
-        assertThat(a.login(new User("sampleUser", "pass")), is(new StatusCode(1)));
+        assertThat(a.login(new User("sampleUser", "pass")), is(new StatusCode(0)));
     }
 
     @Test
@@ -25,7 +25,7 @@ public class AuthTest {
     public void multipleLoginIs101() throws Exception {
         final Auth a = new Auth();
         a.addUser(new User("sampleUser", "pass"));
-        assertThat(a.login(new User("sampleUser", "pass")), is(new StatusCode(1)));
+        assertThat(a.login(new User("sampleUser", "pass")), is(new StatusCode(0)));
         assertThat(a.login(new User("sampleUser", "pass")), is(new StatusCode(101)));
     }
 }
