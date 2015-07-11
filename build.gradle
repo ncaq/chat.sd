@@ -36,7 +36,7 @@ project(':client') {
     apply plugin: 'application'
     dependencies {
         compile project(':util')
-        compile files('/usr/share/java-getopt-1/lib/gnu.getopt.jar')
+        compile 'gnu.getopt:java-getopt:1.0.13'
         testCompile project(':server')
     }
     run {
