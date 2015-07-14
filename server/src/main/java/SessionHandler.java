@@ -46,8 +46,6 @@ public class SessionHandler implements Runnable {
                         System.err.println(err);
                     }
                 }
-                else {
-                }
             }
             catch(final IllegalStateException err) {
                 send.println(new StatusCode(100).toString());
