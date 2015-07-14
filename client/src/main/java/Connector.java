@@ -19,7 +19,13 @@ public class Connector {
         this.reader = new BufferedReader(new InputStreamReader(this.server.getInputStream()));
         this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.server.getOutputStream())), true);
 
-        this.login(username, rawPassword);
+        final StatusCode s = this.login(username, rawPassword);
+        switch(s.getCode()) {
+        case 0:
+            break;
+        default:
+            throw new RuntimeException(s.toString() + "\n" + "ユーザー" + username + ":" + s.getDescription());
+        }
     }
 
     /**
@@ -49,8 +55,9 @@ public class Connector {
         throw new ConnectException(errStash.stream().map(e -> e.toString()).reduce("", (a, t) -> a + t));
     }
 
-    private void login(final String username, final String rawPassword) {
-        this.writer.println("user " + username + " pass " + rawPassword);
+    private StatusCode login(final String username, final String rawPassword) throws IOException {
+        this.writeln("user " + username + " pass " + rawPassword);
+        return new StatusCode(this.readLine());
     }
 
     private final Socket server;
