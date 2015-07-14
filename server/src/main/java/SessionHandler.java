@@ -25,6 +25,9 @@ public class SessionHandler implements Runnable {
             System.err.println(u.getUsername() + " is " + loginStatus.toString());
 
             if(loginStatus.equals(new StatusCode(0))) { // ログイン成功
+                final String loginMessage = "login " + u.getUsername();
+                System.err.println(loginMessage);
+                server.broadcast(loginMessage);
                 final ExecutorService g = Executors.newSingleThreadExecutor();
                 g.execute(new GetTimeLineR(send, this.messageBox));
                 final ExecutorService p = Executors.newSingleThreadExecutor();
