@@ -27,11 +27,4 @@ public class UserTest {
         final User n = new User("ユーザー名", "生パスワード");
         assertThat(n.getPassword(), is(u.getPassword()));
     }
-
-    @Test
-    public void testToString() {
-        final User u = new User("ユ", "パ");
-        final String hashedPassword = u.getPassword();
-        assertThat(u.toString(), is("user ユ pass " + hashedPassword));
-    }
 }
