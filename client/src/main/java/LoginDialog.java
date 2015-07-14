@@ -22,29 +22,35 @@ import javafx.util.*;
  * ログイン用ダイアログ.
  * Dialogの機能が本格的に使用できるのはJDK9からなので,その場凌ぎが多いです
  */
-public class LoginDialog extends Dialog<Pair<String, Pair<String, String>>> {
+public class LoginDialog extends Dialog {
     public LoginDialog() {
         this.setTitle("Login Dialog");
 
-        final ButtonType loginButtonType = new ButtonType("Login");
-        this.getDialogPane().getButtonTypes().add(loginButtonType);
+        this.getDialogPane().getButtonTypes().add(new ButtonType("Login"));
 
         final VBox input = new VBox();
-        final TextField hostname = new TextField();
-        final TextField username = new TextField();
-        final PasswordField password = new PasswordField();
         input.getChildren().addAll(new HBox(new Label("Hostname: "), hostname),
                                    new HBox(new Label("Username: "), username),
                                    new HBox(new Label("Password: "), password));
 
-        this.getDialogPane().setContent(input);
+        Platform.runLater(() -> hostname.requestFocus());
 
-        this.setResultConverter(dialogButton -> {
-                try {
-                    return new Pair<>(hostname.getText(), new Pair<>(username.getText(), password.getText()));
-                }
-                catch(final Exception err) {
-                    return null;
-                }});
+        this.getDialogPane().setContent(input);
     }
+
+    public String getHostname() {
+        return this.hostname.getText();
+    }
+
+    public String getUsername() {
+        return this.username.getText();
+    }
+
+    public String getPassword() {
+        return this.password.getText();
+    }
+
+    private final TextField hostname = new TextField();
+    private final TextField username = new TextField();
+    private final PasswordField password = new PasswordField();
 }

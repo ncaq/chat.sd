@@ -3,6 +3,8 @@ package net.ncaq.chat.sd.client;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
 import java.util.stream.*;
 import javafx.application.*;
 import javafx.beans.value.*;
@@ -30,21 +32,22 @@ public class JavaFxClient extends Application {
     public void initialize() {
         this.timeline.setItems(FXCollections.<HBox>observableArrayList());
 
-        try {
-            final Pair<String, Pair<String, String>> input = new LoginDialog().showAndWait().orElse(new Pair<>("localhost", new Pair<>("anonymous", "")));
-            this.connector = new Connector(input.getKey(), input.getValue().getKey(), input.getValue().getValue());
-        }
-        catch(final IOException err) { // 接続できなければエラーアラートを表示して終了します
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("ERROR");
-            alert.setHeaderText("Error");
-            alert.setContentText(err.toString() + "\n" + "終了します");
+        do {
+            try {
+                final LoginDialog l = new LoginDialog();
+                l.showAndWait();
+                this.connector = new Connector(l.getHostname(), l.getUsername(), l.getPassword());
+            }
+            catch(final Exception err) {
+                System.err.println(err);
 
-            Platform.runLater(() -> {
-                    alert.showAndWait();
-                    Platform.exit();
-                });
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setContentText(err.getMessage());
+                alert.showAndWait();
+            }
         }
+        while(this.connector == null);
 
         this.message.setOnAction(this::send);
         this.submit.setDefaultButton(true);
