@@ -20,7 +20,7 @@ public class GetTimeLineR implements Runnable {
             catch(final InterruptedException err) {
                 System.err.println(err);
                 break;
-            }};
+            }}
     }
 
     private final PrintWriter client;

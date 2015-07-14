@@ -39,6 +39,7 @@ public class SessionHandler implements Runnable {
 
                     try {
                         while(g.awaitTermination(1, TimeUnit.HOURS) && p.awaitTermination(1, TimeUnit.HOURS)) {
+                            Thread.sleep(1);
                         }
                     }
                     catch(final InterruptedException err) {

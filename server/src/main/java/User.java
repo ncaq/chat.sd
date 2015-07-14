@@ -61,7 +61,7 @@ public class User {
      */
     @Override
     public boolean equals(final Object take) {
-        return (take instanceof User) ? this.getUsername().equals(((User)take).getUsername()) && this.getPassword().equals(((User)take).getPassword()) :
+        return take instanceof User ? this.getUsername().equals(((User)take).getUsername()) && this.getPassword().equals(((User)take).getPassword()) :
             false;
     }
 
