@@ -32,11 +32,8 @@ public class LoginDialog extends Dialog<Pair<String, User>> {
 
         final VBox input = new VBox();
         final TextField hostname = new TextField();
-        hostname.setPromptText("localhost");
         final TextField username = new TextField();
-        username.setPromptText("anonymous");
         final PasswordField password = new PasswordField();
-        password.setPromptText("");
         input.getChildren().addAll(new HBox(new Label("Hostname: "), hostname),
                                    new HBox(new Label("Username: "), username),
                                    new HBox(new Label("Password: "), password));
