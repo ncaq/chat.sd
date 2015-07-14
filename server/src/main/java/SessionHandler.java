@@ -19,8 +19,10 @@ public class SessionHandler implements Runnable {
             final BufferedReader receive = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
             final PrintWriter send = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.client.getOutputStream())), true);
 
-            final StatusCode loginStatus = auth.login(new User(receive.readLine()));
+            final User u = new User(receive.readLine());
+            final StatusCode loginStatus = auth.login(u);
             send.println(loginStatus.toString());
+            System.err.println(u.getUsername() + "is" + loginStatus.toString());
 
             if(loginStatus.equals(new StatusCode(0))) { // ログイン成功
                 final ExecutorService g = Executors.newSingleThreadExecutor();
