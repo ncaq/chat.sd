@@ -45,9 +45,6 @@ project(':client') {
     }
     run {
         mainClassName = 'net.ncaq.chat.sd.client.Main'
-        if(project.hasProperty('args')) {
-            args project.args.split('\\s+')
-        }
     }
 }
 
