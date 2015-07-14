@@ -7,9 +7,10 @@ import java.util.concurrent.*;
 import java.util.stream.*;
 
 public class PostTimeLineR implements Runnable {
-    public PostTimeLineR(final BufferedReader client, final ChatServer server) throws IOException {
+    public PostTimeLineR(final BufferedReader client, final ChatServer server, final User user) throws IOException {
         this.client = client;
         this.server = server;
+        this.user = user;
     }
 
     public void run() {
@@ -20,7 +21,7 @@ public class PostTimeLineR implements Runnable {
                     break;
                 }
                 else {
-                    this.server.broadcast(l);
+                    this.server.broadcast("chat " + user.getUsername() + " " + l);
                 }
             }
             catch(final IOException err) {
@@ -32,4 +33,5 @@ public class PostTimeLineR implements Runnable {
 
     private final BufferedReader client;
     private final ChatServer server;
+    private final User user;
 }
