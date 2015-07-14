@@ -14,12 +14,12 @@ public class Connector {
      * ソケット生成.
      * 失敗すると例外吐くので再試行するかプログラム落とすこと.
      */
-    public Connector(final String address, final User user) throws ConnectException, IOException {
+    public Connector(final String address, final String username, final String rawPassword) throws ConnectException, IOException {
         this.server = this.makeSocket(InetAddress.getByName(address), new Integer[]{12345, 50000});
         this.reader = new BufferedReader(new InputStreamReader(this.server.getInputStream()));
         this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.server.getOutputStream())), true);
 
-        this.login(user);
+        this.login(username, rawPassword);
     }
 
     /**
@@ -49,8 +49,8 @@ public class Connector {
         throw new ConnectException(errStash.stream().map(e -> e.toString()).reduce("", (a, t) -> a + t));
     }
 
-    private void login(final User u) {
-        this.writer.println(u.toString());
+    private void login(final String username, final String rawPassword) {
+        this.writer.println("user " + username + " pass " + rawPassword);
     }
 
     private final Socket server;

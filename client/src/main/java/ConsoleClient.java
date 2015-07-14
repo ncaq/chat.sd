@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
-import net.ncaq.chat.sd.util.*;
 
 /**
  * CUIのクライアント.
@@ -17,7 +16,7 @@ public class ConsoleClient {
      */
     public ConsoleClient(final String hostname, final String username ,final String rawPassword) {
         try {
-            final Connector server = new Connector(hostname, new User(username, rawPassword));
+            final Connector server = new Connector(hostname, username, rawPassword);
             Executors.newSingleThreadExecutor().execute(getStreamToStdOut(server));
             Executors.newSingleThreadExecutor().execute(postStdInToServer(server));
         }
@@ -40,7 +39,7 @@ public class ConsoleClient {
             System.out.println("password:");
             final String rawPassword = sc.next();
 
-            final Connector server = new Connector(hostname, new User(username, rawPassword));
+            final Connector server = new Connector(hostname, username, rawPassword);
             Executors.newSingleThreadExecutor().execute(getStreamToStdOut(server));
             Executors.newSingleThreadExecutor().execute(postStdInToServer(server));
         }

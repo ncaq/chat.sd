@@ -16,6 +16,11 @@ public class AuthTest {
     }
 
     @Test
+    public void anonymousLogin() throws Exception {
+        assertThat(new Auth().login(new User("anonymous", "")), is(new StatusCode(0)));
+    }
+
+    @Test
     public void nothingUserIs100() throws Exception {
         final Auth a = new Auth();
         assertThat(a.login(new User("sampleUser", "pass")), is(new StatusCode(100)));

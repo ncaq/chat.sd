@@ -22,7 +22,7 @@ public class SessionHandler implements Runnable {
             final User u = new User(receive.readLine());
             final StatusCode loginStatus = auth.login(u);
             send.println(loginStatus.toString());
-            System.err.println(u.getUsername() + "is" + loginStatus.toString());
+            System.err.println(u.getUsername() + " is " + loginStatus.toString());
 
             if(loginStatus.equals(new StatusCode(0))) { // ログイン成功
                 final ExecutorService g = Executors.newSingleThreadExecutor();

@@ -17,13 +17,12 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import javafx.util.*;
-import net.ncaq.chat.sd.util.*;
 
 /**
  * ログイン用ダイアログ.
  * Dialogの機能が本格的に使用できるのはJDK9からなので,その場凌ぎが多いです
  */
-public class LoginDialog extends Dialog<Pair<String, User>> {
+public class LoginDialog extends Dialog<Pair<String, Pair<String, String>>> {
     public LoginDialog() {
         this.setTitle("Login Dialog");
 
@@ -42,7 +41,7 @@ public class LoginDialog extends Dialog<Pair<String, User>> {
 
         this.setResultConverter(dialogButton -> {
                 try {
-                    return new Pair<>(hostname.getText(), new User(username.getText(), password.getText()));
+                    return new Pair<>(hostname.getText(), new Pair<>(username.getText(), password.getText()));
                 }
                 catch(final Exception err) {
                     return null;

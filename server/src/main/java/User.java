@@ -1,4 +1,4 @@
-package net.ncaq.chat.sd.util;
+package net.ncaq.chat.sd.server;
 
 import java.io.*;
 import java.net.*;
@@ -51,14 +51,6 @@ public class User {
      */
     public String getPassword() {
         return Base64.getEncoder().encodeToString(this.password.getEncoded());
-    }
-
-    /**
-     * ログイン用文字列.
-     */
-    @Override
-    public String toString() {
-        return "user " + this.getUsername() + " pass " + this.getPassword();
     }
 
     /**
