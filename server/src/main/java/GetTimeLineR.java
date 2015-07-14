@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
 
-public class GetTimeLineR extends Runnable {
+public class GetTimeLineR implements Runnable {
     public GetTimeLineR(final PrintWriter client, final LinkedBlockingQueue<String> messageBox) throws IOException {
         this.client = client;
         this.messageBox = messageBox;
@@ -17,7 +17,7 @@ public class GetTimeLineR extends Runnable {
             try {
                 client.println(messageBox.take());
             }
-            catch(IOException|InterruptedException err) {
+            catch(final InterruptedException err) {
                 System.err.println(err);
                 break;
             }};

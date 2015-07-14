@@ -6,6 +6,11 @@ import static org.hamcrest.Matchers.*;
 
 public class UserTest {
     @Test
+    public void testLoginQuery() {
+        assertThat(new User("user userName pass Password"), is(new User("userName", "password")));
+    }
+
+    @Test
     public void testGetUserName() {
         assertThat(new User("userNameSample", "p").getUsername(), is("userNameSample"));
         assertThat(new User("日本語ユーザ", "p").getUsername(), is("日本語ユーザ"));

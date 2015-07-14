@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
 
-public class PostTimeLineR extends Runnable {
+public class PostTimeLineR implements Runnable {
     public PostTimeLineR(final BufferedReader client, final ChatServer server) throws IOException {
         this.client = client;
         this.server = server;

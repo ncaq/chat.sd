@@ -5,6 +5,7 @@ import java.net.*;
 import java.security.*;
 import java.security.spec.*;
 import java.util.*;
+import java.util.regex.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
 
@@ -16,16 +17,25 @@ import javax.crypto.spec.*;
  */
 public class User {
     public User(final String username, final String rawPassword) {
-        SecretKey passwordStash = null;
+        this.username = username;
+        this.password = this.cryptoPassword(rawPassword);
+    }
+
+    public User(final String loginQuery) {
+        final Matcher m = Pattern.compile("user\\s*(.+)\\s*pass (.+)").matcher(loginQuery);
+        this.username = m.group(1);
+        this.password = this.cryptoPassword(m.group(2));
+    }
+
+    private SecretKey cryptoPassword(final String rawPassword) {
         try {
-            passwordStash = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(new PBEKeySpec(rawPassword.toCharArray(), username.getBytes("UTF-8"), 44873, 512));
+            return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(new PBEKeySpec(rawPassword.toCharArray(), username.getBytes("UTF-8"), 44873, 512));
         }
         catch(UnsupportedEncodingException|NoSuchAlgorithmException|IllegalArgumentException|InvalidKeySpecException err) {
             System.err.println(err);
             System.exit(-1);
+            return null;
         }
-        this.username = username;
-        this.password = passwordStash;
     }
 
     /**

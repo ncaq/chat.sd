@@ -5,8 +5,9 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
+import net.ncaq.chat.sd.util.*;
 
-public class SessionHandler extends Runnable {
+public class SessionHandler implements Runnable {
     public SessionHandler(final ChatServer server, final Socket client, final Auth auth) throws IOException {
         this.server = server;
         this.client = client;
@@ -14,26 +15,31 @@ public class SessionHandler extends Runnable {
     }
 
     public void run() {
-        final BufferedReader receive = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
-        final PrintWriter send = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.client.getOutputStream())), true);
+        try {
+            final BufferedReader receive = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
+            final PrintWriter send = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.client.getOutputStream())), true);
 
-        final StatusCode loginStatus = auth.login(receive.readLine());
-        send.println(loginStatus.toString());
+            final StatusCode loginStatus = auth.login(new User(receive.readLine()));
+            send.println(loginStatus.toString());
 
-        if(loginStatus.equals(new StatusCode(0))) { // ログイン成功
-            final ExecutorService g = Executors.newSingleThreadExecutor();
-            g.execute(new GetTimeLineR(send, this.messageBox));
-            final ExecutorService p = Executors.newSingleThreadExecutor();
-            p.execute(new PostTimeLineR(receive, this.server));
-            try {
-                while(g.awaitTermnation(1, TimeUnit.HOURS) && p.awaitTermnation(1, TimeUnit.HOURS)) {
+            if(loginStatus.equals(new StatusCode(0))) { // ログイン成功
+                final ExecutorService g = Executors.newSingleThreadExecutor();
+                g.execute(new GetTimeLineR(send, this.messageBox));
+                final ExecutorService p = Executors.newSingleThreadExecutor();
+                p.execute(new PostTimeLineR(receive, this.server));
+                try {
+                    while(g.awaitTermination(1, TimeUnit.HOURS) && p.awaitTermination(1, TimeUnit.HOURS)) {
+                    }
+                }
+                catch(final InterruptedException err) {
+                    System.err.println(err);
                 }
             }
-            catch(final InterruptedException err) {
-                System.err.println(err);
+            else {
             }
         }
-        else {
+        catch(final IOException err) {
+            System.err.println(err);
         }
     }
 

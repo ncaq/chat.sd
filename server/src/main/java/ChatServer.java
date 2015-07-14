@@ -14,7 +14,8 @@ public class ChatServer {
                     for(;;) {
                         try {
                             final SessionHandler newSession = new SessionHandler(this, socket.accept(), auth);
-                            newSession.start();
+                            final ExecutorService thread = Executors.newCachedThreadPool();
+                            thread.execute(newSession);
                             sessions.put(newSession);
                         }
                         catch(IOException|InterruptedException err) {
@@ -25,10 +26,10 @@ public class ChatServer {
             new Thread(() -> {
                     for(;;) {
                         try {
-                            final String newMessage = newMessage.take();
+                            final String nm = newMessageBox.take();
                             sessions.parallelStream().forEach(s -> {
                                     try {
-                                        s.put(newMessage);
+                                        s.put(nm);
                                     }
                                     catch(final InterruptedException err) {
                                         System.err.println(err);
@@ -43,13 +44,13 @@ public class ChatServer {
         }
     }
 
-    public void broadcast(final String newMessage) throws InterruptedException {
-        this.newMessage.put(newMessage);
-        this.log.write(newMessage);
+    public void broadcast(final String newMessageBox) throws InterruptedException {
+        this.newMessageBox.put(newMessageBox);
+        this.log.write(newMessageBox);
     }
 
     private final LinkedBlockingQueue<SessionHandler> sessions = new LinkedBlockingQueue<>();
-    private final LinkedBlockingQueue<String> newMessage = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<String> newMessageBox = new LinkedBlockingQueue<>();
     private final Auth auth = new Auth();
     private final Log log = Log.getInstance();
 }
