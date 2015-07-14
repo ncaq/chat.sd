@@ -21,7 +21,10 @@ public class User {
         this.password = this.cryptoPassword(rawPassword);
     }
 
-    public User(final String loginQuery) {
+    /**
+     * ログイン文字列から構成
+     */
+    public User(final String loginQuery) throws IllegalStateException {
         final Matcher m = Pattern.compile("user\\s*([^ ]+)\\s*pass\\s*([^ ]*)").matcher(loginQuery);
         m.matches();
         this.username = m.group(1);

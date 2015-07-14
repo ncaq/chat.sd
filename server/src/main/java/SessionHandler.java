@@ -18,29 +18,33 @@ public class SessionHandler implements Runnable {
         try {
             final BufferedReader receive = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
             final PrintWriter send = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.client.getOutputStream())), true);
+            try {
+                final User u = new User(receive.readLine());
+                final StatusCode loginStatus = auth.login(u);
+                send.println(loginStatus.toString());
+                System.err.println(u.getUsername() + " is " + loginStatus.toString());
 
-            final User u = new User(receive.readLine());
-            final StatusCode loginStatus = auth.login(u);
-            send.println(loginStatus.toString());
-            System.err.println(u.getUsername() + " is " + loginStatus.toString());
-
-            if(loginStatus.equals(new StatusCode(0))) { // ログイン成功
-                final String loginMessage = "login " + u.getUsername();
-                System.err.println(loginMessage);
-                server.broadcast(loginMessage);
-                final ExecutorService g = Executors.newSingleThreadExecutor();
-                g.execute(new GetTimeLineR(send, this.messageBox));
-                final ExecutorService p = Executors.newSingleThreadExecutor();
-                p.execute(new PostTimeLineR(receive, this.server));
-                try {
-                    while(g.awaitTermination(1, TimeUnit.HOURS) && p.awaitTermination(1, TimeUnit.HOURS)) {
+                if(loginStatus.equals(new StatusCode(0))) { // ログイン成功
+                    final String loginMessage = "login " + u.getUsername();
+                    System.err.println(loginMessage);
+                    server.broadcast(loginMessage);
+                    final ExecutorService g = Executors.newSingleThreadExecutor();
+                    g.execute(new GetTimeLineR(send, this.messageBox));
+                    final ExecutorService p = Executors.newSingleThreadExecutor();
+                    p.execute(new PostTimeLineR(receive, this.server));
+                    try {
+                        while(g.awaitTermination(1, TimeUnit.HOURS) && p.awaitTermination(1, TimeUnit.HOURS)) {
+                        }
+                    }
+                    catch(final InterruptedException err) {
+                        System.err.println(err);
                     }
                 }
-                catch(final InterruptedException err) {
-                    System.err.println(err);
+                else {
                 }
             }
-            else {
+            catch(final IllegalStateException err) {
+                send.println(new StatusCode(100).toString());
             }
         }
         catch(final IOException err) {
