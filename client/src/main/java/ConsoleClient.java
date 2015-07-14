@@ -14,7 +14,7 @@ public class ConsoleClient {
     /**
      * 主にテスト用.
      */
-    public ConsoleClient(final String hostname, final String username ,final String rawPassword) {
+    public ConsoleClient(final String hostname, final String username, final String rawPassword) {
         try {
             final Connector server = new Connector(hostname, username, rawPassword);
             Executors.newSingleThreadExecutor().execute(getStreamToStdOut(server));
