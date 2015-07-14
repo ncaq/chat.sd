@@ -6,6 +6,10 @@ import java.util.*;
 import java.util.concurrent.*;
 import net.ncaq.chat.sd.util.*;
 
+/**
+ * ログインとかログアウトとか管理します
+ * スレッドセーフ
+ */
 public class Auth {
     public Auth() {
         final User anonymous = new User("anonymous", "");
@@ -14,7 +18,7 @@ public class Auth {
         this.userPassword.put(root.getUsername(), root.getPassword());
     }
 
-    public StatusCode login(User u) {
+    public StatusCode login(final User u) {
         if(!u.getPassword().equals(userPassword.get(u.getUsername()))) {
             return new StatusCode(100);
         }
@@ -26,7 +30,7 @@ public class Auth {
         }
     };
 
-    public void addUser(User u) {
+    public void addUser(final User u) {
         userPassword.put(u.getUsername(), u.getPassword());
     }
 
