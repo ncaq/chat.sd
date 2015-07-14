@@ -7,7 +7,11 @@ import static org.hamcrest.Matchers.*;
 public class UserTest {
     @Test
     public void testLoginQuery() {
-        assertThat(new User("user userName pass Password"), is(new User("userName", "password")));
+        final User u = new User("user username pass password");
+        final User t = new User("username", "password");
+        assertThat(u.getUsername(), is(t.getUsername()));
+        assertThat(u.getPassword(), is(t.getPassword()));
+        assertThat(u, is(t));
     }
 
     @Test

@@ -22,7 +22,8 @@ public class User {
     }
 
     public User(final String loginQuery) {
-        final Matcher m = Pattern.compile("user\\s*(.+)\\s*pass (.+)").matcher(loginQuery);
+        final Matcher m = Pattern.compile("user\\s*([^ ]+)\\s*pass\\s*([^ ]+)").matcher(loginQuery);
+        m.matches();
         this.username = m.group(1);
         this.password = this.cryptoPassword(m.group(2));
     }
@@ -55,8 +56,26 @@ public class User {
     /**
      * ログイン用文字列.
      */
+    @Override
     public String toString() {
         return "user " + this.getUsername() + " pass " + this.getPassword();
+    }
+
+    /**
+     * @return username, password
+     */
+    @Override
+    public boolean equals(final Object take) {
+        return (take instanceof User) ? this.getUsername().equals(((User)take).getUsername()) && this.getPassword().equals(((User)take).getPassword()) :
+            false;
+    }
+
+    /**
+     * @return hashCode == code
+     */
+    @Override
+    public int hashCode() {
+        return this.getUsername().hashCode() + this.getPassword().hashCode();
     }
 
     private final String username;
