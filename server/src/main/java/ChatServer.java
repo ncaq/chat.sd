@@ -8,12 +8,12 @@ import java.util.concurrent.*;
 public class ChatServer {
     public ChatServer(final Integer port) {
         try {
-            final ServerSocket server = new ServerSocket(port);
+            final ServerSocket socket = new ServerSocket(port);
 
             new Thread(() -> {
                     for(;;) {
                         try {
-                            final SessionHandler newSession = new SessionHandler(this, server.accept());
+                            final SessionHandler newSession = new SessionHandler(this, socket.accept(), auth);
                             newSession.start();
                             sessions.put(newSession);
                         }
@@ -25,7 +25,7 @@ public class ChatServer {
             new Thread(() -> {
                     for(;;) {
                         try {
-                            final String newMessage = receive.take();
+                            final String newMessage = newMessage.take();
                             sessions.parallelStream().forEach(s -> {
                                     try {
                                         s.put(newMessage);
@@ -37,16 +37,6 @@ public class ChatServer {
                         catch(final InterruptedException err) {
                             System.err.println(err);
                         }}}).start();
-
-            new Thread(() -> {
-                    for(;;) {
-                        sessions.removeIf(s -> !s.isAlive());
-                        try {
-                            Thread.sleep(1000 * 60); // 1 minutes
-                        }
-                        catch(final InterruptedException err) {
-                            System.err.println(err);
-                        }}}).start();
         }
         catch(final IOException err) {
             System.err.println(err);
@@ -54,11 +44,12 @@ public class ChatServer {
     }
 
     public void broadcast(final String newMessage) throws InterruptedException {
-        this.receive.put(newMessage);
+        this.newMessage.put(newMessage);
         this.log.write(newMessage);
     }
 
     private final LinkedBlockingQueue<SessionHandler> sessions = new LinkedBlockingQueue<>();
-    private final LinkedBlockingQueue<String> receive = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<String> newMessage = new LinkedBlockingQueue<>();
+    private final Auth auth = new Auth();
     private final Log log = Log.getInstance();
 }

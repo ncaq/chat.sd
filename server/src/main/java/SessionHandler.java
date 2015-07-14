@@ -6,52 +6,44 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
 
-public class SessionHandler extends Thread {
-    public SessionHandler(final ChatServer server, final Socket client) throws IOException {
+public class SessionHandler extends Runnable {
+    public SessionHandler(final ChatServer server, final Socket client, final Auth auth) throws IOException {
         this.server = server;
         this.client = client;
-
-        this.reader = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
-        this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.client.getOutputStream())), true);
-        this.receiveTimeLine = new LinkedBlockingQueue<>();
+        this.auth = auth;
     }
 
     public void run() {
-        final ExecutorService e = Executors.newSingleThreadExecutor();
-        e.execute(() -> {
-                for(;;) {
-                    try {
-                        this.writer.println(this.receiveTimeLine.take());
-                    }
-                    catch(final InterruptedException err) {
-                        System.err.println(err);
-                    }}});
+        final BufferedReader receive = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
+        final PrintWriter send = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.client.getOutputStream())), true);
 
-        while(this.client.isConnected()) {
+        final StatusCode loginStatus = auth.login(receive.readLine());
+        send.println(loginStatus.toString());
+
+        if(loginStatus.equals(new StatusCode(0))) { // ログイン成功
+            final ExecutorService g = Executors.newSingleThreadExecutor();
+            g.execute(new GetTimeLineR(send, this.messageBox));
+            final ExecutorService p = Executors.newSingleThreadExecutor();
+            p.execute(new PostTimeLineR(receive, this.server));
             try {
-                final String l = this.reader.readLine();
-                if(l == null) {
-                    break;
-                }
-                else {
-                    this.server.broadcast(l);
+                while(g.awaitTermnation(1, TimeUnit.HOURS) && p.awaitTermnation(1, TimeUnit.HOURS)) {
                 }
             }
-            catch(IOException|InterruptedException err) {
+            catch(final InterruptedException err) {
                 System.err.println(err);
-            }}
-
-        e.shutdown();
+            }
+        }
+        else {
+        }
     }
 
     public void put(final String newMessage) throws InterruptedException {
-        this.receiveTimeLine.put(newMessage);
+        this.messageBox.put(newMessage);
     }
 
     private final ChatServer server;
     private final Socket client;
+    private final Auth auth;
 
-    private final BufferedReader reader;
-    private final PrintWriter writer;
-    private final LinkedBlockingQueue<String> receiveTimeLine;
+    private final LinkedBlockingQueue<String> messageBox = new LinkedBlockingQueue<>();
 }
