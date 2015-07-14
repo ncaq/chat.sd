@@ -22,10 +22,10 @@ public class User {
     }
 
     public User(final String loginQuery) {
-        final Matcher m = Pattern.compile("user\\s*([^ ]+)\\s*pass\\s*([^ ]+)").matcher(loginQuery);
+        final Matcher m = Pattern.compile("user\\s*([^ ]+)\\s*pass\\s*([^ ]*)").matcher(loginQuery);
         m.matches();
         this.username = m.group(1);
-        this.password = this.cryptoPassword(m.group(2));
+        this.password = this.cryptoPassword(m.group(2)); // accept empty
     }
 
     private SecretKey cryptoPassword(final String rawPassword) {
