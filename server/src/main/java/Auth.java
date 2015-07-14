@@ -19,19 +19,33 @@ public class Auth {
     }
 
     public StatusCode login(final User u) {
-        if(!u.getPassword().equals(userPassword.get(u.getUsername()))) {
+        if(!this.contains(u)) {
             return new StatusCode(100);
         }
-        else if(userLogined.contains(u.getUsername()) || !userLogined.add(u.getUsername())){ // add
+        else if(userLogined.contains(u.getUsername()) || !userLogined.add(u.getUsername())) { // add
             return new StatusCode(101);
         }
-        else{
+        else {
             return new StatusCode(0);
         }
     };
 
+    public StatusCode logout(final User u) {
+        if (!this.contains(u)) {
+            return new StatusCode(100);
+        }
+        else {
+            this.userLogined.remove(u.getUsername());
+            return new StatusCode(0);
+        }
+    }
+
     public void addUser(final User u) {
         userPassword.put(u.getUsername(), u.getPassword());
+    }
+
+    public boolean contains(final User u) {
+        return u.getPassword().equals(userPassword.get(u.getUsername()));
     }
 
     private final Map<String, String> userPassword = new ConcurrentSkipListMap<>();
