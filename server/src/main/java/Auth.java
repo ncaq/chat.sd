@@ -34,9 +34,11 @@ public class Auth {
         if (!this.contains(u)) {
             return new StatusCode(100);
         }
+        else if(!this.userLogined.remove(u.getUsername())) { // remove
+            return new StatusCode(601);
+        }
         else {
-            this.userLogined.remove(u.getUsername());
-            return new StatusCode(0);
+            return new StatusCode(600);
         }
     }
 

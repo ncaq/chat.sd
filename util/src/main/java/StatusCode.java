@@ -6,6 +6,7 @@ import java.util.regex.*;
 
 /**
  * 通信のステータスコード.
+ * よく考えたら列挙体で実装するべきだった.
  */
 public class StatusCode {
     /**
@@ -69,11 +70,15 @@ public class StatusCode {
             put(0, "login succeed");
             put(100, "password invalid");
             put(101, "multiple login");
+            put(600, "logout succeed(extension)");
+            put(601, "multiple logout(extension)");
         }};
 
     private final static Map<Integer, String> description = new ConcurrentHashMap<Integer, String>(){{
             put(0, "ログイン成功");
             put(100, "パスワードが間違っています");
             put(101, "既にログインしています");
+            put(600, "ログアウト成功(テスト用)");
+            put(601, "ログインしていません(テスト用)");
         }};
 }
