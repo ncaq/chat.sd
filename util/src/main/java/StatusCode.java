@@ -32,6 +32,13 @@ public class StatusCode {
     }
 
     /**
+     * @return 説明
+     */
+    public String getDescription() {
+        return description.get(this.code);
+    }
+
+    /**
      * @return フルメッセージ文字列
      */
     @Override
@@ -62,5 +69,11 @@ public class StatusCode {
             put(0, "login succeed");
             put(100, "password invalid");
             put(101, "multiple login");
+        }};
+
+    private final static Map<Integer, String> description = new ConcurrentHashMap<Integer, String>(){{
+            put(0, "ログイン成功");
+            put(100, "パスワードが間違っています");
+            put(101, "既にログインしています");
         }};
 }
