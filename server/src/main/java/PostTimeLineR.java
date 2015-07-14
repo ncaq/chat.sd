@@ -23,7 +23,7 @@ public class PostTimeLineR implements Runnable {
                     this.server.broadcast(l);
                 }
             }
-            catch(IOException|InterruptedException err) {
+            catch(final IOException err) {
                 System.err.println(err);
                 break;
             }
