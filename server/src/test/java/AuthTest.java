@@ -30,7 +30,14 @@ public class AuthTest {
     public void multipleLoginIs101() throws Exception {
         final Auth a = new Auth();
         a.addUser(new User("sampleUser", "pass"));
+    }
+
+    @Test
+    public void loginAndLogoutAndLogin() {
+        final Auth a = new Auth();
+        a.addUser(new User("sampleUser", "pass"));
         assertThat(a.login(new User("sampleUser", "pass")), is(new StatusCode(0)));
-        assertThat(a.login(new User("sampleUser", "pass")), is(new StatusCode(101)));
+        assertThat(a.logout(new User("sampleUser", "pass")), is(new StatusCode(0)));
+        assertThat(a.login(new User("sampleUser", "pass")), is(new StatusCode(0)));
     }
 }
