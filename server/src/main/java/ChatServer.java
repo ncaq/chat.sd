@@ -44,9 +44,14 @@ public class ChatServer {
         }
     }
 
-    public void broadcast(final String newMessageBox) throws InterruptedException {
-        this.newMessageBox.put(newMessageBox);
-        this.log.write(newMessageBox);
+    public void broadcast(final String newMessageBox) {
+        try {
+            this.newMessageBox.put(newMessageBox);
+            this.log.write(newMessageBox);
+        }
+        catch(final InterruptedException err) {
+            System.err.println(err);
+        }
     }
 
     private final LinkedBlockingQueue<SessionHandler> sessions = new LinkedBlockingQueue<>();
