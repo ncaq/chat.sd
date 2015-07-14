@@ -13,7 +13,7 @@ public class ChatServer {
             new Thread(() -> {
                     for(;;) {
                         try {
-                            final SessionHandler newSession = new SessionHandler(this, socket.accept(), auth);
+                            final TimeLineR newSession = new TimeLineR(this, socket.accept(), auth);
                             final ExecutorService thread = Executors.newCachedThreadPool();
                             thread.execute(newSession);
                             sessions.put(newSession);
@@ -54,7 +54,7 @@ public class ChatServer {
         }
     }
 
-    private final LinkedBlockingQueue<SessionHandler> sessions = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<TimeLineR> sessions = new LinkedBlockingQueue<>();
     private final LinkedBlockingQueue<String> newMessageBox = new LinkedBlockingQueue<>();
     private final Auth auth = new Auth();
     private final Log log = Log.getInstance();
