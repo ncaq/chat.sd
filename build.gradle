@@ -30,7 +30,9 @@ project(':server') {
     apply plugin: 'application'
     dependencies {
         compile project(':util')
-        compile 'org.xerial:sqlite-jdbc:3.8.10.1'
+        compile 'javax:javaee-api:7.0'
+        compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.0'
+        compile 'com.h2database:h2:1.4.187'
     }
     run {
         mainClassName = 'net.ncaq.chat.sd.server.Main'
@@ -61,10 +63,4 @@ javadoc {
     source subprojects*.sourceSets.main.allJava
     classpath = files(subprojects*.sourceSets.main.compileClasspath)
     options.encoding = 'UTF-8'
-}
-
-test {
-    fileTree(dir: '.', include: '**/*.xml').each { f ->
-        f.setLastModified System.currentTimeMillis()
-    }
 }
