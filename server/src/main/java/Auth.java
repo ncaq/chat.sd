@@ -20,7 +20,7 @@ public class Auth {
     public Message login(final User u) {
         Message m = !this.contains(u) ?
             new PasswordInvalidMessage() :
-            logined.contains(u.getName()) || !logined.add(u.getName()) ? // add
+            logined.contains(u) || !logined.add(u) ? // add
             new MultipleLoginMessage() :
             new LoginMessage();
         m.setPoster(u);
@@ -43,6 +43,8 @@ public class Auth {
 
     public boolean contains(final User u) {
         // return u.getPassword().toString().equals(userPassword.get(u.getName()));
+        /** @todo */
+        return true;
     }
 
     private final Set<User> logined = new ConcurrentSkipListSet<>();

@@ -27,7 +27,7 @@ public class CentralServer {
             pool.execute(() -> {
                     for(;;) {
                         try {
-                            final String nm = newMessageBox.take();
+                            final Message nm = newMessageBox.take();
                             pool.execute(() -> sessions.parallelStream().forEach(s -> s.put(nm)));
                         }
                         catch(final InterruptedException err) {
