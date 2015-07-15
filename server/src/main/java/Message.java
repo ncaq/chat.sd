@@ -22,5 +22,5 @@ public class Message {
     private java.sql.Date create = new java.sql.Date(System.currentTimeMillis());
 
     @EmbeddedId
-    private User submitUser;
+    private User poster;
 }
