@@ -32,19 +32,32 @@ public class TimeLineR implements Runnable {
                 server.broadcast(loginMessage);
 
                 try {
-                    final ExecutorService e = Executors.newSingleThreadExecutor();
-                    e.execute(getTimeLineR());
-                    postTimeLineR().run(); // postが終了したらgetを強制終了する
-                    e.shutdown();
+                    final ExecutorService getThread = Executors.newSingleThreadExecutor();
+                    getThread.execute(getTimeLineR()); // getは非同期実行
+                    postTimeLineR().run();     // postは｢同期｣実行
+                    getThread.shutdown();      // getは自動で終了しない
                 }
-                finally {       // 確実にログアウト
-                    auth.logout(user);
+                finally {
+                    auth.logout(user); // 確実にログアウト
                     System.err.println(user.getUsername() + "さんが終了しました");
                 }
             }
         }
         catch(final IllegalStateException err) { // 正規表現例外などに対処
             get.println(PASSWORD_INVALID.toString());
+        }
+        finally {               // 早期開放のため明示的に開放
+            try {
+                get.close();
+                post.close();
+                client.close();
+            }
+            catch(final IOException err) { // もし例外が出ても,開放が遅れるだけで自動開放はされるはず
+                System.err.println(err);
+            }
+            finally {
+                server.notifySessionClosed(this); // サーバにセッションの終了を通知
+            }
         }
     }
 

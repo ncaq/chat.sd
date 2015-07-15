@@ -40,19 +40,32 @@ public class ChatServer {
         }
     }
 
+    /**
+     * 全てのセッションに新規メッセージを配信する準備をします.
+     */
     public void broadcast(final String newMessageBox) {
         try {
             this.newMessageBox.put(newMessageBox);
-            this.log.write(newMessageBox);
+            this.messageLog.write(newMessageBox);
         }
         catch(final InterruptedException err) {
             System.err.println(err);
         }
     }
 
+    /**
+     * 閉じたセッションを配信から排除します.
+     */
+    public void notifySessionClosed(final TimeLineR closedSession) {
+        pool.execute(() -> {
+                sessions.remove(closedSession);
+                System.err.println("close session: " + closedSession);
+            });
+    }
+
     private final ExecutorService pool = Executors.newCachedThreadPool();
     private final Queue<TimeLineR> sessions = new ConcurrentLinkedQueue<>();
     private final BlockingQueue<String> newMessageBox = new LinkedBlockingQueue<>();
     private final Auth auth = new Auth();
-    private final Log log = Log.getInstance();
+    private final MessageLog messageLog = MessageLog.getInstance();
 }
