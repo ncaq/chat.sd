@@ -6,18 +6,26 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class Log {
-    private Log() {
-        Connection coNotFinal = null;
+    static {
         try {
             Class.forName("org.sqlite.JDBC");
-            coNotFinal = DriverManager.getConnection("jdbc:sqlite:chat.sqlite3");
         }
-        catch(final Exception err) { // この例外は回復諦めて終了します
+        catch(final ClassNotFoundException err) {
             System.err.println(err);
             System.exit(-1);
         }
-        this.chat = coNotFinal;
+    }
 
+    private Log() {
+        Connection chatNotFinal = null;
+        try {
+            chatNotFinal = DriverManager.getConnection("jdbc:sqlite:chat.sqlite3");
+        }
+        catch(final SQLException err) {
+            System.err.println(err);
+            System.exit(-1);
+        }
+        this.chat = chatNotFinal;
         this.makeTableWhenNothing();
     }
 
@@ -48,13 +56,13 @@ public class Log {
                 }});
     }
 
-    public static synchronized Log getInstance() {
-        return self == null ? self = new Log() :
-            self;
+    public static Log getInstance() {
+        return self;
     }
 
-    private static Log self;
+    private static final Log self = new Log();
+
+    private final ExecutorService single = Executors.newSingleThreadExecutor();
 
     private final Connection chat;
-    private final ExecutorService single = Executors.newSingleThreadExecutor();
 }
