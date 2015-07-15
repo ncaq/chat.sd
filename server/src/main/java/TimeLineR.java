@@ -6,10 +6,9 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
 import lombok.*;
-import net.ncaq.chat.sd.server.message.*;
 import net.ncaq.chat.sd.util.*;
+import net.ncaq.chat.sd.util.message.*;
 import static java.util.concurrent.TimeUnit.*;
-import static net.ncaq.chat.sd.util.Status.*;
 
 public class TimeLineR implements Runnable {
     public TimeLineR(final ChatServer server, final Socket client, final Auth auth) throws IOException {
@@ -23,13 +22,13 @@ public class TimeLineR implements Runnable {
 
     public void run() {
         try {
-            val loginStatus = auth.login(user);
+            val loginMessage = auth.login(user);
             val loginMessage = new LoginMessage(user, "login");
             System.err.println();
 
-            get.println(loginStatus.toString());
+            get.println(loginMessage.toString());
 
-            if(loginStatus.equals(LOGIN_SUCCEED)) {
+            if(loginMessage.equals(LOGIN_SUCCEED)) {
                 System.err.println(loginMessage);
                 server.broadcast(loginMessage);
 

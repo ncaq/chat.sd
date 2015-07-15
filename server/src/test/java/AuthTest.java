@@ -8,7 +8,6 @@ import java.util.stream.*;
 import net.ncaq.chat.sd.util.*;
 import org.junit.*;
 import static junit.framework.Assert.*;
-import static net.ncaq.chat.sd.util.Status.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -56,13 +55,13 @@ public class AuthTest {
 
         final ExecutorService lio = Executors.newFixedThreadPool(2 * threads + 1);
 
-        Collection<Callable<Status>> cl = new ConcurrentLinkedQueue<>();
+        Collection<Callable<Message>> cl = new ConcurrentLinkedQueue<>();
         for(int i = 0; i < threads; ++i) {
             cl.add(() -> a.login(u));
             cl.add(() -> a.logout(u));
         }
 
-        List<Future<Status>> fsl = lio.invokeAll(cl);
+        List<Future<Message>> fsl = lio.invokeAll(cl);
         fsl.forEach(f -> {
                 try {
                     f.get();
@@ -73,7 +72,7 @@ public class AuthTest {
             }); // wait
         fsl.add(lio.submit(() -> a.logout(u)));
 
-        final List<Status> sl = fsl.stream().map(f -> {
+        final List<Message> sl = fsl.stream().map(f -> {
                 try {
                     return f.get();
                 }

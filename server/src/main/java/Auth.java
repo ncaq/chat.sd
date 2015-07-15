@@ -5,7 +5,6 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 import net.ncaq.chat.sd.util.*;
-import static net.ncaq.chat.sd.util.Status.*;
 
 /**
  * ログインとかログアウトとか管理します
@@ -19,7 +18,7 @@ public class Auth {
         this.userPassword.put(root.getName(), root.getPassword().toString());
     }
 
-    public Status login(final User u) {
+    public Message login(final User u) {
         if(!this.contains(u)) {
             return PASSWORD_INVALID;
         }
@@ -31,7 +30,7 @@ public class Auth {
         }
     };
 
-    public Status logout(final User u) {
+    public Message logout(final User u) {
         if(!this.contains(u)) {
             return PASSWORD_INVALID;
         }

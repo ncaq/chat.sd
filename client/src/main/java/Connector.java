@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import net.ncaq.chat.sd.util.*;
-import static net.ncaq.chat.sd.util.Status.*;
 
 /**
  * クライアント側の通信を担います.
@@ -20,7 +19,7 @@ public class Connector {
         this.reader = new BufferedReader(new InputStreamReader(this.server.getInputStream()));
         this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.server.getOutputStream())), true);
 
-        final Status s = this.login(username, rawPassword);
+        final Message s = this.login(username, rawPassword);
         switch(s.getCode()) {
         case 0:
             break;
@@ -56,9 +55,9 @@ public class Connector {
         throw new ConnectException(errStash.stream().map(e -> e.toString()).reduce("", (a, t) -> a + t));
     }
 
-    private Status login(final String username, final String rawPassword) throws IOException {
+    private Message login(final String username, final String rawPassword) throws IOException {
         this.writeln("user " + username + " pass " + rawPassword);
-        return Status.fromResponse(this.readLine());
+        return Message.fromResponse(this.readLine());
     }
 
     private final Socket server;
