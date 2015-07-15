@@ -20,12 +20,12 @@ public class TimeLineR implements Runnable {
 
     public void run() {
         try {
-            final StatusCode loginStatus = auth.login(user);
+            final Status loginStatus = auth.login(user);
             System.err.println(user.getUsername() + " is " + loginStatus.toString());
 
             get.println(loginStatus.toString());
 
-            if(loginStatus.equals(new StatusCode(0))) { // ログイン成功
+            if(loginStatus.equals(LOGIN_SUCCEED)) {
                 final String loginMessage = "login " + user.getUsername();
                 System.err.println(loginMessage);
                 server.broadcast(loginMessage);
@@ -43,7 +43,7 @@ public class TimeLineR implements Runnable {
             }
         }
         catch(final IllegalStateException err) { // 正規表現例外などに対処
-            get.println(new StatusCode(100).toString());
+            get.println(PASSWORD_INVALID.toString());
         }
     }
 

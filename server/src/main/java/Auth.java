@@ -18,27 +18,27 @@ public class Auth {
         this.userPassword.put(root.getUsername(), root.getPassword());
     }
 
-    public StatusCode login(final User u) {
+    public Status login(final User u) {
         if(!this.contains(u)) {
-            return new StatusCode(100);
+            return PASSWORD_INVALID;
         }
         else if(userLogined.contains(u.getUsername()) || !userLogined.add(u.getUsername())) { // add
-            return new StatusCode(101);
+            return MULTIPLE_LOGIN;
         }
         else {
-            return new StatusCode(0);
+            return LOGIN_SUCCEED;
         }
     };
 
-    public StatusCode logout(final User u) {
+    public Status logout(final User u) {
         if(!this.contains(u)) {
-            return new StatusCode(100);
+            return PASSWORD_INVALID;
         }
         else if(!this.userLogined.remove(u.getUsername())) { // remove
-            return new StatusCode(601);
+            return MULTIPLE_LOGOUT;
         }
         else {
-            return new StatusCode(600);
+            return LOGOUT_SUCCEED;
         }
     }
 

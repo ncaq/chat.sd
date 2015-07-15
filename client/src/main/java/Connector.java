@@ -19,7 +19,7 @@ public class Connector {
         this.reader = new BufferedReader(new InputStreamReader(this.server.getInputStream()));
         this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.server.getOutputStream())), true);
 
-        final StatusCode s = this.login(username, rawPassword);
+        final Status s = this.login(username, rawPassword);
         switch(s.getCode()) {
         case 0:
             break;
@@ -55,9 +55,9 @@ public class Connector {
         throw new ConnectException(errStash.stream().map(e -> e.toString()).reduce("", (a, t) -> a + t));
     }
 
-    private StatusCode login(final String username, final String rawPassword) throws IOException {
+    private Status login(final String username, final String rawPassword) throws IOException {
         this.writeln("user " + username + " pass " + rawPassword);
-        return new StatusCode(this.readLine());
+        return Status.fromMessage(this.readLine());
     }
 
     private final Socket server;
