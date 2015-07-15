@@ -11,17 +11,17 @@ import lombok.*;
 @Entity
 public class PasswordInvalidMessage extends Message {
     @Override
-    public static String messageType() {
+    public String messageType() {
         return "password invalid";
     }
 
     @Override
-    public static Integer code() {
+    public Integer code() {
         return 100;
     }
 
     @Override
-    public static String description() {
+    public String description() {
         return "";
     }
 }

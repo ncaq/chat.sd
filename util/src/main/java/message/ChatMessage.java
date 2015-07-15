@@ -11,7 +11,7 @@ import lombok.*;
 @Entity
 public class ChatMessage extends Message {
     @Override
-    public String notifyBody() {
+    public String forTimeLineBody() {
         return String.join(" ", new String[]{getPoster().getName(), getBody()});
     }
 
@@ -21,12 +21,12 @@ public class ChatMessage extends Message {
     }
 
     @Override
-    public static Integer code() {
+    public Integer code() {
         return 200;
     }
 
     @Override
-    public static String description() {
+    public String description() {
         return "ok(extension)";
     }
 }

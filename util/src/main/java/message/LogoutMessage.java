@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 public class LogoutMessage extends Message {
     @Override
-    public String notifyBody() {
+    public String forTimeLineBody() {
         return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().getRecentLogin().toString(), getPoster().getPostingCount().toString()});
     }
 
@@ -19,12 +19,12 @@ public class LogoutMessage extends Message {
     }
 
     @Override
-    public static Integer code() {
+    public Integer code() {
         return 600;
     }
 
     @Override
-    public static String description() {
+    public String description() {
         return "succeed(extension)";
     }
 }

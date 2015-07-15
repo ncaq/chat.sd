@@ -11,17 +11,17 @@ import lombok.*;
 @Entity
 public class MultipleLoginMessage extends Message {
     @Override
-    public static String messageType() {
+    public String messageType() {
         return "multiple login";
     }
 
     @Override
-    public static Integer code() {
+    public Integer code() {
         return 101;
     }
 
     @Override
-    public static String description() {
+    public String description() {
         return "";
     }
 }
