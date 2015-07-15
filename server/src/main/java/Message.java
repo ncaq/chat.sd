@@ -5,6 +5,9 @@ import java.util.*;
 import javax.persistence.*;
 import lombok.*;
 
+/**
+ * チャットメッセージ.
+ */
 @Data
 @Entity
 public class Message {
