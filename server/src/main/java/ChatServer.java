@@ -27,7 +27,7 @@ public class ChatServer {
                     for(;;) {
                         try {
                             final String nm = newMessageBox.take();
-                            sessions.parallelStream().forEach(s -> s.put(nm));
+                            pool.execute(() -> sessions.parallelStream().forEach(s -> s.put(nm)));
                         }
                         catch(final InterruptedException err) {
                             System.err.println(err);
