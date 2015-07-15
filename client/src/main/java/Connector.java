@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import net.ncaq.chat.sd.util.*;
+import static net.ncaq.chat.sd.util.Status.*;
 
 /**
  * クライアント側の通信を担います.
@@ -57,7 +58,7 @@ public class Connector {
 
     private Status login(final String username, final String rawPassword) throws IOException {
         this.writeln("user " + username + " pass " + rawPassword);
-        return Status.fromMessage(this.readLine());
+        return Status.fromResponse(this.readLine());
     }
 
     private final Socket server;

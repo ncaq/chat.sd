@@ -7,6 +7,7 @@ import java.util.concurrent.*;
 import java.util.stream.*;
 import net.ncaq.chat.sd.util.*;
 import static java.util.concurrent.TimeUnit.*;
+import static net.ncaq.chat.sd.util.Status.*;
 
 public class TimeLineR implements Runnable {
     public TimeLineR(final ChatServer server, final Socket client, final Auth auth) throws IOException {

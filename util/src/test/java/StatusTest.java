@@ -16,12 +16,14 @@ public class StatusTest {
     }
 
     @Test
-    public void fromMessage() {
-        assertThat(Status.fromMessage("  0 login succeed")   , is(LOGIN_SUCCEED));
-        assertThat(Status.fromMessage("100 password invalid"), is(PASSWORD_INVALID));
-        assertThat(Status.fromMessage("101 multiple login")  , is(MULTIPLE_LOGIN));
-        assertThat(Status.fromMessage("600 logout succeed")  , is(LOGOUT_SUCCEED));
-        assertThat(Status.fromMessage("601 multiple logout") , is(MULTIPLE_LOGOUT));
+    public void fromResponse() {
+        assertThat(Status.fromResponse("  0 login succeed")   , is(LOGIN_SUCCEED));
+        assertThat(Status.fromResponse(  "0 login succeed")   , is(LOGIN_SUCCEED));
+        assertThat(Status.fromResponse("100 password invalid"), is(PASSWORD_INVALID));
+        assertThat(Status.fromResponse("101 multiple login")  , is(MULTIPLE_LOGIN));
+        assertThat(Status.fromResponse("600 logout succeed")  , is(LOGOUT_SUCCEED));
+        assertThat(Status.fromResponse("600 logout succeed(extension)")  , is(LOGOUT_SUCCEED));
+        assertThat(Status.fromResponse("601 multiple logout") , is(MULTIPLE_LOGOUT));
     }
 
     @Test
