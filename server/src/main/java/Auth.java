@@ -15,32 +15,26 @@ public class Auth {
     public Auth() {
         final User anonymous = new User("anonymous", "");
         final User root = new User("root", "特に特権とかない");
-        // this.userPassword.put(anonymous.getName(), anonymous.getPassword().toString());
-        // this.userPassword.put(root.getName(), root.getPassword().toString());
     }
 
     public Message login(final User u) {
-        if(!this.contains(u)) {
-            return PASSWORD_INVALID;
-        }
-        else if(logined.contains(u.getName()) || !logined.add(u.getName())) { // add
-            return MULTIPLE_LOGIN;
-        }
-        else {
-            return LOGIN_SUCCEED;
-        }
+        Message m = !this.contains(u) ?
+            new PasswordInvalidMessage() :
+            logined.contains(u.getName()) || !logined.add(u.getName()) ? // add
+            new MultipleLoginMessage() :
+            new LoginMessage();
+        m.setPoster(u);
+        return m;
     };
 
     public Message logout(final User u) {
-        if(!this.contains(u)) {
-            return PASSWORD_INVALID;
-        }
-        else if(!this.logined.remove(u.getName())) { // remove
-            return MULTIPLE_LOGOUT;
-        }
-        else {
-            return LOGOUT_SUCCEED;
-        }
+        Message m = !this.contains(u) ?
+            new PasswordInvalidMessage() :
+            !this.logined.remove(u.getName()) ? // remove
+            new MultipleLogoutMessage() :
+            new LogoutMessage();
+        m.setPoster(u);
+        return m;
     }
 
     public void addUser(final User u) {
