@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 import net.ncaq.chat.sd.util.*;
+import net.ncaq.chat.sd.util.message.*;
 
 /**
  * ログインとかログアウトとか管理します
