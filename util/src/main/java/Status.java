@@ -8,18 +8,18 @@ import java.util.regex.*;
  * 通信のステータスコード.
  * よく考えたら列挙体で実装するべきだった.
  */
-public class StatusCode {
+public class Status {
     /**
      * @param code コード番号
      */
-    public StatusCode(final Integer code) {
+    public Status(final Integer code) {
         this.code = code;
     }
 
     /**
      * @param full フルメッセージ文字列
      */
-    public StatusCode(final String full) {
+    public Status(final String full) {
         final Matcher m = Pattern.compile("^\\d+").matcher(full);
         m.find();
         this.code = Integer.parseInt(m.group());
@@ -52,7 +52,7 @@ public class StatusCode {
      */
     @Override
     public boolean equals(final Object take) {
-        return take instanceof StatusCode ? this.getCode().equals(((StatusCode)take).getCode()) :
+        return take instanceof Status ? this.getCode().equals(((Status)take).getCode()) :
             false;
     }
 
