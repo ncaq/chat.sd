@@ -36,7 +36,7 @@ public abstract class Message {
      * タイムライン向け通知.
      */
     public String forTimeLine() {
-        return this.messageType() + " " + this.forTimeLineBody();
+        return this.type() + " " + this.forTimeLineBody();
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class Message {
      * 通信ステータス.
      */
     public String status() {
-        return String.join(" ", new String[]{this.code().toString(), this.messageType(), this.description()});
+        return String.join(" ", new String[]{this.code().toString(), this.type(), this.description()});
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class Message {
      * これで識別します.
      * 通知やステータスの説明に繋げます.
      */
-    abstract public String messageType();
+    abstract public String type();
 
     /**
      * 通信ステータス識別コード.

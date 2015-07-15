@@ -16,7 +16,7 @@ public class LogoutMessage extends Message {
     }
 
     @Override
-    public String messageType() {
+    public String type() {
         return "logout";
     }
 

@@ -16,7 +16,7 @@ public class LoginMessage extends Message {
     }
 
     @Override
-    public String messageType() {
+    public String type() {
         return "login";
     }
 

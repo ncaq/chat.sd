@@ -11,7 +11,7 @@ import lombok.*;
 @Entity
 public class MultipleLoginMessage extends Message {
     @Override
-    public String messageType() {
+    public String type() {
         return "multiple login";
     }
 

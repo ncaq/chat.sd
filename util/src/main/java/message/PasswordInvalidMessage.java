@@ -11,7 +11,7 @@ import lombok.*;
 @Entity
 public class PasswordInvalidMessage extends Message {
     @Override
-    public String messageType() {
+    public String type() {
         return "password invalid";
     }
 

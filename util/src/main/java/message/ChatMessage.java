@@ -16,7 +16,7 @@ public class ChatMessage extends Message {
     }
 
     @Override
-    public String messageType() {
+    public String type() {
         return "chat";
     }
 
