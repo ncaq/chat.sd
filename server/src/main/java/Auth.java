@@ -31,7 +31,7 @@ public class Auth {
     };
 
     public StatusCode logout(final User u) {
-        if (!this.contains(u)) {
+        if(!this.contains(u)) {
             return new StatusCode(100);
         }
         else if(!this.userLogined.remove(u.getUsername())) { // remove
