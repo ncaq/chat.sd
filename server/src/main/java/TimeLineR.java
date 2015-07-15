@@ -5,6 +5,8 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
+import lombok.*;
+import net.ncaq.chat.sd.server.message.*;
 import net.ncaq.chat.sd.util.*;
 import static java.util.concurrent.TimeUnit.*;
 import static net.ncaq.chat.sd.util.Status.*;
@@ -21,13 +23,13 @@ public class TimeLineR implements Runnable {
 
     public void run() {
         try {
-            final Status loginStatus = auth.login(user);
-            System.err.println(user.getName() + " is " + loginStatus.toString());
+            val loginStatus = auth.login(user);
+            val loginMessage = new LoginMessage(user, "login");
+            System.err.println();
 
             get.println(loginStatus.toString());
 
             if(loginStatus.equals(LOGIN_SUCCEED)) {
-                final String loginMessage = "login " + user.getName();
                 System.err.println(loginMessage);
                 server.broadcast(loginMessage);
 
@@ -39,7 +41,7 @@ public class TimeLineR implements Runnable {
                 }
                 finally {
                     auth.logout(user); // 確実にログアウト
-                    System.err.println(user.getName() + "さんが終了しました");
+                    System.err.println(new Message(user, MessageType.CONTROL, "さんが終了しました"));
                 }
             }
         }
@@ -56,7 +58,7 @@ public class TimeLineR implements Runnable {
                 System.err.println(err);
             }
             finally {
-                server.notifySessionClosed(this); // サーバにセッションの終了を通知
+                server.removeClosedSession(this); // サーバにセッションの終了を通知
             }
         }
     }
@@ -96,7 +98,7 @@ public class TimeLineR implements Runnable {
         return () -> {
             try {
                 for(String l = post.readLine(); l != null; l = post.readLine()) {
-                    server.broadcast("chat " + user.getName() + " " + l);
+                    server.broadcast(new Message(user, MessageType.CHAT, l));
                 }
             }
             catch(final IOException err) {

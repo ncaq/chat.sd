@@ -1,11 +1,10 @@
-package net.ncaq.chat.sd.server;
+package net.ncaq.chat.sd.util;
 
 import java.io.*;
 import java.net.*;
 import java.security.*;
 import java.security.spec.*;
 import java.sql.*;
-import java.util.*;
 import java.util.regex.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
@@ -16,8 +15,8 @@ import lombok.*;
  * ユーザー情報保存クラス.
  * 一応パスワードをハッシュ化するが,おそらく脆弱.
  */
-@Data
 @Entity
+@Getter
 public class User {
     @Id
     private Long id;
@@ -25,6 +24,13 @@ public class User {
     private String name;
 
     private SecretKey password;
+
+    /** 直近のログイン */
+    @Temporal(TemporalType.DATE)
+    private Date recentLogin;
+
+    /** 発言回数 */
+    private Long postingCount;
 
     public User(final String name, final String rawPassword) {
         this.name = name;

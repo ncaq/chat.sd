@@ -4,9 +4,10 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
+import net.ncaq.chat.sd.server.message.*;
 
-public class ChatServer {
-    public ChatServer(final Integer port) {
+public class CentralServer {
+    public CentralServer(final Integer port) {
         try {
             final ServerSocket socket = new ServerSocket(port);
             System.err.println("create socket");
@@ -43,10 +44,9 @@ public class ChatServer {
     /**
      * 全てのセッションに新規メッセージを配信する準備をします.
      */
-    public void broadcast(final String newMessageBox) {
+    public void broadcast(final Message newMessage) {
         try {
-            this.newMessageBox.put(newMessageBox);
-            this.messageLog.write(newMessageBox);
+            this.newMessageBox.put(newMessage);
         }
         catch(final InterruptedException err) {
             System.err.println(err);
@@ -56,7 +56,7 @@ public class ChatServer {
     /**
      * 閉じたセッションを配信から排除します.
      */
-    public void notifySessionClosed(final TimeLineR closedSession) {
+    public void removeClosedSession(final TimeLineR closedSession) {
         pool.execute(() -> {
                 sessions.remove(closedSession);
                 System.err.println("close session: " + closedSession);
@@ -65,7 +65,6 @@ public class ChatServer {
 
     private final ExecutorService pool = Executors.newCachedThreadPool();
     private final Queue<TimeLineR> sessions = new ConcurrentLinkedQueue<>();
-    private final BlockingQueue<String> newMessageBox = new LinkedBlockingQueue<>();
+    private final BlockingQueue<Message> newMessageBox = new LinkedBlockingQueue<>();
     private final Auth auth = new Auth();
-    private final MessageLog messageLog = MessageLog.getInstance();
 }
