@@ -2,10 +2,12 @@ package net.ncaq.chat.sd.util.message;
 
 import java.sql.*;
 import javax.persistence.*;
+import lombok.*;
 
 /**
  * ログアウト.
  */
+@Data
 @Entity
 public class LogoutMessage extends Message {
     @Override
