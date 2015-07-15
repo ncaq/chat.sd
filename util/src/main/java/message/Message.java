@@ -1,6 +1,12 @@
 package net.ncaq.chat.sd.util.message;
 
+import java.io.*;
+import java.lang.reflect.*;
+import java.net.*;
 import java.sql.*;
+import java.util.*;
+import java.util.jar.*;
+import java.util.regex.*;
 import javax.persistence.*;
 import lombok.*;
 import net.ncaq.chat.sd.util.*;
@@ -17,7 +23,7 @@ public abstract class Message {
 
     /** メッセージの作成時間. */
     @Temporal(TemporalType.DATE)
-    private Date create = new java.sql.Date(System.currentTimeMillis());
+    private java.sql.Date create = new java.sql.Date(System.currentTimeMillis());
 
     /** メッセージの投稿者. */
     @EmbeddedId
@@ -29,17 +35,50 @@ public abstract class Message {
     /**
      * タイムライン向け通知.
      */
-    public String notify() {
-        return this.messageType() + " " + this.notifyBody();
+    public String forTimeLine() {
+        return this.messageType() + " " + this.forTimeLineBody();
     }
 
     /**
      * 通知Body.
      */
-    public String notifyBody();
-
-    public static Message fromCode(final String statusCode) {
+    public String forTimeLineBody() {
+        return "";
     }
+
+    public static Message fromCode(final Integer statusCode) {
+        try {
+            return codeTable.get(statusCode).newInstance();
+        }
+        catch(InstantiationException|IllegalAccessException err) {
+            System.err.println(err);
+            return null;
+        }
+    }
+
+    @Transient
+    private static final Map<Integer, Class<? extends Message>> codeTable = new HashMap<Integer, Class<? extends Message>>() {
+        {
+            try {
+                final String packagePath = "net/ncaq/chat/sd/util/message";
+                final ClassLoader cl = ClassLoader.getSystemClassLoader();
+                final Enumeration<JarEntry> eje = ((JarURLConnection)cl.getResource(packagePath).openConnection()).getJarFile().entries();
+                while(eje.hasMoreElements()) {
+                    final String filepath = eje.nextElement().getName();
+                    if(filepath.startsWith(packagePath) && filepath.endsWith(".class")) {
+                        final Class<? extends Message> messageChild = (Class<Message>)cl.loadClass(filepath.replace('/', '.'));
+                        final Method m = messageChild.getMethod("code");
+                        final Integer childCode = (Integer)m.invoke(null);
+                        this.put(childCode, messageChild);
+                    }
+                }
+            }
+            catch(final Exception err) {
+                System.err.println(err);
+                System.exit(-1);
+            }
+        }
+    };
 
     public static Message fromResponse(final String statusResponse) {
         final Matcher m = Pattern.compile("[^\\d]*(\\d+).*").matcher(statusResponse);
@@ -47,16 +86,11 @@ public abstract class Message {
         return Message.fromCode(Integer.parseInt(m.group(1)));
     }
 
-    @Transient
-    private static final Map<Integer, Message> children = new {
-        // ClassLoader.
-    };
-
     /**
      * 通信ステータス.
      */
-    public static String status() {
-        return String.join(" ", {this.code.toString(), this.messageType(), this.description()});
+    public String status() {
+        return String.join(" ", new String[]{this.code().toString(), this.messageType(), this.description()});
     }
 
     /**
@@ -64,14 +98,14 @@ public abstract class Message {
      * これで識別します.
      * 通知やステータスの説明に繋げます.
      */
-    abstract public static String messageType();
+    abstract public String messageType();
 
     /**
      * 通信ステータス識別コード.
      */
-    abstract public static Integer code();
+    abstract public Integer code();
     /**
      * 通信ステータス説明.
      */
-    abstract public static String description();
+    abstract public String description();
 }
