@@ -22,7 +22,7 @@ public class LoginMessage extends Message {
 
     @Override
     public Integer code() {
-        return 1;
+        return 0;
     }
 
     @Override
