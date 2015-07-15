@@ -16,9 +16,9 @@ public class ChatServer {
                         try {
                             final TimeLineR newSession = new TimeLineR(this, socket.accept(), auth);
                             pool.execute(newSession);
-                            sessions.put(newSession);
+                            sessions.add(newSession);
                         }
-                        catch(IOException|InterruptedException err) {
+                        catch(final IOException err) {
                             System.err.println(err);
                         }
                     }
@@ -52,7 +52,7 @@ public class ChatServer {
 
     private final ExecutorService pool = Executors.newCachedThreadPool();
     private final Queue<TimeLineR> sessions = new ConcurrentLinkedQueue<>();
-    private final Queue<String> newMessageBox = new LinkedBlockingQueue<>();
+    private final BlockingQueue<String> newMessageBox = new LinkedBlockingQueue<>();
     private final Auth auth = new Auth();
     private final Log log = Log.getInstance();
 }

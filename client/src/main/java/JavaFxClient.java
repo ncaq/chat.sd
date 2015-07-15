@@ -71,13 +71,14 @@ public class JavaFxClient extends Application {
     }
 
     public void receive() {
-        for(String l = this.connector.readLine(); l == null; l = this.connector.readLine()) {
-            try {
-                Platform.runLater(() -> this.timeline.getItems().add(new HBox(new Label(l)))); // runLaterでJavaFXのスレッドで実行させないと例外
+        try {
+            for(String l = this.connector.readLine(); l == null; l = this.connector.readLine()) {
+                final String fl = l;
+                Platform.runLater(() -> this.timeline.getItems().add(new HBox(new Label(fl)))); // runLaterでJavaFXのスレッドで実行させないと例外
             }
-            catch(final IOException err) {
-                System.err.println(err);
-            }
+        }
+        catch(final IOException err) {
+            System.err.println(err);
         }
     }
 
