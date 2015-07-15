@@ -15,15 +15,15 @@ public class Auth {
     public Auth() {
         final User anonymous = new User("anonymous", "");
         final User root = new User("root", "特に特権とかない");
-        this.userPassword.put(anonymous.getUsername(), anonymous.getPassword());
-        this.userPassword.put(root.getUsername(), root.getPassword());
+        this.userPassword.put(anonymous.getName(), anonymous.getPassword().toString());
+        this.userPassword.put(root.getName(), root.getPassword().toString());
     }
 
     public Status login(final User u) {
         if(!this.contains(u)) {
             return PASSWORD_INVALID;
         }
-        else if(userLogined.contains(u.getUsername()) || !userLogined.add(u.getUsername())) { // add
+        else if(userLogined.contains(u.getName()) || !userLogined.add(u.getName())) { // add
             return MULTIPLE_LOGIN;
         }
         else {
@@ -35,7 +35,7 @@ public class Auth {
         if(!this.contains(u)) {
             return PASSWORD_INVALID;
         }
-        else if(!this.userLogined.remove(u.getUsername())) { // remove
+        else if(!this.userLogined.remove(u.getName())) { // remove
             return MULTIPLE_LOGOUT;
         }
         else {
@@ -44,11 +44,11 @@ public class Auth {
     }
 
     public void addUser(final User u) {
-        userPassword.put(u.getUsername(), u.getPassword());
+        userPassword.put(u.getName(), u.getPassword().toString());
     }
 
     public boolean contains(final User u) {
-        return u.getPassword().equals(userPassword.get(u.getUsername()));
+        return u.getPassword().toString().equals(userPassword.get(u.getName()));
     }
 
     private final Map<String, String> userPassword = new ConcurrentSkipListMap<>();

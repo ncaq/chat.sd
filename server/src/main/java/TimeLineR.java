@@ -22,12 +22,12 @@ public class TimeLineR implements Runnable {
     public void run() {
         try {
             final Status loginStatus = auth.login(user);
-            System.err.println(user.getUsername() + " is " + loginStatus.toString());
+            System.err.println(user.getName() + " is " + loginStatus.toString());
 
             get.println(loginStatus.toString());
 
             if(loginStatus.equals(LOGIN_SUCCEED)) {
-                final String loginMessage = "login " + user.getUsername();
+                final String loginMessage = "login " + user.getName();
                 System.err.println(loginMessage);
                 server.broadcast(loginMessage);
 
@@ -39,7 +39,7 @@ public class TimeLineR implements Runnable {
                 }
                 finally {
                     auth.logout(user); // 確実にログアウト
-                    System.err.println(user.getUsername() + "さんが終了しました");
+                    System.err.println(user.getName() + "さんが終了しました");
                 }
             }
         }
@@ -96,7 +96,7 @@ public class TimeLineR implements Runnable {
         return () -> {
             try {
                 for(String l = post.readLine(); l != null; l = post.readLine()) {
-                    server.broadcast("chat " + user.getUsername() + " " + l);
+                    server.broadcast("chat " + user.getName() + " " + l);
                 }
             }
             catch(final IOException err) {

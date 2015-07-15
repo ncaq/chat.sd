@@ -15,9 +15,8 @@ import lombok.*;
 /**
  * ユーザー情報保存クラス.
  * 一応パスワードをハッシュ化するが,おそらく脆弱.
- * 学習目的で書きました.
- * 実用性を考えるならセキュリティ関連は自分で書きません.
  */
+@Data
 @Entity
 public class User {
     @Id
@@ -27,8 +26,8 @@ public class User {
 
     private SecretKey password;
 
-    public User(final String username, final String rawPassword) {
-        this.username = username;
+    public User(final String name, final String rawPassword) {
+        this.name = name;
         this.password = this.cryptoPassword(rawPassword);
     }
 
@@ -38,19 +37,13 @@ public class User {
     public User(final String loginQuery) throws IllegalStateException {
         final Matcher m = Pattern.compile("user\\s*([^ ]+)\\s*pass\\s*([^ ]*)").matcher(loginQuery);
         m.matches();
-        this.username = m.group(1);
+        this.name = m.group(1);
         this.password = this.cryptoPassword(m.group(2));
-    }
-
-    /**
-     * Entity要件用.
-     */
-    protected User() {
     }
 
     private SecretKey cryptoPassword(final String rawPassword) {
         try {
-            return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(new PBEKeySpec(rawPassword.toCharArray(), username.getBytes("UTF-8"), 44873, 512));
+            return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(new PBEKeySpec(rawPassword.toCharArray(), name.getBytes("UTF-8"), 44873, 512));
         }
         catch(UnsupportedEncodingException|NoSuchAlgorithmException|IllegalArgumentException|InvalidKeySpecException err) {
             System.err.println(err);
