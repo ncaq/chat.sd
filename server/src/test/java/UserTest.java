@@ -9,15 +9,15 @@ public class UserTest {
     public void testLoginQuery() {
         final User u = new User("user username pass password");
         final User t = new User("username", "password");
-        assertThat(u.getUsername(), is(t.getUsername()));
+        assertThat(u.getName(), is(t.getName()));
         assertThat(u.getPassword(), is(t.getPassword()));
         assertThat(u, is(t));
     }
 
     @Test
     public void testGetUserName() {
-        assertThat(new User("userNameSample", "p").getUsername(), is("userNameSample"));
-        assertThat(new User("日本語ユーザ", "p").getUsername(), is("日本語ユーザ"));
+        assertThat(new User("userNameSample", "p").getName(), is("userNameSample"));
+        assertThat(new User("日本語ユーザ", "p").getName(), is("日本語ユーザ"));
     }
 
     @Test
