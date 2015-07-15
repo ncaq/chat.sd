@@ -3,26 +3,22 @@ package net.ncaq.chat.sd.util;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.*;
+import static net.ncaq.chat.sd.util.Status.*;
 
 /**
  * 通信のステータスコード.
- * よく考えたら列挙体で実装するべきだった.
  */
-public class Status {
-    /**
-     * @param code コード番号
-     */
-    public Status(final Integer code) {
-        this.code = code;
-    }
+public enum Status {
+    LOGIN_SUCCEED   (  0, "login succeed"             , "ログイン成功"),
+    PASSWORD_INVALID(100, "password invalid"          , "パスワードが間違っています"),
+    MULTIPLE_LOGIN  (101, "multiple login"            , "既にログインしています"),
+    LOGOUT_SUCCEED  (600, "logout succeed(extension)" , "ログアウト成功(テスト用)"),
+    MULTIPLE_LOGOUT (601, "multiple logout(extension)", "ログインしていません(テスト用)");
 
-    /**
-     * @param full フルメッセージ文字列
-     */
-    public Status(final String full) {
-        final Matcher m = Pattern.compile("^\\d+").matcher(full);
-        m.find();
-        this.code = Integer.parseInt(m.group());
+    private Status(final Integer code, final String message, final String description){
+        this.code = code;
+        this.message = message;
+        this.description = description;
     }
 
     /**
@@ -36,49 +32,41 @@ public class Status {
      * @return 説明
      */
     public String getDescription() {
-        return description.get(this.code);
+        return this.description;
     }
 
     /**
-     * @return フルメッセージ文字列
+     * @return フルレスポンス文字列
      */
     @Override
     public String toString() {
-        return this.code.toString() + " " + message.get(this.code);
+        return this.code.toString() + " " + this.message;
     }
 
     /**
-     * @return codeが等しければ同一
+     * @param code 3桁までのステータスコード
      */
-    @Override
-    public boolean equals(final Object take) {
-        return take instanceof Status ? this.getCode().equals(((Status)take).getCode()) :
-            false;
+    public static Status fromCode(final Integer code) {
+        return codeTable.get(code);
     }
 
     /**
-     * @return hashCode == code
+     * @param response フルレスポンス文字列
      */
-    @Override
-    public int hashCode() {
-        return this.getCode();
+    public static Status fromResponse(final String response) {
+        System.err.println(response);
+        final Matcher m = Pattern.compile("[^\\d]*(\\d+).*").matcher(response);
+        m.matches();
+        return Status.fromCode(Integer.parseInt(m.group(1)));
     }
 
     private final Integer code;
+    private final String message;
+    private final String description;
 
-    private final static Map<Integer, String> message = new ConcurrentHashMap<Integer, String>(){{
-            put(0, "login succeed");
-            put(100, "password invalid");
-            put(101, "multiple login");
-            put(600, "logout succeed(extension)");
-            put(601, "multiple logout(extension)");
-        }};
-
-    private final static Map<Integer, String> description = new ConcurrentHashMap<Integer, String>(){{
-            put(0, "ログイン成功");
-            put(100, "パスワードが間違っています");
-            put(101, "既にログインしています");
-            put(600, "ログアウト成功(テスト用)");
-            put(601, "ログインしていません(テスト用)");
-        }};
+    private final static Map<Integer, Status> codeTable = new HashMap<Integer, Status>() {
+        {
+            Arrays.stream(Status.values()).forEach(s -> put(s.getCode(), s));
+        }
+    };
 }
