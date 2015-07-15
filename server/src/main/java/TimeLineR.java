@@ -11,7 +11,7 @@ import net.ncaq.chat.sd.util.message.*;
 import static java.util.concurrent.TimeUnit.*;
 
 public class TimeLineR implements Runnable {
-    public TimeLineR(final ChatServer server, final Socket client, final Auth auth) throws IOException {
+    public TimeLineR(final CentralServer server, final Socket client, final Auth auth) throws IOException {
         this.server = server;
         this.client = client;
         this.auth = auth;
@@ -108,7 +108,7 @@ public class TimeLineR implements Runnable {
 
     private final LinkedBlockingQueue<String> messageBox = new LinkedBlockingQueue<>();
 
-    private final ChatServer server;
+    private final CentralServer server;
     private final Socket client;
     private final Auth auth;
 
