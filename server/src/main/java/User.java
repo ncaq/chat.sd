@@ -4,10 +4,13 @@ import java.io.*;
 import java.net.*;
 import java.security.*;
 import java.security.spec.*;
+import java.sql.*;
 import java.util.*;
 import java.util.regex.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
+import javax.persistence.*;
+import lombok.*;
 
 /**
  * ユーザー情報保存クラス.
@@ -15,20 +18,34 @@ import javax.crypto.spec.*;
  * 学習目的で書きました.
  * 実用性を考えるならセキュリティ関連は自分で書きません.
  */
+@Entity
 public class User {
+    @Id
+    private Long id;
+
+    private String name;
+
+    private SecretKey password;
+
     public User(final String username, final String rawPassword) {
         this.username = username;
         this.password = this.cryptoPassword(rawPassword);
     }
 
     /**
-     * ログイン文字列から構成
+     * ログイン文字列から構成.
      */
     public User(final String loginQuery) throws IllegalStateException {
         final Matcher m = Pattern.compile("user\\s*([^ ]+)\\s*pass\\s*([^ ]*)").matcher(loginQuery);
         m.matches();
         this.username = m.group(1);
-        this.password = this.cryptoPassword(m.group(2)); // accept empty
+        this.password = this.cryptoPassword(m.group(2));
+    }
+
+    /**
+     * Entity要件用.
+     */
+    protected User() {
     }
 
     private SecretKey cryptoPassword(final String rawPassword) {
@@ -41,38 +58,4 @@ public class User {
             return null;
         }
     }
-
-    /**
-     * ユーザー名.
-     */
-    public String getUsername() {
-        return this.username;
-    }
-
-    /**
-     * パスワード.
-     */
-    public String getPassword() {
-        return Base64.getEncoder().encodeToString(this.password.getEncoded());
-    }
-
-    /**
-     * @return username, password
-     */
-    @Override
-    public boolean equals(final Object take) {
-        return take instanceof User ? this.getUsername().equals(((User)take).getUsername()) && this.getPassword().equals(((User)take).getPassword()) :
-            false;
-    }
-
-    /**
-     * @return hashCode == code
-     */
-    @Override
-    public int hashCode() {
-        return this.getUsername().hashCode() + this.getPassword().hashCode();
-    }
-
-    private final String username;
-    private final SecretKey password;
 }
