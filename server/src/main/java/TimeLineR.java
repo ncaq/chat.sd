@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
 import net.ncaq.chat.sd.util.*;
+import static java.util.concurrent.TimeUnit.*;
 
 public class TimeLineR implements Runnable {
     public TimeLineR(final ChatServer server, final Socket client, final Auth auth) throws IOException {
@@ -29,58 +30,58 @@ public class TimeLineR implements Runnable {
                 System.err.println(loginMessage);
                 server.broadcast(loginMessage);
 
-                final ExecutorService g = Executors.newSingleThreadExecutor();
-                g.execute(getTimeLineR());
-
-                final ExecutorService p = Executors.newSingleThreadExecutor();
-                p.execute(postTimeLineR());
-
                 try {
-                    while(g.awaitTermination(1, TimeUnit.HOURS) && p.awaitTermination(1, TimeUnit.HOURS)) {
-                        Thread.sleep(1);
-                    }
+                    final ExecutorService e = Executors.newSingleThreadExecutor();
+                    e.execute(getTimeLineR());
+                    postTimeLineR().run(); // postが終了したらgetを強制終了する
+                    e.shutdown();
                 }
-                catch(final InterruptedException err) {
-                    System.err.println(err);
+                finally {       // 確実にログアウト
+                    auth.logout(user);
+                    System.err.println(user.getUsername() + "さんが終了しました");
                 }
             }
         }
-        catch(final IllegalStateException err) {
+        catch(final IllegalStateException err) { // 正規表現例外などに対処
             get.println(new StatusCode(100).toString());
         }
     }
 
     /**
-     * 新規メッセージの配信を準備します
+     * 新規メッセージの配信を準備します.
      */
     public void put(final String newMessage) throws InterruptedException {
         this.messageBox.put(newMessage);
     }
 
+    /**
+     * これは終了しない.
+     * 強制終了すること.
+     */
     private final Runnable getTimeLineR() {
         return () -> {
-            for(;;) {
-                try {
-                    get.println(messageBox.take());
+            try {
+                for(String m = messageBox.take(); ; m = messageBox.take()) {
+                    if(m != null) {
+                        get.println(m);
+                    }
                 }
-                catch(NullPointerException|InterruptedException err) {
-                    System.err.println(err);
-                    break;
-                }
-            };
+            }
+            catch(final InterruptedException err) {
+                System.err.println(err);
+            }
         };
     }
 
     private final Runnable postTimeLineR() {
         return () -> {
-            for(;;) {
-                try {
-                    server.broadcast("chat " + user.getUsername() + " " + post.readLine());
+            try {
+                for(String l = post.readLine(); l != null; l = post.readLine()) {
+                    server.broadcast("chat " + user.getUsername() + " " + l);
                 }
-                catch(NullPointerException|IOException err) {
-                    System.err.println(err);
-                    break;
-                }
+            }
+            catch(final IOException err) {
+                System.err.println(err);
             }
         };
     }

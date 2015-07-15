@@ -9,6 +9,7 @@ public class ChatServer {
     public ChatServer(final Integer port) {
         try {
             final ServerSocket socket = new ServerSocket(port);
+            System.err.println("create socket");
 
             new Thread(() -> {
                     for(;;) {
