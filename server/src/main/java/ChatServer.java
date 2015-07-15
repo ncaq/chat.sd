@@ -11,34 +11,29 @@ public class ChatServer {
             final ServerSocket socket = new ServerSocket(port);
             System.err.println("create socket");
 
-            new Thread(() -> {
+            pool.execute(() -> {
                     for(;;) {
                         try {
                             final TimeLineR newSession = new TimeLineR(this, socket.accept(), auth);
-                            final ExecutorService thread = Executors.newCachedThreadPool();
-                            thread.execute(newSession);
+                            pool.execute(newSession);
                             sessions.put(newSession);
                         }
                         catch(IOException|InterruptedException err) {
                             System.err.println(err);
                         }
-                    }}).start();
-
-            new Thread(() -> {
+                    }
+                });
+            pool.execute(() -> {
                     for(;;) {
                         try {
                             final String nm = newMessageBox.take();
-                            sessions.parallelStream().forEach(s -> {
-                                    try {
-                                        s.put(nm);
-                                    }
-                                    catch(final InterruptedException err) {
-                                        System.err.println(err);
-                                    }});
+                            sessions.parallelStream().forEach(s -> s.put(nm));
                         }
                         catch(final InterruptedException err) {
                             System.err.println(err);
-                        }}}).start();
+                        }
+                    }
+                });
         }
         catch(final IOException err) {
             System.err.println(err);
@@ -55,8 +50,9 @@ public class ChatServer {
         }
     }
 
-    private final LinkedBlockingQueue<TimeLineR> sessions = new LinkedBlockingQueue<>();
-    private final LinkedBlockingQueue<String> newMessageBox = new LinkedBlockingQueue<>();
+    private final ExecutorService pool = Executors.newCachedThreadPool();
+    private final Queue<TimeLineR> sessions = new ConcurrentLinkedQueue<>();
+    private final Queue<String> newMessageBox = new LinkedBlockingQueue<>();
     private final Auth auth = new Auth();
     private final Log log = Log.getInstance();
 }

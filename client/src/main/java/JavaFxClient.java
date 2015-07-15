@@ -53,12 +53,11 @@ public class JavaFxClient extends Application {
         this.submit.setDefaultButton(true);
         Platform.runLater(() -> message.requestFocus());
 
-        Thread t = new Thread(() -> {
-                for(;;) {
-                    receive();
-                }});
-        t.setDaemon(true);      // ウインドウ閉じたら強制終了
-        t.start();
+        Executors.newSingleThreadExecutor((r) -> {
+                final Thread t = new Thread(r);
+                t.setDaemon(true); // アプリが終了すれば自動で終了
+                return t;
+            }).execute(() -> receive());
     }
 
     public void send(final ActionEvent evt) {
@@ -72,12 +71,13 @@ public class JavaFxClient extends Application {
     }
 
     public void receive() {
-        try {
-            final String l = this.connector.readLine();
-            Platform.runLater(() -> this.timeline.getItems().add(new HBox(new Label(l)))); // runLaterでJavaFXのスレッドで実行させないと例外
-        }
-        catch(final IOException err) {
-            System.err.println(err);
+        for(String l = this.connector.readLine(); l == null; l = this.connector.readLine()) {
+            try {
+                Platform.runLater(() -> this.timeline.getItems().add(new HBox(new Label(l)))); // runLaterでJavaFXのスレッドで実行させないと例外
+            }
+            catch(final IOException err) {
+                System.err.println(err);
+            }
         }
     }
 

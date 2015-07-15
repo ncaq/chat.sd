@@ -50,8 +50,13 @@ public class TimeLineR implements Runnable {
     /**
      * 新規メッセージの配信を準備します.
      */
-    public void put(final String newMessage) throws InterruptedException {
-        this.messageBox.put(newMessage);
+    public void put(final String newMessage) {
+        try {
+            this.messageBox.put(newMessage);
+        }
+        catch(final InterruptedException err) {
+            System.err.println(err);
+        }
     }
 
     /**
