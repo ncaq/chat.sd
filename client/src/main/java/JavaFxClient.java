@@ -72,7 +72,7 @@ public class JavaFxClient extends Application {
 
     public void receive() {
         try {
-            for(String l = this.connector.readLine(); l == null; l = this.connector.readLine()) {
+            for(String l = this.connector.readLine(); l != null; l = this.connector.readLine()) {
                 final String fl = l;
                 Platform.runLater(() -> this.timeline.getItems().add(new HBox(new Label(fl)))); // runLaterでJavaFXのスレッドで実行させないと例外
             }
