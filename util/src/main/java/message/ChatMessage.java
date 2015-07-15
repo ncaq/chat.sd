@@ -12,7 +12,7 @@ import lombok.*;
 public class ChatMessage extends Message {
     @Override
     public String notifyBody() {
-        return String.join(" ", {getPoster().getName(), getBody()});
+        return String.join(" ", new String[]{getPoster().getName(), getBody()});
     }
 
     @Override

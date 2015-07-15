@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class LogoutMessage extends Message {
     @Override
     public String notifyBody() {
-        return String.join(" ", {"user", getPoster().getName(), getPoster().getRecentLogin().toString(), getPoster().getPostingCount().toString()});
+        return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().getRecentLogin().toString(), getPoster().getPostingCount().toString()});
     }
 
     @Override

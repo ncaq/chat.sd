@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class LoginMessage extends Message {
     @Override
     public String notifyBody() {
-        return String.join(" ", {"user", getPoster().getName(), getPoster().getRecentLogin().toString()});
+        return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().getRecentLogin().toString()});
     }
 
     @Override
