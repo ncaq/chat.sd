@@ -62,7 +62,7 @@ dependencies {
 }
 
 javadoc {
-    source subprojects*.sourceSets.main.allJava
-    classpath = files(subprojects*.sourceSets.main.compileClasspath)
+    source allprojects*.sourceSets.main.allJava
+    classpath = files(allprojects*.sourceSets.main.compileClasspath)
     options.encoding = 'UTF-8'
 }
