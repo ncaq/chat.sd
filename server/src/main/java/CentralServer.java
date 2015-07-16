@@ -24,17 +24,6 @@ public class CentralServer {
                         }
                     }
                 });
-            pool.execute(() -> {
-                    for(;;) {
-                        try {
-                            final Message nm = newMessageBox.take();
-                            pool.execute(() -> sessions.parallelStream().forEach(s -> s.put(nm)));
-                        }
-                        catch(final InterruptedException err) {
-                            System.err.println(err);
-                        }
-                    }
-                });
         }
         catch(final IOException err) {
             System.err.println(err);
@@ -42,15 +31,10 @@ public class CentralServer {
     }
 
     /**
-     * 全てのセッションに新規メッセージを配信する準備をします.
+     * 全てのセッションに新規メッセージを配信します.
      */
     public void broadcast(final Message newMessage) {
-        try {
-            this.newMessageBox.put(newMessage);
-        }
-        catch(final InterruptedException err) {
-            System.err.println(err);
-        }
+        pool.execute(() -> sessions.parallelStream().forEach(s -> s.put(newMessage)));
     }
 
     /**
@@ -65,6 +49,5 @@ public class CentralServer {
 
     private final ExecutorService pool = Executors.newCachedThreadPool();
     private final Queue<TimeLineR> sessions = new ConcurrentLinkedQueue<>();
-    private final BlockingQueue<Message> newMessageBox = new LinkedBlockingQueue<>();
     private final Auth auth = new Auth();
 }
