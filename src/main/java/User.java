@@ -19,8 +19,10 @@ import lombok.*;
 @Data
 @Entity
 public class User implements Comparable<User> {
-    @Id private String name;
-    @Id private String password;
+    @Id
+    private String name;
+
+    private String password;
 
     /**
      * 平文パスワードをハッシュ化して格納.

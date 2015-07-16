@@ -56,9 +56,8 @@ public class Auth {
     }
 
     /**
-     * ユーザがデータベースに存在するか.
+     * 正しいパスワードのユーザがデータベースに存在するか.
      * @return true 存在する
-     * todo
      */
     public boolean correctUser(final User u) {
         val cbuilder = this.em.getCriteriaBuilder();
