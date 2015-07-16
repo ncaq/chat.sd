@@ -59,6 +59,11 @@ project(':client') {
     }
 }
 
+dependencies {
+    testCompile project(':client')
+    testCompile project(':server')
+}
+
 javadoc {
     source subprojects*.sourceSets.main.allJava
     classpath = files(subprojects*.sourceSets.main.compileClasspath)
