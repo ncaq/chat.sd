@@ -58,13 +58,12 @@ public abstract class Message {
 
     /**
      * messageパッケージのクラスを収集します.
-     * リフレクション黒魔術を使っていて,gradleディレクトリ構成に依存します.
+     * リフレクション黒魔術.
      */
     @Transient
     private static final Map<Integer, Class<? extends Message>> codeTable = new HashMap<Integer, Class<? extends Message>>() {
         {
             try {
-                final String root = System.getProperty("user.dir") + "/build/classes/main"; // 超環境依存 テスト用
                 final Class<Message> self = Message.class;
                 final URL u = self.getResource("");
                 final ClassLoader cl = ClassLoader.getSystemClassLoader();
@@ -72,11 +71,13 @@ public abstract class Message {
                 ((JarURLConnection)u.openConnection()).getJarFile().stream().map(j -> j.getName()).collect(Collectors.toList()) :
                 Arrays.stream((new File(u.getFile())).listFiles()).map(f -> f.getAbsolutePath()).collect(Collectors.toList());
 
-                for(String n : fileNames) {
-                    if(n.endsWith(".class")) {
+                final List<String> classNames = fileNames.stream().map(f -> f.replaceAll("/", "\\.").replaceAll(".*net\\.ncaq", "net.ncaq")).collect(Collectors.toList());
+
+                for(final String c : classNames) {
+                    if(c.endsWith(".class")) {
                         try {
-                            final String className = n.replaceAll("^" + root + ".", "").replaceAll("/", "\\.").replaceAll("\\.class$", "");
-                            final Class<? extends Message> messageChild = (Class<Message>)cl.loadClass(className);
+                            System.err.println(c);
+                            final Class<? extends Message> messageChild = (Class<Message>)cl.loadClass(c.replaceAll("\\.class$", ""));
                             final Integer childCode = (Integer)messageChild.getMethod("code").invoke(messageChild.newInstance());
                             this.put(childCode, messageChild);
                         }
