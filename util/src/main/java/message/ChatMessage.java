@@ -7,7 +7,6 @@ import lombok.*;
 /**
  * チャットによる会話メッセージ
  */
-@Data
 @Entity
 public class ChatMessage extends Message {
     @Override

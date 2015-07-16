@@ -7,7 +7,6 @@ import lombok.*;
 /**
  * ログアウト.
  */
-@Data
 @Entity
 public class LogoutMessage extends Message {
     @Override

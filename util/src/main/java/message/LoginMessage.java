@@ -7,7 +7,6 @@ import lombok.*;
 /**
  * ログイン.
  */
-@Data
 @Entity
 public class LoginMessage extends Message {
     @Override

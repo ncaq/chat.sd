@@ -7,7 +7,6 @@ import lombok.*;
 /**
  * 多重ログアウト
  */
-@Data
 @Entity
 public class MultipleLogoutMessage extends Message {
     @Override

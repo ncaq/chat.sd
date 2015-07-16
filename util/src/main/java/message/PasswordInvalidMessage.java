@@ -7,7 +7,6 @@ import lombok.*;
 /**
  * パスワードが不一致
  */
-@Data
 @Entity
 public class PasswordInvalidMessage extends Message {
     @Override
