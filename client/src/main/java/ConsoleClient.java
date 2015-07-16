@@ -57,7 +57,7 @@ public class ConsoleClient {
                     try {
                         server.writeln(sc.next());
                     }
-                    catch(final IOException err) {
+                    catch(IOException|InterruptedException err) {
                         System.err.println(err);
                         break;
                     }}});

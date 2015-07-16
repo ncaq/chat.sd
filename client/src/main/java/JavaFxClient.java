@@ -59,7 +59,7 @@ public class JavaFxClient extends Application {
             this.connector.writeln(this.message.getText());
             this.message.clear();
         }
-        catch(final IOException err) {
+        catch(IOException|InterruptedException err) {
             System.err.println(err);
         }
     }

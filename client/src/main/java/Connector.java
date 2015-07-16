@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
+import lombok.*;
 import net.ncaq.chat.sd.util.*;
 import net.ncaq.chat.sd.util.message.*;
 
@@ -37,6 +38,7 @@ public class Connector {
         }
 
         // 正常時のみ
+
         daemons.execute(() -> {
                 try {
                     for(String l = reader.readLine(); l != null; l = reader.readLine()) {
@@ -47,16 +49,23 @@ public class Connector {
                     System.err.println(err);
                 }
             });
+        daemons.execute(() -> {
+                try {
+                    for(String m = newMessageBox.take(); m != null; m = newMessageBox.take()) {
+                        writer.println(m);
+                    }
+                }
+                catch(final InterruptedException err) {
+                    System.err.println(err);
+                }
+            });
     }
 
     /**
-     * サーバに一行送信.
-     * 非同期.
+     * サーバに一行送信準備.
      */
-    public void writeln(final String message) throws IOException {
-        daemons.execute(() -> {
-                this.writer.println(message);
-            });
+    public void writeln(final String newMessage) throws IOException, InterruptedException {
+        newMessageBox.put(newMessage);
     }
 
     private Socket makeSocket(final InetAddress serverAddress, final Integer[] ports) throws ConnectException {
@@ -88,4 +97,6 @@ public class Connector {
             t.setDaemon(true);
             return t;
         });
+
+    private final LinkedBlockingQueue<String> newMessageBox = new LinkedBlockingQueue<>();
 }
