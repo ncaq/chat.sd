@@ -17,20 +17,26 @@ public class Connector {
      * ソケット生成.
      * 失敗すると例外吐くので再試行するかプログラム落とすこと.
      */
-    public Connector(final String address, final String username, final String rawPassword, final Consumer<String> readCallback) throws ConnectException, IOException {
+    public Connector(final String address, final String username, final String rawPassword, final Consumer<String> readCallback) throws Exception {
         this.server = this.makeSocket(InetAddress.getByName(address), new Integer[]{12345, 50000});
         this.reader = new BufferedReader(new InputStreamReader(this.server.getInputStream()));
         this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.server.getOutputStream())), true);
         this.readCallback = readCallback;
 
-        final Message s = this.login(username, rawPassword);
-        switch(s.code()) {
-        case 0:
-            break;
-        default:
-            throw new RuntimeException(s.status());
+        try {
+            final Message s = this.login(username, rawPassword);
+            switch(s.code()) {
+            case 0:
+                break;
+            default:
+                throw new RuntimeException(s.status());
+            }
+        }
+        catch(final Exception err) {
+            throw err;
         }
 
+        // 正常時のみ
         daemons.execute(() -> {
                 try {
                     for(String l = reader.readLine(); l != null; l = reader.readLine()) {
@@ -66,7 +72,7 @@ public class Connector {
         throw new ConnectException(errStash.stream().map(e -> e.toString()).reduce("", (a, t) -> a + t));
     }
 
-    private Message login(final String username, final String rawPassword) throws IOException {
+    private Message login(final String username, final String rawPassword) throws Exception {
         this.writeln("user " + username + " pass " + rawPassword);
         return Message.fromStatus(this.reader.readLine());
     }
