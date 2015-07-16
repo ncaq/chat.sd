@@ -48,13 +48,12 @@ public class Auth {
      * @todo
      */
     public boolean correctUser(final User u) {
-        // return u.getPassword().toString().equals(userPassword.get(u.getName()));
         val cbuilder = this.em.getCriteriaBuilder();
-        val q = cbuilder.createQuery(Boolean.class);
+        val q = cbuilder.createQuery(User.class);
         val userRoot = q.from(User.class);
-        q.select(userRoot).where(cbuilder.equals(userRoot.get(User_.name), u.getName()),
-                                 cbuilder.equals(userRoot.get(User_.password), u.getPassword()));
-        return this.em.createQuery(q).getSingleResult();
+        q.select(userRoot).where(cbuilder.equal(userRoot.get(User_.name), u.getName()),
+                                 cbuilder.equal(userRoot.get(User_.password), u.getPassword()));
+        return this.em.createQuery(q).getResultList().size() == 1;
     }
 
     private final Set<User> logined = new ConcurrentSkipListSet<>();

@@ -23,8 +23,7 @@ allprojects {
     }
 
     compileJava {
-        def path = new File(project.projectDir, 'src/main/resource/persistence.xml').absolutePath
-        options.compilerArgs.addAll '-Aeclipselink.persistencexml=' + path
+        options.compilerArgs.addAll '-Aeclipselink.persistencexml=' + new File(project.projectDir, 'src/main/resource/persistence.xml').absolutePath
     }
 
     test {
