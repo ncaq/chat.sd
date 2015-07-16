@@ -3,7 +3,7 @@
              xmlns="http://java.sun.com/xml/ns/persistence"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <persistence-unit name="net.ncaq.chat.sd.persistence.xml" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="net.ncaq.chat.sd.persistence" transaction-type="RESOURCE_LOCAL">
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
