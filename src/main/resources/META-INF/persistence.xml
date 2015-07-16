@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1" xmlns="http://java.sun.com/xml/ns/persistence">
+
+  <!-- PersistenceUnitの定義 -->
+  <persistence-unit name="net.ncaq.chat.sd.persistence" transaction-type="RESOURCE_LOCAL">
+
+    <!-- Entityの定義 -->
+    <class>net.ncaq.chat.sd.User</class>
+
+    <!-- DB接続設定 -->
+    <properties>
+      <!-- JDBCドライバ -->
+      <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+      <!-- DB接続先 -->
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:db"/>
+
+      <!-- EclipseLinkのテーブル自動作成設定 -->
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+    </properties>
+
+  </persistence-unit>
+
+</persistence>
