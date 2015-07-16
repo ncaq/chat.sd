@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
+import javax.inject.*;
+import javax.persistence.*;
+import lombok.*;
 import net.ncaq.chat.sd.message.*;
 
 public class CentralServer {
@@ -34,7 +37,14 @@ public class CentralServer {
      * 全てのセッションに新規メッセージを配信します.
      */
     public void broadcast(final Message newMessage) {
-        pool.execute(() -> sessions.parallelStream().forEach(s -> s.put(newMessage)));
+        // val tr = em.getTransaction();
+        // tr.begin();
+        // em.persist(newMessage);
+        // tr.commit();
+        System.err.println(newMessage);
+        pool.execute(() -> {
+                sessions.parallelStream().forEach(s -> s.put(newMessage));
+            });
     }
 
     /**
@@ -50,4 +60,6 @@ public class CentralServer {
     private final ExecutorService pool = Executors.newCachedThreadPool();
     private final Queue<TimeLineR> sessions = new ConcurrentLinkedQueue<>();
     private final Auth auth = new Auth();
+
+    private final EntityManager em = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence").createEntityManager();
 }
