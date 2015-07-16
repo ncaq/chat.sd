@@ -11,7 +11,6 @@ public class UserTest {
         final User t = new User("username", "password");
         assertThat(u.getName(), is(t.getName()));
         assertThat(u.getPassword(), is(t.getPassword()));
-        assertThat(u, is(t));
     }
 
     @Test
