@@ -15,8 +15,8 @@ import lombok.*;
  * ユーザー情報保存クラス.
  * 一応パスワードをハッシュ化するが,おそらく脆弱.
  */
+@Data
 @Entity
-@Getter
 public class User {
     @Id
     private Long id;
