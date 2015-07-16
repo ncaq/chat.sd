@@ -9,6 +9,7 @@ import net.ncaq.chat.sd.client.*;
 import net.ncaq.chat.sd.server.*;
 import org.junit.*;
 import org.mockito.*;
+import org.mockito.internal.util.reflection.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
