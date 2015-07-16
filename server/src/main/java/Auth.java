@@ -47,16 +47,11 @@ public class Auth {
      * todo
      */
     public void addUser(final User u) {
-        try {
+        if(!this.correctUser(u)) { // 存在しない時のみ追加
             val tr = this.em.getTransaction();
             tr.begin();
             this.em.persist(u);
             tr.commit();
-        }
-        catch(final Exception exc) { // erlang的なエラー許容,既に存在するユーザを追加した時,パスワードが正しければエラーを吐かない
-            if(!this.correctUser(u)) {
-                throw exc;
-            }
         }
     }
 
