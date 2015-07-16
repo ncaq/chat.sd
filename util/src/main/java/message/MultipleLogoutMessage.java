@@ -24,4 +24,9 @@ public class MultipleLogoutMessage extends Message {
     public String description() {
         return "(extension)";
     }
+
+    @Override
+    public String forTimeLineBody() {
+        return "";
+    }
 }
