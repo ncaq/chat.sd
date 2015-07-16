@@ -85,8 +85,4 @@ public class User implements Comparable<User> {
     public Long postingCount() {
         return 0l;
     }
-
-    @Transient
-    @PersistenceContext(unitName = "net.ncaq.chat.sd.persistence")
-    private EntityManager em;
 }
