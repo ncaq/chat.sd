@@ -14,7 +14,7 @@
       <!-- JDBCドライバ -->
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
       <!-- DB接続先 -->
-      <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:db"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/db"/>
 
       <!-- EclipseLinkのテーブル自動作成設定 -->
       <property name="eclipselink.ddl-generation" value="create-tables"/>
