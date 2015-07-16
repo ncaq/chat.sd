@@ -25,13 +25,6 @@ public class User {
 
     private SecretKey password;
 
-    /** 直近のログイン */
-    @Temporal(TemporalType.DATE)
-    private Date recentLogin;
-
-    /** 発言回数 */
-    private Long postingCount;
-
     public User(final String name, final String rawPassword) {
         this.name = name;
         this.password = this.cryptoPassword(rawPassword);
@@ -46,6 +39,23 @@ public class User {
         this.name = m.group(1);
         this.password = this.cryptoPassword(m.group(2));
     }
+
+    /**
+     * 直近のログイン
+     * @todo
+     */
+    public Date recentLogin() {
+        return new java.sql.Date(System.currentTimeMillis());
+    }
+
+    /**
+     * 発言回数
+     * @todo
+     */
+    public Long postingCount() {
+        return 0l;
+    }
+
 
     private SecretKey cryptoPassword(final String rawPassword) {
         try {

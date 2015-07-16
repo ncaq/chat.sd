@@ -26,6 +26,6 @@ public class MultipleLoginMessage extends Message {
 
     @Override
     public String forTimeLineBody() {
-        return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().getRecentLogin().toString()});
+        return "";
     }
 }

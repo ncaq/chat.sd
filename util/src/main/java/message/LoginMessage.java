@@ -26,6 +26,6 @@ public class LoginMessage extends Message {
 
     @Override
     public String forTimeLineBody() {
-        return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().getRecentLogin().toString()});
+        return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().recentLogin().toString()});
     }
 }
