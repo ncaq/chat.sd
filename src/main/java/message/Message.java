@@ -3,7 +3,6 @@ package net.ncaq.chat.sd.message;
 import java.io.*;
 import java.lang.reflect.*;
 import java.net.*;
-import java.sql.*;
 import java.util.*;
 import java.util.jar.*;
 import java.util.regex.*;
@@ -24,10 +23,9 @@ public abstract class Message {
 
     /** メッセージの作成時間. */
     @Temporal(TemporalType.DATE)
-    private java.sql.Date create = new java.sql.Date(System.currentTimeMillis());
+    private Date create = new Date(System.currentTimeMillis());
 
     /** メッセージの投稿者. */
-    @EmbeddedId
     private User poster;
 
     /** メッセージ本文. */

@@ -4,8 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.security.*;
 import java.security.spec.*;
-import java.sql.*;
-import java.util.Base64;
+import java.util.*;
 import java.util.regex.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
@@ -80,7 +79,7 @@ public class User implements Comparable<User> {
      * todo
      */
     public Date recentLogin() {
-        return new java.sql.Date(System.currentTimeMillis());
+        return new Date(System.currentTimeMillis());
     }
 
     /**
