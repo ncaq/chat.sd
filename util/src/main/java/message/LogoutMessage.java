@@ -11,11 +11,6 @@ import lombok.*;
 @Entity
 public class LogoutMessage extends Message {
     @Override
-    public String forTimeLineBody() {
-        return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().getRecentLogin().toString(), getPoster().getPostingCount().toString()});
-    }
-
-    @Override
     public String type() {
         return "logout";
     }
@@ -28,5 +23,10 @@ public class LogoutMessage extends Message {
     @Override
     public String description() {
         return "succeed(extension)";
+    }
+
+    @Override
+    public String forTimeLineBody() {
+        return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().getRecentLogin().toString(), getPoster().getPostingCount().toString()});
     }
 }

@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.jar.*;
 import java.util.regex.*;
+import java.util.stream.*;
 import javax.persistence.*;
 import lombok.*;
 import net.ncaq.chat.sd.util.*;
@@ -46,66 +47,81 @@ public abstract class Message {
         return "";
     }
 
-    public static Message fromCode(final Integer statusCode) {
-        try {
-            return codeTable.get(statusCode).newInstance();
-        }
-        catch(InstantiationException|IllegalAccessException err) {
-            System.err.println(err);
-            return null;
-        }
+    /**
+     * 通信ステータスコードからメッセージを構築.
+     * @param statusCode 3桁までのコード
+     * @return Messageを実装したインスタンス
+     */
+    public static Message fromCode(final Integer statusCode) throws InstantiationException, IllegalAccessException {
+        return codeTable.get(statusCode).newInstance();
     }
 
+    /**
+     * messageパッケージのクラスを収集します.
+     * リフレクション黒魔術を使っていて,gradleディレクトリ構成に依存します.
+     */
     @Transient
     private static final Map<Integer, Class<? extends Message>> codeTable = new HashMap<Integer, Class<? extends Message>>() {
         {
             try {
-                final String packagePath = "net/ncaq/chat/sd/util/message";
+                final String root = System.getProperty("user.dir") + "/build/classes/main"; // 超環境依存 テスト用
+                final Class<Message> self = Message.class;
+                final URL u = self.getResource("");
                 final ClassLoader cl = ClassLoader.getSystemClassLoader();
-                final Enumeration<JarEntry> eje = ((JarURLConnection)cl.getResource(packagePath).openConnection()).getJarFile().entries();
-                while(eje.hasMoreElements()) {
-                    final String filepath = eje.nextElement().getName();
-                    if(filepath.startsWith(packagePath) && filepath.endsWith(".class")) {
-                        final Class<? extends Message> messageChild = (Class<Message>)cl.loadClass(filepath.replace('/', '.'));
-                        final Method m = messageChild.getMethod("code");
-                        final Integer childCode = (Integer)m.invoke(null);
-                        this.put(childCode, messageChild);
+                final List<String> fileNames = (u.getProtocol().equals("jar")) ?
+                ((JarURLConnection)u.openConnection()).getJarFile().stream().map(j -> j.getName()).collect(Collectors.toList()) :
+                Arrays.stream((new File(u.getFile())).listFiles()).map(f -> f.getAbsolutePath()).collect(Collectors.toList());
+
+                for(String n : fileNames) {
+                    if(n.endsWith(".class")) {
+                        try {
+                            final String className = n.replaceAll("^" + root + ".", "").replaceAll("/", "\\.").replaceAll("\\.class$", "");
+                            final Class<? extends Message> messageChild = (Class<Message>)cl.loadClass(className);
+                            final Integer childCode = (Integer)messageChild.getMethod("code").invoke(messageChild.newInstance());
+                            this.put(childCode, messageChild);
+                        }
+                        catch(final Exception err) {
+                            System.err.println(err);
+                        }
                     }
                 }
             }
             catch(final Exception err) {
                 System.err.println(err);
-                System.exit(-1);
             }
         }
     };
 
-    public static Message fromResponse(final String statusResponse) {
-        final Matcher m = Pattern.compile("[^\\d]*(\\d+).*").matcher(statusResponse);
+    /**
+     * 通信ステータス文字列からメッセージを構築.
+     * @return Messageを実装したインスタンス
+     */
+    public static Message fromStatus(final String statusStatus) throws InstantiationException, IllegalAccessException {
+        final Matcher m = Pattern.compile("[^\\d]*(\\d+).*").matcher(statusStatus);
         m.matches();
         return Message.fromCode(Integer.parseInt(m.group(1)));
     }
 
-    /**
-     * 通信ステータス.
-     */
+/**
+ * 通信ステータス.
+ */
     public String status() {
         return String.join(" ", new String[]{this.code().toString(), this.type(), this.description()});
     }
 
-    /**
-     * メッセージの種類.
-     * これで識別します.
-     * 通知やステータスの説明に繋げます.
-     */
+/**
+ * メッセージの種類.
+ * これで識別します.
+ * 通知やステータスの説明に繋げます.
+ */
     abstract public String type();
 
-    /**
-     * 通信ステータス識別コード.
-     */
+/**
+ * 通信ステータス識別コード.
+ */
     abstract public Integer code();
-    /**
-     * 通信ステータス説明.
-     */
+/**
+ * 通信ステータス説明.
+ */
     abstract public String description();
 }

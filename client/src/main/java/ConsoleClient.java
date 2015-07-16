@@ -16,8 +16,7 @@ public class ConsoleClient {
      */
     public ConsoleClient(final String hostname, final String username, final String rawPassword) {
         try {
-            final Connector server = new Connector(hostname, username, rawPassword);
-            Executors.newSingleThreadExecutor().execute(getStreamToStdOut(server));
+            final Connector server = new Connector(hostname, username, rawPassword, (newMessage) -> System.out.println(newMessage));
             Executors.newSingleThreadExecutor().execute(postStdInToServer(server));
         }
         catch(final Exception err) {
@@ -39,28 +38,13 @@ public class ConsoleClient {
             System.out.println("password:");
             final String rawPassword = sc.next();
 
-            final Connector server = new Connector(hostname, username, rawPassword);
-            Executors.newSingleThreadExecutor().execute(getStreamToStdOut(server));
+            final Connector server = new Connector(hostname, username, rawPassword, (newMessage) -> System.out.println(newMessage));
             Executors.newSingleThreadExecutor().execute(postStdInToServer(server));
         }
         catch(final Exception err) {
             System.err.println(err);
             System.exit(-1);
         }
-    }
-
-    /**
-     * サーバの出力を標準出力する関数.
-     */
-    private Runnable getStreamToStdOut(final Connector server) {
-        return (() -> {
-                try {
-                    for(String l = server.readLine(); l != null; l = server.readLine()) {
-                        System.out.println(l);
-                    }}
-                catch(final IOException err) {
-                    System.err.println(err);
-                }});
     }
 
     /**

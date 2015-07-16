@@ -18,7 +18,7 @@ public class Auth {
     }
 
     public Message login(final User u) {
-        Message m = !this.contains(u) ?
+        Message m = !this.correctUser(u) ?
             new PasswordInvalidMessage() :
             logined.contains(u) || !logined.add(u) ? // add
             new MultipleLoginMessage() :
@@ -28,7 +28,7 @@ public class Auth {
     };
 
     public Message logout(final User u) {
-        Message m = !this.contains(u) ?
+        Message m = !this.correctUser(u) ?
             new PasswordInvalidMessage() :
             !this.logined.remove(u.getName()) ? // remove
             new MultipleLogoutMessage() :
@@ -37,13 +37,21 @@ public class Auth {
         return m;
     }
 
+    /**
+     * ユーザーを追加
+     * @todo
+     */
     public void addUser(final User u) {
         // userPassword.put(u.getName(), u.getPassword().toString());
     }
 
-    public boolean contains(final User u) {
+    /**
+     * ユーザがデータベースに存在するか.
+     * @return true 存在する
+     * @todo
+     */
+    public boolean correctUser(final User u) {
         // return u.getPassword().toString().equals(userPassword.get(u.getName()));
-        /** @todo */
         return true;
     }
 

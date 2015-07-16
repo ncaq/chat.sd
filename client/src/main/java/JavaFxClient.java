@@ -36,7 +36,7 @@ public class JavaFxClient extends Application {
             try {
                 final LoginDialog l = new LoginDialog();
                 l.showAndWait();
-                this.connector = new Connector(l.getHostname(), l.getUsername(), l.getPassword());
+                this.connector = new Connector(l.getHostname(), l.getUsername(), l.getPassword(), this::receive);
             }
             catch(final Exception err) {
                 System.err.println(err);
@@ -52,12 +52,6 @@ public class JavaFxClient extends Application {
         this.message.setOnAction(this::send);
         this.submit.setDefaultButton(true);
         Platform.runLater(() -> message.requestFocus());
-
-        Executors.newSingleThreadExecutor((r) -> {
-                final Thread t = new Thread(r);
-                t.setDaemon(true); // アプリが終了すれば自動で終了
-                return t;
-            }).execute(() -> receive());
     }
 
     public void send(final ActionEvent evt) {
@@ -70,16 +64,8 @@ public class JavaFxClient extends Application {
         }
     }
 
-    public void receive() {
-        try {
-            for(String l = this.connector.readLine(); l != null; l = this.connector.readLine()) {
-                final String fl = l;
-                Platform.runLater(() -> this.timeline.getItems().add(new HBox(new Label(fl)))); // runLaterでJavaFXのスレッドで実行させないと例外
-            }
-        }
-        catch(final IOException err) {
-            System.err.println(err);
-        }
+    public void receive(final String newMessage) {
+        Platform.runLater(() -> this.timeline.getItems().add(new HBox(new Label(newMessage)))); // runLaterでJavaFXのスレッドで実行させないと例外
     }
 
     @FXML

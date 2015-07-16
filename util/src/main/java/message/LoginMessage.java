@@ -11,11 +11,6 @@ import lombok.*;
 @Entity
 public class LoginMessage extends Message {
     @Override
-    public String forTimeLineBody() {
-        return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().getRecentLogin().toString()});
-    }
-
-    @Override
     public String type() {
         return "login";
     }
@@ -28,5 +23,10 @@ public class LoginMessage extends Message {
     @Override
     public String description() {
         return "succeed";
+    }
+
+    @Override
+    public String forTimeLineBody() {
+        return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().getRecentLogin().toString()});
     }
 }
