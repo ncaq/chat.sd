@@ -17,17 +17,20 @@ import lombok.*;
  */
 @Data
 @Entity
-public class User {
-    @Id
-    private Long id;
+public class User implements Comparable<User> {
+    @Id private String name;
+    @Id private SecretKey password;
 
-    private String name;
-
-    private SecretKey password;
+    /**
+     * 平文パスワードをハッシュ化して格納.
+     */
+    public void setPassword(final String rawPassword) {
+        this.password = this.cryptoPassword(this.name, rawPassword);
+    }
 
     public User(final String name, final String rawPassword) {
-        this.name = name;
-        this.password = this.cryptoPassword(rawPassword);
+        this.setName(name);
+        this.setPassword(rawPassword);
     }
 
     /**
@@ -36,28 +39,11 @@ public class User {
     public User(final String loginQuery) throws IllegalStateException {
         final Matcher m = Pattern.compile("user\\s*([^ ]+)\\s*pass\\s*([^ ]*)").matcher(loginQuery);
         m.matches();
-        this.name = m.group(1);
-        this.password = this.cryptoPassword(m.group(2));
+        setName(m.group(1));
+        setPassword(m.group(2));
     }
 
-    /**
-     * 直近のログイン
-     * @todo
-     */
-    public Date recentLogin() {
-        return new java.sql.Date(System.currentTimeMillis());
-    }
-
-    /**
-     * 発言回数
-     * @todo
-     */
-    public Long postingCount() {
-        return 0l;
-    }
-
-
-    private SecretKey cryptoPassword(final String rawPassword) {
+    private static SecretKey cryptoPassword(final String name, final String rawPassword) {
         try {
             return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(new PBEKeySpec(rawPassword.toCharArray(), name.getBytes("UTF-8"), 44873, 512));
         }
@@ -67,4 +53,33 @@ public class User {
             return null;
         }
     }
+
+    /**
+     * SkipListに格納するため比較を実装する.
+     */
+    @Override
+    public int compareTo(final User take) {
+        val nc = this.name.compareTo(take.name);
+        return (nc == 0) ? this.password.toString().compareTo(this.password.toString()) :
+            nc;
+    }
+
+    /**
+     * 直近のログイン.
+     * @todo
+     */
+    public Date recentLogin() {
+        return new java.sql.Date(System.currentTimeMillis());
+    }
+
+    /**
+     * 発言回数.
+     * @todo
+     */
+    public Long postingCount() {
+        return 0l;
+    }
+
+    @PersistenceContext(unitName = "net.ncaq.chat.sd.persistence")
+    private EntityManager em;
 }
