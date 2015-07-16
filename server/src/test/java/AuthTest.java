@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
+import lombok.*;
 import net.ncaq.chat.sd.*;
 import net.ncaq.chat.sd.message.*;
 import org.junit.*;
@@ -22,13 +23,16 @@ public class AuthTest {
 
     @Test
     public void anonymousLogin() throws Exception {
-        assertThat(new Auth().login(new User("anonymous", "")), is(instanceOf(LoginMessage.class)));
+        val a = new Auth();
+        val u = new User("anonymous", "");
+        a.addUser(u);
+        assertThat(a.login(u), is(instanceOf(LoginMessage.class)));
     }
 
     @Test
     public void nothingUserIs100() throws Exception {
         final Auth a = new Auth();
-        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(PasswordInvalidMessage.class)));
+        assertThat(a.login(new User("nothingUser", "nonono")), is(instanceOf(PasswordInvalidMessage.class)));
     }
 
     @Test
