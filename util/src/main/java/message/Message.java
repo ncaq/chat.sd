@@ -34,13 +34,6 @@ public abstract class Message {
     private String body;
 
     /**
-     * タイムライン向け通知.
-     */
-    public String forTimeLine() {
-        return this.type() + " " + this.forTimeLineBody();
-    }
-
-    /**
      * 通信ステータスコードからメッセージを構築.
      * @param statusCode 3桁までのコード
      * @return Messageを実装したインスタンス
@@ -92,6 +85,23 @@ public abstract class Message {
         final Matcher m = Pattern.compile("[^\\d]*(\\d+).*").matcher(statusStatus);
         m.matches();
         return Message.fromCode(Integer.parseInt(m.group(1)));
+    }
+
+    /**
+     * そのユーザの何回目の投稿か.
+     * @param u 検索対象ユーザ
+     * @return 投稿インデックス(0から)
+     * @todo
+     */
+    public Long nthPost(final User u) {
+        return 0l;
+    }
+
+    /**
+     * タイムライン向け通知.
+     */
+    public String forTimeLine() {
+        return this.type() + " " + this.forTimeLineBody();
     }
 
     /**
