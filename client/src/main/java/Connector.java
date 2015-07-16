@@ -82,7 +82,7 @@ public class Connector {
     }
 
     private Message login(final String username, final String rawPassword) throws Exception {
-        this.writeln("user " + username + " pass " + rawPassword);
+        this.writer.println("user " + username + " pass " + rawPassword);
         return Message.fromStatus(this.reader.readLine());
     }
 
