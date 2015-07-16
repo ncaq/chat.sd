@@ -2,6 +2,8 @@ package net.ncaq.chat.sd;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.*;
+import lombok.*;
 import net.ncaq.chat.sd.client.*;
 import net.ncaq.chat.sd.server.*;
 import net.ncaq.chat.sd.util.*;
@@ -12,8 +14,9 @@ import static org.hamcrest.Matchers.*;
 public class ConnectTest {
     @Test
     public void anonymousLoginIsSuccess() throws Exception {
-        new ChatServer(50000);
-        final Connector c = new Connector("localhost", "anonymous", "");
-        assertThat(c.readLine(), is(notNullValue()));
+        new CentralServer(50000);
+        val q = new LinkedBlockingQueue<String>();
+        val c = new Connector("localhost", "anonymous", "", (m) -> q.add(m));
+        assertThat(q.take(), is(notNullValue()));
     }
 }
