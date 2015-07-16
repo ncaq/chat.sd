@@ -39,7 +39,7 @@ public class Auth {
      * @todo
      */
     public void addUser(final User u) {
-        // userPassword.put(u.getName(), u.getPassword().toString());
+
     }
 
     /**
