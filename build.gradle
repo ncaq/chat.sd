@@ -22,6 +22,11 @@ allprojects {
         testCompile 'org.mockito:mockito-core:1.9.5'
     }
 
+    compileJava {
+        def path = new File(project.projectDir, 'src/main/resource/persistence.xml').absolutePath
+        options.compilerArgs.addAll '-Aeclipselink.persistencexml=' + path
+    }
+
     test {
         ignoreFailures = true
     }
@@ -38,10 +43,6 @@ project(':server') {
     dependencies {
         compile project(':')
         compile 'com.h2database:h2:1.4.187'
-    }
-    compileJava {
-        def path = new File(project.projectDir, 'src/main/resource/persistence.xml').absolutePath
-        options.compilerArgs.addAll '-Aeclipselink.persistencexml=' + path
     }
     run {
         mainClassName = 'net.ncaq.chat.sd.server.Main'
