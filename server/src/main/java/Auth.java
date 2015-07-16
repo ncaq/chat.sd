@@ -14,6 +14,14 @@ import net.ncaq.chat.sd.message.*;
  * スレッドセーフ
  */
 public class Auth {
+    public Auth() {
+        this.addUser(new User("anonymous", ""));
+        this.addUser(new User("guest0", "0"));
+        this.addUser(new User("guest1", "1"));
+        this.addUser(new User("guest2", "2"));
+        this.addUser(new User("guest3", "3"));
+    }
+
     public Message login(final User u) {
         Message m = !this.correctUser(u) ?
             new PasswordInvalidMessage() :
