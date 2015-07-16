@@ -65,22 +65,21 @@ public abstract class Message {
                 Arrays.stream((new File(u.getFile())).listFiles()).map(f -> f.getAbsolutePath()).collect(Collectors.toList());
 
                 final List<String> classNames = fileNames.stream().map(f -> f.replaceAll("/", "\\.").replaceAll(".*net\\.ncaq", "net.ncaq")).collect(Collectors.toList());
-
                 for(final String c : classNames) {
                     if(c.startsWith("net.ncaq.chat.sd.util.message") && c.endsWith(".class")) {
                         try {
-                            final Class<? extends Message> messageChild = (Class<Message>)cl.loadClass(c.replaceAll("\\.class$", ""));
-                            final Integer childCode = (Integer)messageChild.getMethod("code").invoke(messageChild.newInstance());
-                            this.put(childCode, messageChild);
+                            final Class<? extends Message> child = (Class<Message>)cl.loadClass(c.replaceAll("\\.class$", ""));
+                            final Integer childCode = (Integer)child.getMethod("code").invoke(child.newInstance());
+                            this.put(childCode, child);
                         }
-                        catch(final Exception err) {
-                            System.err.println(err);
+                        catch(InstantiationException|NoSuchMethodException exp) {
+                            // abstractのインスタンス作成,メソッド無しは黙殺する
                         }
                     }
                 }
             }
-            catch(final Exception err) {
-                System.err.println(err);
+            catch(final Exception exp) {
+                System.err.println(exp);
             }
         }
     };
