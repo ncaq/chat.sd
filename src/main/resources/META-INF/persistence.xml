@@ -14,7 +14,7 @@
       <!-- JDBCドライバ -->
       <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
       <!-- DB接続先 -->
-      <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:persistence.sqlite3"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlite::resource:persistence.sqlite3"/>
 
       <!-- EclipseLinkのテーブル自動作成設定 -->
       <property name="eclipselink.ddl-generation" value="create-tables"/>
