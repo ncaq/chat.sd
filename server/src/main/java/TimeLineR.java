@@ -83,7 +83,7 @@ public class TimeLineR implements Runnable {
             try {
                 for(Message m = newMessageBox.take(); ; m = newMessageBox.take()) {
                     if(m != null) {
-                        get.println(m);
+                        get.println(m.forTimeLine());
                     }
                 }
             }
@@ -98,6 +98,7 @@ public class TimeLineR implements Runnable {
             try {
                 for(String l = post.readLine(); l != null; l = post.readLine()) {
                     ChatMessage m = new ChatMessage();
+                    m.setPoster(user);
                     m.setBody(l);
                     server.broadcast(m);
                 }

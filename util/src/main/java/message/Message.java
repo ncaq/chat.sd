@@ -41,13 +41,6 @@ public abstract class Message {
     }
 
     /**
-     * 通知Body.
-     */
-    public String forTimeLineBody() {
-        return "";
-    }
-
-    /**
      * 通信ステータスコードからメッセージを構築.
      * @param statusCode 3桁までのコード
      * @return Messageを実装したインスタンス
@@ -103,26 +96,31 @@ public abstract class Message {
         return Message.fromCode(Integer.parseInt(m.group(1)));
     }
 
-/**
- * 通信ステータス.
- */
+    /**
+     * 通信ステータス.
+     */
     public String status() {
         return String.join(" ", new String[]{this.code().toString(), this.type(), this.description()});
     }
 
-/**
- * メッセージの種類.
- * これで識別します.
- * 通知やステータスの説明に繋げます.
- */
+    /**
+     * メッセージの種類.
+     * これで識別します.
+     * 通知やステータスの説明に繋げます.
+     */
     abstract public String type();
 
-/**
- * 通信ステータス識別コード.
- */
+    /**
+     * 通信ステータス識別コード.
+     */
     abstract public Integer code();
-/**
- * 通信ステータス説明.
- */
+    /**
+     * 通信ステータス説明.
+     */
     abstract public String description();
+
+    /**
+     * 通知Body.
+     */
+    abstract public String forTimeLineBody();
 }
