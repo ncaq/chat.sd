@@ -30,7 +30,7 @@ public class Auth {
     public Message logout(final User u) {
         Message m = !this.correctUser(u) ?
             new PasswordInvalidMessage() :
-            !this.logined.remove(u.getName()) ? // remove
+            !this.logined.remove(u) ? // remove
             new MultipleLogoutMessage() :
             new LogoutMessage();
         m.setPoster(u);
