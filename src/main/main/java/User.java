@@ -1,4 +1,4 @@
-package net.ncaq.chat.sd.util;
+package net.ncaq.chat.sd;
 
 import java.io.*;
 import java.net.*;

@@ -1,4 +1,4 @@
-package net.ncaq.chat.sd.util.message;
+package net.ncaq.chat.sd.message;
 
 import java.sql.*;
 import javax.persistence.*;

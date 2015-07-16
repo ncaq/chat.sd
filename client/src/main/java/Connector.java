@@ -6,8 +6,8 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
 import lombok.*;
-import net.ncaq.chat.sd.util.*;
-import net.ncaq.chat.sd.util.message.*;
+import net.ncaq.chat.sd.*;
+import net.ncaq.chat.sd.message.*;
 
 /**
  * クライアント側の通信を担います.

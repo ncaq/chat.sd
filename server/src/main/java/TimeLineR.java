@@ -6,8 +6,8 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
 import lombok.*;
-import net.ncaq.chat.sd.util.*;
-import net.ncaq.chat.sd.util.message.*;
+import net.ncaq.chat.sd.*;
+import net.ncaq.chat.sd.message.*;
 import static java.util.concurrent.TimeUnit.*;
 
 public class TimeLineR implements Runnable {

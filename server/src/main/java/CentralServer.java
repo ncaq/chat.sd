@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
-import net.ncaq.chat.sd.util.message.*;
+import net.ncaq.chat.sd.message.*;
 
 public class CentralServer {
     public CentralServer(final Integer port) {

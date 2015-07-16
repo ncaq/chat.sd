@@ -1,4 +1,4 @@
-package net.ncaq.chat.sd.util.message;
+package net.ncaq.chat.sd.message;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -10,7 +10,7 @@ import java.util.regex.*;
 import java.util.stream.*;
 import javax.persistence.*;
 import lombok.*;
-import net.ncaq.chat.sd.util.*;
+import net.ncaq.chat.sd.*;
 
 /**
  * 汎用メッセージ.
@@ -59,7 +59,7 @@ public abstract class Message {
 
                 final List<String> classNames = fileNames.stream().map(f -> f.replaceAll("/", "\\.").replaceAll(".*net\\.ncaq", "net.ncaq")).collect(Collectors.toList());
                 for(final String c : classNames) {
-                    if(c.startsWith("net.ncaq.chat.sd.util.message") && c.endsWith(".class")) {
+                    if(c.startsWith("net.ncaq.chat.sd.message") && c.endsWith(".class")) {
                         try {
                             final Class<? extends Message> child = (Class<Message>)cl.loadClass(c.replaceAll("\\.class$", ""));
                             final Integer childCode = (Integer)child.getMethod("code").invoke(child.newInstance());

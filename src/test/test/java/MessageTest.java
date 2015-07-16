@@ -1,6 +1,6 @@
-package net.ncaq.chat.sd.util;
+package net.ncaq.chat.sd;
 
-import net.ncaq.chat.sd.util.message.*;
+import net.ncaq.chat.sd.message.*;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
