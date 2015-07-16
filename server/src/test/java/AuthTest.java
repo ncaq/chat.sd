@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
 import net.ncaq.chat.sd.util.*;
+import net.ncaq.chat.sd.util.message.*;
 import org.junit.*;
 import static junit.framework.Assert.*;
 import static org.hamcrest.MatcherAssert.*;
@@ -16,33 +17,35 @@ public class AuthTest {
     public void existUserIs0() throws Exception {
         final Auth a = new Auth();
         a.addUser(new User("sampleUser", "pass"));
-        assertThat(a.login(new User("sampleUser", "pass")), is(LOGIN_SUCCEED));
+        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(LoginMessage.class)));
     }
 
     @Test
     public void anonymousLogin() throws Exception {
-        assertThat(new Auth().login(new User("anonymous", "")), is(LOGIN_SUCCEED));
+        assertThat(new Auth().login(new User("anonymous", "")), is(instanceOf(LoginMessage.class)));
     }
 
     @Test
     public void nothingUserIs100() throws Exception {
         final Auth a = new Auth();
-        assertThat(a.login(new User("sampleUser", "pass")), is(PASSWORD_INVALID));
+        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(PasswordInvalidMessage.class)));
     }
 
     @Test
     public void multipleLoginIs101() throws Exception {
         final Auth a = new Auth();
         a.addUser(new User("sampleUser", "pass"));
+        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(LoginMessage.class)));
+        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(MultipleLoginMessage.class)));
     }
 
     @Test
     public void loginAndLogoutAndLogin() {
         final Auth a = new Auth();
         a.addUser(new User("sampleUser", "pass"));
-        assertThat(a.login(new User("sampleUser", "pass")), is(LOGIN_SUCCEED));
-        assertThat(a.logout(new User("sampleUser", "pass")), is(LOGOUT_SUCCEED));
-        assertThat(a.login(new User("sampleUser", "pass")), is(LOGIN_SUCCEED));
+        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(LoginMessage.class)));
+        assertThat(a.logout(new User("sampleUser", "pass")), is(instanceOf(LogoutMessage.class)));
+        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(LoginMessage.class)));
     }
 
     @Test
@@ -83,8 +86,8 @@ public class AuthTest {
             }).collect(Collectors.toList());
 
         assertThat("status list: " + Arrays.deepToString(sl.toArray()),
-                   sl.stream().filter(s -> s.equals(LOGIN_SUCCEED)).count() -
-                   sl.stream().filter(s -> s.equals(LOGOUT_SUCCEED)).count(),
+                   sl.stream().filter(s -> s instanceof LoginMessage).count() -
+                   sl.stream().filter(s -> s instanceof LogoutMessage).count(),
                    is(0L));
     }
 }
