@@ -41,7 +41,7 @@ project(':server') {
     apply plugin: 'application'
     dependencies {
         compile project(':')
-        compile 'com.h2database:h2:1.4.187'
+        compile 'org.xerial:sqlite-jdbc:3.8.10.1'
     }
     run {
         mainClassName = 'net.ncaq.chat.sd.server.Main'
