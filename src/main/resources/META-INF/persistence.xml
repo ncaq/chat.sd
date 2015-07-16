@@ -3,20 +3,12 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1" xmlns="http://java.sun.com/xml/ns/persistence">
 
-  <!-- PersistenceUnitの定義 -->
   <persistence-unit name="net.ncaq.chat.sd.persistence" transaction-type="RESOURCE_LOCAL">
-
-    <!-- Entityの定義 -->
     <class>net.ncaq.chat.sd.User</class>
-
-    <!-- DB接続設定 -->
     <properties>
-      <!-- JDBCドライバ -->
       <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
-      <!-- DB接続先 -->
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:persistence.sqlite3"/>
 
-      <!-- EclipseLinkのテーブル自動作成設定 -->
       <property name="eclipselink.ddl-generation" value="create-tables"/>
       <property name="eclipselink.ddl-generation.output-mode" value="database"/>
     </properties>
