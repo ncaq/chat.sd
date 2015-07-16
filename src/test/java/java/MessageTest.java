@@ -38,7 +38,8 @@ public class MessageTest {
         assertThat(im.type(), is("password invalid"));
         assertThat(im.code(), is(100));
         assertThat(im.description(), is(""));
-        assertThat(im.forTimeLine(), is("100 password invalid"));
+        assertThat(im.forTimeLine(), is("password invalid"));
+        assertThat(im.status(), is("100 password invalid"));
 
         assertThat(Message.fromStatus("100 password invalid"), is(instanceOf(PasswordInvalidMessage.class)));
     }
