@@ -67,9 +67,8 @@ public abstract class Message {
                 final List<String> classNames = fileNames.stream().map(f -> f.replaceAll("/", "\\.").replaceAll(".*net\\.ncaq", "net.ncaq")).collect(Collectors.toList());
 
                 for(final String c : classNames) {
-                    if(c.endsWith(".class")) {
+                    if(c.startsWith("net.ncaq.chat.sd.util.message") && c.endsWith(".class")) {
                         try {
-                            System.err.println(c);
                             final Class<? extends Message> messageChild = (Class<Message>)cl.loadClass(c.replaceAll("\\.class$", ""));
                             final Integer childCode = (Integer)messageChild.getMethod("code").invoke(messageChild.newInstance());
                             this.put(childCode, messageChild);
