@@ -39,7 +39,7 @@ public class Auth {
      * @todo
      */
     public void addUser(final User u) {
-
+        this.em.persist(u);
     }
 
     /**
@@ -58,6 +58,9 @@ public class Auth {
 
     private final Set<User> logined = new ConcurrentSkipListSet<>();
 
-    @PersistenceContext(unitName = "net.ncaq.chat.sd.persistence")
-    private EntityManager em;
+    @PersistenceUnit
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence");
+
+    @PersistenceContext
+    private EntityManager em = emf.createEntityManager();
 }
