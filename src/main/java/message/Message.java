@@ -91,7 +91,7 @@ public abstract class Message {
      * そのユーザの何回目の投稿か.
      * @param u 検索対象ユーザ
      * @return 投稿インデックス(0から)
-     * @todo
+     * todo
      */
     public Long nthPost(final User u) {
         return 0l;

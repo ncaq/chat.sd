@@ -75,7 +75,7 @@ public class User implements Comparable<User> {
 
     /**
      * 直近のログイン.
-     * @todo
+     * todo
      */
     public Date recentLogin() {
         return new java.sql.Date(System.currentTimeMillis());
@@ -83,7 +83,7 @@ public class User implements Comparable<User> {
 
     /**
      * 発言回数.
-     * @todo
+     * todo
      */
     public Long postingCount() {
         return 0l;

@@ -44,7 +44,7 @@ public class Auth {
 
     /**
      * ユーザーを追加
-     * @todo
+     * todo
      */
     public void addUser(final User u) {
         try {
@@ -63,7 +63,7 @@ public class Auth {
     /**
      * ユーザがデータベースに存在するか.
      * @return true 存在する
-     * @todo
+     * todo
      */
     public boolean correctUser(final User u) {
         val cbuilder = this.em.getCriteriaBuilder();
