@@ -58,9 +58,6 @@ public class Auth {
 
     private final Set<User> logined = new ConcurrentSkipListSet<>();
 
-    @PersistenceUnit
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence");
-
-    @PersistenceContext
-    private EntityManager em = emf.createEntityManager();
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence");
+    private final EntityManager em = emf.createEntityManager();
 }

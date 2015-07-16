@@ -28,6 +28,12 @@ public class User implements Comparable<User> {
         this.password = this.cryptoPassword(this.name, rawPassword);
     }
 
+    /**
+     * for JPA.
+     */
+    public User() {
+    }
+
     public User(final String name, final String rawPassword) {
         this.setName(name);
         this.setPassword(rawPassword);
@@ -80,6 +86,7 @@ public class User implements Comparable<User> {
         return 0l;
     }
 
+    @Transient
     @PersistenceContext(unitName = "net.ncaq.chat.sd.persistence")
     private EntityManager em;
 }
