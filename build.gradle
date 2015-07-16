@@ -2,6 +2,17 @@ apply plugin: 'java'
 
 defaultTasks 'build', 'javadoc'
 
+dependencies {
+    compile 'javax:javaee-api:7.0'
+    compile 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.0'
+    compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.0'
+    compile 'org.xerial:sqlite-jdbc:3.8.10.1'
+}
+
+compileJava {
+    options.compilerArgs.addAll '-Aeclipselink.persistencexml=' + rootProject.file('src/main/resources/META-INF/persistence.xml').absolutePath
+}
+
 allprojects {
     apply plugin: 'java'
 
@@ -10,17 +21,12 @@ allprojects {
     }
 
     dependencies {
-        compile 'javax:javaee-api:7.0'
-        compile 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.0'
-        compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.0'
         compile 'org.projectlombok:lombok:1.16.4'
         testCompile 'junit:junit:4.11'
         testCompile 'org.hamcrest:hamcrest-all:1.3'
         testCompile 'org.mockito:mockito-core:1.9.5'
-    }
-
-    compileJava {
-        options.compilerArgs.addAll '-Aeclipselink.persistencexml=' + rootProject.file('src/main/resources/META-INF/persistence.xml').absolutePath
+        testCompile project(':client')
+        testCompile project(':server')
     }
 
     test {
@@ -38,6 +44,9 @@ project(':server') {
     apply plugin: 'application'
     dependencies {
         compile project(':')
+        compile 'javax:javaee-api:7.0'
+        compile 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.0'
+        compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.0'
         compile 'org.xerial:sqlite-jdbc:3.8.10.1'
     }
     run {
@@ -54,11 +63,6 @@ project(':client') {
     run {
         mainClassName = 'net.ncaq.chat.sd.client.Main'
     }
-}
-
-dependencies {
-    testCompile project(':client')
-    testCompile project(':server')
 }
 
 javadoc {
