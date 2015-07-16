@@ -36,7 +36,7 @@ subprojects {
 project(':server') {
     apply plugin: 'application'
     dependencies {
-        compile project(':util')
+        compile project(':')
         compile 'com.h2database:h2:1.4.187'
     }
     compileJava {
@@ -51,21 +51,12 @@ project(':server') {
 project(':client') {
     apply plugin: 'application'
     dependencies {
-        compile project(':util')
+        compile project(':')
         compile 'gnu.getopt:java-getopt:1.0.13'
     }
     run {
         mainClassName = 'net.ncaq.chat.sd.client.Main'
     }
-}
-
-project(':util') {
-}
-
-dependencies {
-    testCompile project(':server')
-    testCompile project(':client')
-    testCompile project(':util')
 }
 
 javadoc {
