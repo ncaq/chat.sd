@@ -4,19 +4,16 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
+import javax.persistence.*;
+import lombok.*;
 import net.ncaq.chat.sd.util.*;
 import net.ncaq.chat.sd.util.message.*;
 
 /**
- * ログインとかログアウトとか管理します
+ * 存在しないユーザのログイン,多重ログインを防ぎます.
  * スレッドセーフ
  */
 public class Auth {
-    public Auth() {
-        final User anonymous = new User("anonymous", "");
-        final User root = new User("root", "特に特権とかない");
-    }
-
     public Message login(final User u) {
         Message m = !this.correctUser(u) ?
             new PasswordInvalidMessage() :
@@ -52,8 +49,16 @@ public class Auth {
      */
     public boolean correctUser(final User u) {
         // return u.getPassword().toString().equals(userPassword.get(u.getName()));
-        return true;
+        val cbuilder = this.em.getCriteriaBuilder();
+        val q = cbuilder.createQuery(Boolean.class);
+        val userRoot = q.from(User.class);
+        q.select(userRoot).where(cbuilder.equals(userRoot.get(User_.name), u.getName()),
+                                 cbuilder.equals(userRoot.get(User_.password), u.getPassword()));
+        return this.em.createQuery(q).getSingleResult();
     }
 
     private final Set<User> logined = new ConcurrentSkipListSet<>();
+
+    @PersistenceContext(unitName = "net.ncaq.chat.sd.persistence")
+    private EntityManager em;
 }
