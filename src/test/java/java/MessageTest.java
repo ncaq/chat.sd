@@ -30,6 +30,7 @@ public class MessageTest {
         assertThat(lm.code(), is(0));
         assertThat(lm.description(), is("succeed"));
         assertThat(lm.forTimeLine(), startsWith("login user hoge"));
+        assertThat(lm.status(), is("0 login succeed"));
     }
 
     @Test
