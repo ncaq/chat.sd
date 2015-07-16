@@ -19,7 +19,9 @@ public class MessageTest {
         assertThat(cm.type(), is("chat"));
         assertThat(cm.code(), is(200));
         assertThat(cm.description(), is("ok(extension)"));
-        assertThat(cm.forTimeLine(), startsWith("chat hoge foo"));
+        assertThat(cm.forTimeLine(), is("chat hoge foo"));
+
+        assertThat(Message.fromStatus("200 chat ok"), is(instanceOf(ChatMessage.class)));
     }
 
     @Test
@@ -31,6 +33,8 @@ public class MessageTest {
         assertThat(lm.description(), is("succeed"));
         assertThat(lm.forTimeLine(), startsWith("login user hoge"));
         assertThat(lm.status(), is("0 login succeed"));
+
+        assertThat(Message.fromStatus("0 login succeed"), is(instanceOf(LoginMessage.class)));
     }
 
     @Test
