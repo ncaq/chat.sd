@@ -5,6 +5,7 @@ import java.net.*;
 import java.security.*;
 import java.security.spec.*;
 import java.sql.*;
+import java.util.Base64;
 import java.util.regex.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
@@ -19,7 +20,7 @@ import lombok.*;
 @Entity
 public class User implements Comparable<User> {
     @Id private String name;
-    @Id private SecretKey password;
+    @Id private String password;
 
     /**
      * 平文パスワードをハッシュ化して格納.
@@ -49,9 +50,11 @@ public class User implements Comparable<User> {
         setPassword(m.group(2));
     }
 
-    private static SecretKey cryptoPassword(final String name, final String rawPassword) {
+    private static String cryptoPassword(final String name, final String rawPassword) {
         try {
-            return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(new PBEKeySpec(rawPassword.toCharArray(), name.getBytes("UTF-8"), 44873, 512));
+            return Base64.getEncoder().encodeToString(
+                SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(
+                    new PBEKeySpec(rawPassword.toCharArray(), name.getBytes("UTF-8"), 44873, 512)).getEncoded());
         }
         catch(UnsupportedEncodingException|NoSuchAlgorithmException|IllegalArgumentException|InvalidKeySpecException err) {
             System.err.println(err);
