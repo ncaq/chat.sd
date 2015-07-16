@@ -4,7 +4,7 @@
              version="2.1" xmlns="http://java.sun.com/xml/ns/persistence">
 
   <persistence-unit name="net.ncaq.chat.sd.persistence" transaction-type="RESOURCE_LOCAL">
-    <class>net.ncaq.chat.sd.User</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:persistence.sqlite3"/>
