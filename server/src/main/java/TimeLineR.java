@@ -23,14 +23,11 @@ public class TimeLineR implements Runnable {
     public void run() {
         try {
             val authMessage = auth.login(this.user);
-
             get.println(authMessage.status());
-
             System.err.println(authMessage);
 
             if(authMessage instanceof LoginMessage) {
                 server.broadcast(authMessage);
-                System.err.println(authMessage);
 
                 try {
                     final ExecutorService getThread = Executors.newSingleThreadExecutor();
@@ -75,16 +72,15 @@ public class TimeLineR implements Runnable {
     }
 
     /**
+     * PrintWriterはスレッドセーフではないため,一度ブロッキングキューを経由します.
      * これは終了しない.
      * 強制終了すること.
      */
     private final Runnable getTimeLineR() {
         return () -> {
             try {
-                for(Message m = newMessageBox.take(); ; m = newMessageBox.take()) {
-                    if(m != null) {
-                        get.println(m.forTimeLine());
-                    }
+                for(Message m = newMessageBox.take(); m != null; m = newMessageBox.take()) {
+                    get.println(m.forTimeLine());
                 }
             }
             catch(final InterruptedException err) {
