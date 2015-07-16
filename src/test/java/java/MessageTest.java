@@ -31,4 +31,15 @@ public class MessageTest {
         assertThat(lm.description(), is("succeed"));
         assertThat(lm.forTimeLine(), startsWith("login user hoge"));
     }
+
+    @Test
+    public void PasswordInvalidMessage() throws Exception {
+        final Message im = Message.fromCode(100);
+        assertThat(im.type(), is("password invalid"));
+        assertThat(im.code(), is(100));
+        assertThat(im.description(), is(""));
+        assertThat(im.forTimeLine(), is("100 password invalid"));
+
+        assertThat(Message.fromStatus("100 password invalid"), is(instanceOf(PasswordInvalidMessage.class)));
+    }
 }
