@@ -24,10 +24,11 @@ public class TimeLineR implements Runnable {
         try {
             val authMessage = auth.login(this.user);
             get.println(authMessage.status());
-            System.err.println(authMessage);
+            System.out.println(authMessage.status());
 
             if(authMessage instanceof LoginMessage) {
                 server.broadcast(authMessage);
+                System.out.println(authMessage);
 
                 try {
                     final ExecutorService getThread = Executors.newSingleThreadExecutor();
@@ -37,7 +38,7 @@ public class TimeLineR implements Runnable {
                 }
                 finally {
                     val m = auth.logout(user); // 確実にログアウト
-                    System.err.println(m);
+                    System.out.println(m);
                 }
             }
         }
@@ -51,8 +52,8 @@ public class TimeLineR implements Runnable {
                 post.close();
                 client.close();
             }
-            catch(final IOException err) { // もし例外が出ても,開放が遅れるだけで自動開放はされるはず
-                System.err.println(err);
+            catch(final IOException exc) { // もし例外が出ても,開放が遅れるだけで自動開放はされるはず
+                System.err.println(exc);
             }
             finally {
                 server.removeClosedSession(this); // サーバにセッションの終了を通知
@@ -67,8 +68,8 @@ public class TimeLineR implements Runnable {
         try {
             this.newMessageBox.put(newMessage);
         }
-        catch(final InterruptedException err) {
-            System.err.println(err);
+        catch(final InterruptedException exc) {
+            System.err.println(exc);
         }
     }
 
@@ -84,8 +85,8 @@ public class TimeLineR implements Runnable {
                     get.println(m.forTimeLine());
                 }
             }
-            catch(final InterruptedException err) {
-                System.err.println(err);
+            catch(final InterruptedException exc) {
+                System.err.println(exc);
             }
         };
     }
@@ -100,8 +101,8 @@ public class TimeLineR implements Runnable {
                     server.broadcast(m);
                 }
             }
-            catch(final IOException err) {
-                System.err.println(err);
+            catch(final IOException exc) {
+                System.err.println(exc);
             }
         };
     }

@@ -13,7 +13,7 @@ public class CentralServer {
     public CentralServer(final Integer port) {
         try {
             final ServerSocket socket = new ServerSocket(port);
-            System.err.println("create socket");
+            System.out.println("create socket");
 
             pool.execute(() -> {
                     for(;;) {
@@ -53,7 +53,7 @@ public class CentralServer {
     public void removeClosedSession(final TimeLineR closedSession) {
         pool.execute(() -> {
                 sessions.remove(closedSession);
-                System.err.println("close session: " + closedSession);
+                System.out.println("close session: " + closedSession);
             });
     }
 
