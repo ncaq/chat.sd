@@ -19,11 +19,12 @@ import net.ncaq.chat.sd.*;
 public abstract class Message {
     /** 自動生成id. */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** メッセージの作成時間. */
+    /** メッセージの投稿時間. */
     @Temporal(TemporalType.DATE)
-    private Date create = new Date(System.currentTimeMillis());
+    private Date submit = new Date(System.currentTimeMillis());
 
     /** メッセージの投稿者. */
     private User poster;
