@@ -43,8 +43,8 @@ public class Auth {
     }
 
     /**
-     * ユーザーを追加
-     * todo
+     * ユーザーを追加.
+     * 既に完全に一致するユーザが追加されているときは何も行わない.
      */
     public void addUser(final User u) {
         if(!this.correctUser(u)) { // 存在しない時のみ追加
@@ -57,14 +57,16 @@ public class Auth {
 
     /**
      * 正しいパスワードのユーザがデータベースに存在するか.
-     * @return true 存在する
+     * @param u 検索対象ユーザ.
+     * @return 存在する時 {@code true}.
+     * TODO 現在の実装方法は不適切.
+     * inを使う形式で書き換えるべき.
      */
     public boolean correctUser(final User u) {
         val cbuilder = this.em.getCriteriaBuilder();
         val q = cbuilder.createQuery(User.class);
         val userRoot = q.from(User.class);
-        q.select(userRoot).where(cbuilder.equal(userRoot.get(User_.name), u.getName()),
-                                 cbuilder.equal(userRoot.get(User_.password), u.getPassword()));
+        q.select(userRoot).where(cbuilder.equal(userRoot, u));
         return this.em.createQuery(q).getResultList().size() == 1;
     }
 
