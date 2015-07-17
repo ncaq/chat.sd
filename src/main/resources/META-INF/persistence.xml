@@ -6,8 +6,8 @@
   <persistence-unit name="net.ncaq.chat.sd.persistence" transaction-type="RESOURCE_LOCAL">
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
-      <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:persistence.sqlite3"/>
+      <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/.net.ncaq.chat.sd.persistence"/>
 
       <property name="eclipselink.ddl-generation" value="create-tables"/>
       <property name="eclipselink.ddl-generation.output-mode" value="database"/>
