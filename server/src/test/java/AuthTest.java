@@ -26,7 +26,9 @@ public class AuthTest {
         val a = new Auth();
         val u = new User("anonymous", "");
         a.addUser(u);
-        assertThat(a.login(u), is(instanceOf(LoginMessage.class)));
+        val m = a.login(u);
+        assertThat(m, is(instanceOf(LoginMessage.class)));
+        assertThat(m.status(), is("0 login succeed"));
     }
 
     @Test
