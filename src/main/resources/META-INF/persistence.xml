@@ -3,7 +3,7 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1" xmlns="http://java.sun.com/xml/ns/persistence">
 
-  <persistence-unit name="net.ncaq.chat.sd.persistence" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="net.ncaq.chat.sd.persistence">
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
@@ -12,7 +12,5 @@
       <property name="eclipselink.ddl-generation" value="create-tables"/>
       <property name="eclipselink.ddl-generation.output-mode" value="database"/>
     </properties>
-
   </persistence-unit>
-
 </persistence>

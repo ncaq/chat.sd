@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 import javax.persistence.*;
+import javax.transaction.*;
 import lombok.*;
 import net.ncaq.chat.sd.*;
 import net.ncaq.chat.sd.message.*;
@@ -46,12 +47,10 @@ public class Auth {
      * ユーザーを追加.
      * 既に完全に一致するユーザが追加されているときは何も行わない.
      */
+    @Transactional
     public void addUser(final User u) {
         if(!this.correctUser(u)) { // 存在しない時のみ追加
-            val tr = this.em.getTransaction();
-            tr.begin();
             this.em.persist(u);
-            tr.commit();
         }
     }
 

@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import javax.inject.*;
 import javax.persistence.*;
+import javax.transaction.*;
 import lombok.*;
 import net.ncaq.chat.sd.message.*;
 
@@ -36,11 +37,9 @@ public class CentralServer {
     /**
      * 全てのセッションに新規メッセージを配信します.
      */
+    @Transactional
     public void broadcast(final Message newMessage) {
-        val tr = em.getTransaction();
-        tr.begin();
         em.persist(newMessage);
-        tr.commit();
         System.out.println(newMessage);
         pool.execute(() -> {
                 sessions.parallelStream().forEach(s -> s.put(newMessage));
