@@ -27,7 +27,7 @@ public class TimeLineR implements Runnable {
             System.out.println(authMessage.status());
 
             if(authMessage instanceof LoginMessage) {
-                server.broadcast(authMessage);
+                server.broadcast(authMessage.forTimeLine());
                 System.out.println(authMessage);
 
                 try {
