@@ -29,6 +29,9 @@ allprojects {
 
     apply plugin: 'pmd'
     pmd.ignoreFailures = true
+
+    apply plugin: 'findbugs'
+    findbugs.ignoreFailures = true
 }
 
 subprojects {
