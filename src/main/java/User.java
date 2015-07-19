@@ -82,12 +82,13 @@ public class User implements Comparable<User> {
      */
     public Optional<Date> recentLogin() {
         try {
-            val cbuilder = this.em.getCriteriaBuilder();
-            val q = cbuilder.createQuery(LoginMessage.class);
+            val em = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence").createEntityManager();
+            val cb = this.em.getCriteriaBuilder();
+            val q = cb.createQuery(LoginMessage.class);
             val root = q.from(LoginMessage.class);
             q.select(root)
-                .where(cbuilder.equal(root.get(LoginMessage_.poster), this))
-                .orderBy(cbuilder.desc(root.get(LoginMessage_.submit)));
+                .where(cb.equal(root.get(LoginMessage_.poster), this))
+                .orderBy(cb.desc(root.get(LoginMessage_.submit)));
             return Optional.of(this.em.createQuery(q).getResultList().get(0).getSubmit());
         }
         catch(final ArrayIndexOutOfBoundsException exc) {
@@ -99,6 +100,7 @@ public class User implements Comparable<User> {
      * 発言回数.
      */
     public Long postingCount() {
+        val em = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence").createEntityManager();
         val cb = this.em.getCriteriaBuilder();
         val q = cb.createQuery(Long.class);
         val root = q.from(ChatMessage.class);
@@ -106,7 +108,4 @@ public class User implements Comparable<User> {
             .where(cb.equal(root.get(ChatMessage_.poster), this));
         return em.createQuery(q).getSingleResult();
     }
-
-    @Transient
-    private final EntityManager em = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence").createEntityManager();
 }

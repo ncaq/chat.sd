@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.*;
 import javax.persistence.*;
 import lombok.*;
 import net.ncaq.chat.sd.*;
@@ -55,8 +56,6 @@ public class Auth {
      * 正しいパスワードのユーザがデータベースに存在するか.
      * @param u 検索対象ユーザ.
      * @return 存在する時 {@code true}.
-     * TODO 現在の実装方法は不適切.
-     * inを使う形式で書き換えるべき.
      */
     public boolean correctUser(final User u) {
         val cbuilder = this.em.getCriteriaBuilder();
@@ -66,8 +65,15 @@ public class Auth {
         return this.em.createQuery(q).getResultList().size() == 1;
     }
 
-    @Getter
-    private final Set<User> logined = new ConcurrentSkipListSet<>();
+    /**
+     * ログイン中のユーザ情報(タイムライン向け).
+     */
+    public String loginedUsersInfo() {
+        val currentLogined = logined.clone(); // 並列セットなのでカウントする前にコピー
+        return String.join(" ", new String[]{"curuser", Integer.toString(currentLogined.size()),
+                                             String.join(" ", currentLogined.stream().map(User::getName).collect(Collectors.toList()))});
+    }
 
+    private final ConcurrentSkipListSet<User> logined = new ConcurrentSkipListSet<>();
     private final EntityManager em = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence").createEntityManager();
 }

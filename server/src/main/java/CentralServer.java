@@ -48,7 +48,7 @@ public class CentralServer {
     }
 
     /**
-     * 最近のチャットメッセージを10件送信し,配信準備が完了したセッションをメッセージの配信対象にします.
+     * 最近のチャットメッセージを10件送信し,現在のログインユーザを送信し,配信準備が完了したセッションをメッセージの配信対象にします.
      */
     public void addReadiedSession(final TimeLineR readiedSession) {
         val cb = this.em.getCriteriaBuilder();
@@ -57,7 +57,6 @@ public class CentralServer {
         q.select(root).orderBy(cb.desc(root.get(ChatMessage_.submit)));
         val messages = this.em.createQuery(q).setMaxResults(10).getResultList();
         Collections.reverse(messages); // 新しい順 -> 古い順
-
         messages.stream().map(ChatMessage::toOldChat).forEach(readiedSession::put);
 
         sessions.add(readiedSession);
@@ -65,6 +64,8 @@ public class CentralServer {
         val lm = new LoginMessage();
         lm.setPoster(readiedSession.getUser());
         this.broadcast(lm);
+
+        readiedSession.put(auth.loginedUsersInfo());
     }
 
     /**
