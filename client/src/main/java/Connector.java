@@ -83,7 +83,7 @@ public class Connector {
 
     private Message login(final String username, final String rawPassword) throws Exception {
         this.writer.println("user " + username + " pass " + rawPassword);
-        return Message.fromStatus(this.reader.readLine());
+        return Message.of(this.reader.readLine());
     }
 
     private final Socket server;

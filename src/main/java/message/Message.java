@@ -38,7 +38,7 @@ public abstract class Message {
      * @param statusCode 3桁までのコード
      * @return Messageを実装したインスタンス
      */
-    public static Message fromCode(final Integer statusCode) throws InstantiationException, IllegalAccessException {
+    public static Message of(final Integer statusCode) throws InstantiationException, IllegalAccessException {
         return codeTable.get(statusCode).newInstance();
     }
 
@@ -81,10 +81,10 @@ public abstract class Message {
      * 通信ステータス文字列からメッセージを構築.
      * @return Messageを実装したインスタンス
      */
-    public static Message fromStatus(final String statusStatus) throws InstantiationException, IllegalAccessException {
+    public static Message of(final String statusStatus) throws InstantiationException, IllegalAccessException {
         final Matcher m = Pattern.compile("[^\\d]*(\\d+).*").matcher(statusStatus);
         m.matches();
-        return Message.fromCode(Integer.parseInt(m.group(1)));
+        return Message.of(Integer.parseInt(m.group(1)));
     }
 
     /**
