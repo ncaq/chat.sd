@@ -15,11 +15,10 @@ public class CentralServer {
             final ServerSocket socket = new ServerSocket(port);
             System.out.println("create socket");
 
-            pool.execute(() -> {
+            threadPool.execute(() -> {
                     for(;;) {
                         try {
-                            final TimeLineR newSession = new TimeLineR(this, socket.accept(), auth);
-                            pool.execute(newSession);
+                            threadPool.execute(new TimeLineR(this, socket.accept(), auth));
                         }
                         catch(final IOException err) {
                             System.err.println(err);
@@ -36,7 +35,7 @@ public class CentralServer {
      * 全てのセッションに新規メッセージを配信します.
      */
     public void broadcast(final Message newMessage) {
-        pool.execute(() -> {
+        threadPool.execute(() -> {
                 final String toTimeLine = newMessage.toTimeLine();
                 sessions.parallelStream().forEach(s -> s.put(toTimeLine));
 
@@ -68,13 +67,13 @@ public class CentralServer {
      * 閉じたセッションを配信から排除します.
      */
     public void removeClosedSession(final TimeLineR closedSession) {
-        pool.execute(() -> {
+        threadPool.execute(() -> {
                 sessions.remove(closedSession);
                 System.out.println("close session: " + closedSession);
             });
     }
 
-    private final ExecutorService pool = Executors.newCachedThreadPool();
+    private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Queue<TimeLineR> sessions = new ConcurrentLinkedQueue<>();
     private final Auth auth = new Auth();
 
