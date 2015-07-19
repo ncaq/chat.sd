@@ -27,6 +27,7 @@ public class TimeLineR implements Runnable {
             System.out.println(authMessage.status());
 
             if(authMessage instanceof LoginMessage) {
+                server.addReadiedSession(this);
                 server.broadcast(authMessage);
 
                 try {

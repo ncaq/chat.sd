@@ -20,7 +20,6 @@ public class CentralServer {
                         try {
                             final TimeLineR newSession = new TimeLineR(this, socket.accept(), auth);
                             pool.execute(newSession);
-                            sessions.add(newSession);
                         }
                         catch(final IOException err) {
                             System.err.println(err);
@@ -47,6 +46,22 @@ public class CentralServer {
                 tr.commit();
                 System.out.println(newMessage);
             });
+    }
+
+    /**
+     * 最近のチャットメッセージを10件送信し,配信準備が完了したセッションをメッセージの配信対象にします.
+     */
+    public void addReadiedSession(final TimeLineR readiedSession) {
+        val cb = this.em.getCriteriaBuilder();
+        val q = cb.createQuery(ChatMessage.class);
+        val root = q.from(ChatMessage.class);
+        q.select(root).orderBy(cb.desc(root.get(ChatMessage_.submit)));
+        val messages = this.em.createQuery(q).setMaxResults(10).getResultList();
+        Collections.reverse(messages); // 新しい順 -> 古い順
+
+        messages.stream().map(Message::forTimeLine).forEach(readiedSession::put);
+
+        sessions.add(readiedSession);
     }
 
     /**
