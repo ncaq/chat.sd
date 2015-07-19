@@ -61,6 +61,10 @@ public class CentralServer {
         messages.stream().map(ChatMessage::toOldChat).forEach(readiedSession::put);
 
         sessions.add(readiedSession);
+
+        val lm = new LoginMessage();
+        lm.setPoster(readiedSession.getUser());
+        this.broadcast(lm);
     }
 
     /**
