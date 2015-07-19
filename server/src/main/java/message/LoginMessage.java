@@ -15,16 +15,6 @@ public class LoginMessage extends Message {
     }
 
     @Override
-    public Integer code() {
-        return 0;
-    }
-
-    @Override
-    public String description() {
-        return "succeed";
-    }
-
-    @Override
     public String toTimeLineBody() {
         return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().recentLogin().map(d -> messageDateFormat.format(d)).orElse("")});
     }

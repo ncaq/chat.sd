@@ -15,16 +15,6 @@ public class ChatMessage extends Message {
     }
 
     @Override
-    public Integer code() {
-        return 200;
-    }
-
-    @Override
-    public String description() {
-        return "ok(extension)";
-    }
-
-    @Override
     public String toTimeLineBody() {
         return String.join(" ", new String[]{getPoster().getName(), getBody()});
     }
