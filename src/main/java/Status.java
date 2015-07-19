@@ -17,20 +17,20 @@ public enum Status {
     LOGOUT_SUCCEED  (600, "logout succeed (extension)"),
     MULTIPLE_LOGOUT (601, "multiple logout (extension)");
 
-    private Status(final Integer code, final String message){
+    private Status(final Integer code, final String description){
         this.code = code;
-        this.message = message;
+        this.description = description;
     }
 
     private final Integer code;
-    private final String message;
+    private final String description;
 
     /**
      * @return フルレスポンス文字列
      */
     @Override
     public String toString() {
-        return this.code.toString() + " " + this.message;
+        return this.code.toString() + " " + this.description;
     }
 
     /**
