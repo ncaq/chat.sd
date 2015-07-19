@@ -21,6 +21,12 @@ public class Auth {
         this.addUser(new User("guest1", "1"));
         this.addUser(new User("guest2", "2"));
         this.addUser(new User("guest3", "3"));
+        this.addUser(new User("guest4", "4"));
+        this.addUser(new User("guest5", "5"));
+        this.addUser(new User("guest6", "6"));
+        this.addUser(new User("guest7", "7"));
+        this.addUser(new User("guest8", "8"));
+        this.addUser(new User("guest9", "9"));
     }
 
     public Status login(final User u) {
