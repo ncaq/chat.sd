@@ -37,8 +37,8 @@ public class CentralServer {
      */
     public void broadcast(final Message newMessage) {
         pool.execute(() -> {
-                final String messageForTimeLine = newMessage.toTimeLine();
-                sessions.parallelStream().forEach(s -> s.put(messageForTimeLine));
+                final String toTimeLine = newMessage.toTimeLine();
+                sessions.parallelStream().forEach(s -> s.put(toTimeLine));
 
                 final EntityTransaction tr = em.getTransaction();
                 tr.begin();
