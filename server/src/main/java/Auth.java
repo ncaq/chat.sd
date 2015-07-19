@@ -7,6 +7,7 @@ import java.util.concurrent.*;
 import javax.persistence.*;
 import lombok.*;
 import net.ncaq.chat.sd.*;
+import static net.ncaq.chat.sd.Status.*;
 
 /**
  * 存在しないユーザのログイン,多重ログインを防ぎます.

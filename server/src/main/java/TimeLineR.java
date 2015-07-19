@@ -9,6 +9,7 @@ import lombok.*;
 import net.ncaq.chat.sd.*;
 import net.ncaq.chat.sd.server.message.*;
 import static java.util.concurrent.TimeUnit.*;
+import static net.ncaq.chat.sd.Status.*;
 
 public class TimeLineR implements Runnable {
     public TimeLineR(final CentralServer server, final Socket client, final Auth auth) throws IOException {
@@ -22,13 +23,12 @@ public class TimeLineR implements Runnable {
 
     public void run() {
         try {
-            val authMessage = auth.login(this.user);
-            get.println(authMessage.status());
-            System.out.println(authMessage.status());
+            val loginStatus = auth.login(this.user);
+            get.println(loginStatus.toString());
+            System.out.println(loginStatus.toString());
 
-            if(authMessage instanceof LoginMessage) {
+            if(loginStatus == LOGIN_SUCCEED) {
                 server.addReadiedSession(this);
-                server.broadcast(authMessage);
 
                 try {
                     final ExecutorService getThread = Executors.newSingleThreadExecutor();
@@ -37,14 +37,16 @@ public class TimeLineR implements Runnable {
                     getThread.shutdown();      // getは自動で終了しない
                 }
                 finally {
-                    val m = auth.logout(user); // 確実にログアウト
+                    auth.logout(user); // 確実にログアウト
+                    val m = new LogoutMessage();
+                    m.setPoster(this.user);
                     server.broadcast(m);
                 }
             }
         }
         catch(final Exception exc) { // 正規表現例外などに対処
             System.err.println(exc);
-            get.println(new PasswordInvalidMessage().status());
+            get.println(PASSWORD_INVALID.getDescription());
         }
         finally {               // 早期開放のため明示的に開放
             try {

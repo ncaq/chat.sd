@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.*;
 import javax.persistence.*;
 import lombok.*;
+import net.ncaq.chat.sd.server.*;
 
 /**
  * 汎用メッセージ.

@@ -4,12 +4,10 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.*;
 import lombok.*;
-import static net.ncaq.chat.sd.util.Status.*;
 
 /**
  * 通信のステータス.
  */
-@Data
 public enum Status {
     LOGIN_SUCCEED   (  0, "login succeed"),
     PASSWORD_INVALID(100, "password invalid"),
@@ -22,7 +20,9 @@ public enum Status {
         this.description = description;
     }
 
+    @Getter
     private final Integer code;
+    @Getter
     private final String description;
 
     /**
@@ -47,7 +47,7 @@ public enum Status {
         System.err.println(response);
         final Matcher m = Pattern.compile("[^\\d]*(\\d+).*").matcher(response);
         m.matches();
-        return Status.fromCode(Integer.parseInt(m.group(1)));
+        return Status.of(Integer.parseInt(m.group(1)));
     }
 
     private final static Map<Integer, Status> codeTable = new HashMap<Integer, Status>() {

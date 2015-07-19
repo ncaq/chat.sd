@@ -7,7 +7,7 @@ import java.util.concurrent.*;
 import java.util.function.*;
 import lombok.*;
 import net.ncaq.chat.sd.*;
-import net.ncaq.chat.sd.message.*;
+import static net.ncaq.chat.sd.Status.*;
 
 /**
  * クライアント側の通信を担います.
@@ -25,12 +25,12 @@ public class Connector {
         this.readCallback = readCallback;
 
         try {
-            final Message s = this.login(username, rawPassword);
-            switch(s.code()) {
-            case 0:
+            val s = this.login(username, rawPassword);
+            switch(s) {
+            case LOGIN_SUCCEED:
                 break;
             default:
-                throw new RuntimeException(s.status());
+                throw new RuntimeException(s.toString());
             }
         }
         catch(final Exception err) {
@@ -81,9 +81,9 @@ public class Connector {
         throw new ConnectException(errStash.stream().map(e -> e.toString()).reduce("", (a, t) -> a + t));
     }
 
-    private Message login(final String username, final String rawPassword) throws Exception {
+    private Status login(final String username, final String rawPassword) throws Exception {
         this.writer.println("user " + username + " pass " + rawPassword);
-        return Message.of(this.reader.readLine());
+        return Status.of(this.reader.readLine());
     }
 
     private final Socket server;
