@@ -29,8 +29,9 @@ public class AuthTest {
 
     @Test
     public void multipleLoginIs101() throws Exception {
-        assertThat(new Auth().login(new User("anonymous", "")), is(LOGIN_SUCCEED));
-        assertThat(new Auth().login(new User("anonymous", "")), is(MULTIPLE_LOGIN));
+        val a = new Auth();
+        assertThat(a.login(new User("anonymous", "")), is(LOGIN_SUCCEED));
+        assertThat(a.login(new User("anonymous", "")), is(MULTIPLE_LOGIN));
     }
 
     @Test
