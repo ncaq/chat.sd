@@ -3,6 +3,7 @@ package net.ncaq.chat.sd.message;
 import java.io.*;
 import java.lang.reflect.*;
 import java.net.*;
+import java.text.*;
 import java.util.*;
 import java.util.jar.*;
 import java.util.regex.*;
@@ -87,21 +88,16 @@ public abstract class Message {
     }
 
     /**
-     * そのユーザの何回目の投稿か.
-     * @param u 検索対象ユーザ
-     * @return 投稿インデックス(0から)
-     * todo
-     */
-    public Long nthPost(final User u) {
-        return 0l;
-    }
-
-    /**
      * タイムライン向け通知.
      */
     public String forTimeLine() {
         return String.join(" ", new String[]{this.type(), this.forTimeLineBody()}).trim();
     }
+
+    /**
+     * このクラスで使う日付表現.
+     */
+    protected static final DateFormat messageDateFormat = new SimpleDateFormat("yyyy/LL/dd HH:mm:ss");
 
     /**
      * 通信ステータス.

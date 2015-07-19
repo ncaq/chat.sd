@@ -26,6 +26,6 @@ public class LogoutMessage extends Message {
 
     @Override
     public String forTimeLineBody() {
-        return String.join(" ", new String[]{"user", getPoster().getName(), getPoster().recentLogin().get().toString(), getPoster().postingCount().toString()});
+        return String.join(" ", new String[]{"user", getPoster().getName(), messageDateFormat.format(getPoster().recentLogin().get()), getPoster().postingCount().toString()});
     }
 }
