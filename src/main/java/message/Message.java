@@ -90,8 +90,8 @@ public abstract class Message {
     /**
      * タイムライン向け通知.
      */
-    public String forTimeLine() {
-        return String.join(" ", new String[]{this.type(), this.forTimeLineBody()}).trim();
+    public String toTimeLine() {
+        return String.join(" ", new String[]{this.type(), this.toTimeLineBody()}).trim();
     }
 
     /**
@@ -125,5 +125,5 @@ public abstract class Message {
     /**
      * 通知Body.
      */
-    abstract public String forTimeLineBody();
+    abstract public String toTimeLineBody();
 }

@@ -37,7 +37,7 @@ public class CentralServer {
      */
     public void broadcast(final Message newMessage) {
         pool.execute(() -> {
-                final String messageForTimeLine = newMessage.forTimeLine();
+                final String messageForTimeLine = newMessage.toTimeLine();
                 sessions.parallelStream().forEach(s -> s.put(messageForTimeLine));
 
                 final EntityTransaction tr = em.getTransaction();
@@ -59,7 +59,7 @@ public class CentralServer {
         val messages = this.em.createQuery(q).setMaxResults(10).getResultList();
         Collections.reverse(messages); // 新しい順 -> 古い順
 
-        messages.stream().map(Message::forTimeLine).forEach(readiedSession::put);
+        messages.stream().map(Message::toTimeLine).forEach(readiedSession::put);
 
         sessions.add(readiedSession);
     }

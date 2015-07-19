@@ -25,7 +25,7 @@ public class PasswordInvalidMessage extends Message {
     }
 
     @Override
-    public String forTimeLineBody() {
+    public String toTimeLineBody() {
         return "";
     }
 }

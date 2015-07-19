@@ -70,6 +70,7 @@ public class Auth {
         return this.em.createQuery(q).getResultList().size() == 1;
     }
 
+    @Getter
     private final Set<User> logined = new ConcurrentSkipListSet<>();
 
     private final EntityManager em = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence").createEntityManager();

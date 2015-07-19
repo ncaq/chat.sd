@@ -25,7 +25,7 @@ public class MultipleLoginMessage extends Message {
     }
 
     @Override
-    public String forTimeLineBody() {
+    public String toTimeLineBody() {
         return "";
     }
 }

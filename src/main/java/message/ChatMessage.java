@@ -25,7 +25,7 @@ public class ChatMessage extends Message {
     }
 
     @Override
-    public String forTimeLineBody() {
+    public String toTimeLineBody() {
         return String.join(" ", new String[]{getPoster().getName(), getBody()});
     }
 }
