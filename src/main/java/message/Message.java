@@ -100,14 +100,14 @@ public abstract class Message {
      * タイムライン向け通知.
      */
     public String forTimeLine() {
-        return String.join(" ", Arrays.stream(new String[]{this.type(), this.forTimeLineBody()}).filter((s) -> !s.isEmpty()).collect(Collectors.toList()));
+        return String.join(" ", new String[]{this.type(), this.forTimeLineBody()}).trim();
     }
 
     /**
      * 通信ステータス.
      */
     public String status() {
-        return String.join(" ", Arrays.stream(new String[]{this.code().toString(), this.type(), this.description()}).filter((s) -> !s.isEmpty()).collect(Collectors.toList()));
+        return String.join(" ", new String[]{this.code().toString(), this.type(), this.description()}).trim();
     }
 
     /**

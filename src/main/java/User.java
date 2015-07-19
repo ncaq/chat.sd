@@ -9,7 +9,9 @@ import java.util.regex.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
 import javax.persistence.*;
+import javax.persistence.criteria.*;
 import lombok.*;
+import net.ncaq.chat.sd.message.*;
 
 /**
  * ユーザー情報保存クラス.
@@ -76,17 +78,35 @@ public class User implements Comparable<User> {
 
     /**
      * 直近のログイン.
-     * todo
+     * @return ログインしたことがない @code{Optional.empty()}.
      */
-    public Date recentLogin() {
-        return new Date(System.currentTimeMillis());
+    public Optional<Date> recentLogin() {
+        try {
+            val cbuilder = this.em.getCriteriaBuilder();
+            val q = cbuilder.createQuery(LoginMessage.class);
+            val root = q.from(LoginMessage.class);
+            q.select(root)
+                .where(cbuilder.equal(root.get(LoginMessage_.poster), this))
+                .orderBy(cbuilder.desc(root.get(LoginMessage_.submit)));
+            return Optional.of(this.em.createQuery(q).getResultList().get(0).getSubmit());
+        }
+        catch(final ArrayIndexOutOfBoundsException exc) {
+            return Optional.empty();
+        }
     }
 
     /**
      * 発言回数.
-     * todo
      */
     public Long postingCount() {
-        return 0l;
+        val cb = this.em.getCriteriaBuilder();
+        val q = cb.createQuery(Long.class);
+        val root = q.from(ChatMessage.class);
+        q.select(cb.count(root))
+            .where(cb.equal(root.get(ChatMessage_.poster), this));
+        return em.createQuery(q).getSingleResult();
     }
+
+    @Transient
+    private final EntityManager em = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence").createEntityManager();
 }

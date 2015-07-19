@@ -28,7 +28,6 @@ public class TimeLineR implements Runnable {
 
             if(authMessage instanceof LoginMessage) {
                 server.broadcast(authMessage);
-                System.out.println(authMessage);
 
                 try {
                     final ExecutorService getThread = Executors.newSingleThreadExecutor();
@@ -38,7 +37,7 @@ public class TimeLineR implements Runnable {
                 }
                 finally {
                     val m = auth.logout(user); // 確実にログアウト
-                    System.out.println(m);
+                    server.broadcast(m);
                 }
             }
         }
@@ -64,9 +63,9 @@ public class TimeLineR implements Runnable {
     /**
      * 新規メッセージの配信を準備します.
      */
-    public void put(final Message newMessage) {
+    public void put(final String newMessage) {
         try {
-            this.newMessageBox.put(newMessage);
+            this.newMessageTextBox.put(newMessage);
         }
         catch(final InterruptedException exc) {
             System.err.println(exc);
@@ -81,8 +80,8 @@ public class TimeLineR implements Runnable {
     private final Runnable getTimeLineR() {
         return () -> {
             try {
-                for(Message m = newMessageBox.take(); m != null; m = newMessageBox.take()) {
-                    get.println(m.forTimeLine());
+                for(String m = newMessageTextBox.take(); m != null; m = newMessageTextBox.take()) {
+                    get.println(m);
                 }
             }
             catch(final InterruptedException exc) {
@@ -107,7 +106,7 @@ public class TimeLineR implements Runnable {
         };
     }
 
-    private final LinkedBlockingQueue<Message> newMessageBox = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<String> newMessageTextBox = new LinkedBlockingQueue<>();
 
     private final CentralServer server;
     private final Socket client;

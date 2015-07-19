@@ -37,13 +37,15 @@ public class CentralServer {
      * 全てのセッションに新規メッセージを配信します.
      */
     public void broadcast(final Message newMessage) {
-        val tr = em.getTransaction();
-        tr.begin();
-        em.persist(newMessage);
-        tr.commit();
-        System.out.println(newMessage);
         pool.execute(() -> {
-                sessions.parallelStream().forEach(s -> s.put(newMessage));
+                final String messageForTimeLine = newMessage.forTimeLine();
+                sessions.parallelStream().forEach(s -> s.put(messageForTimeLine));
+
+                final EntityTransaction tr = em.getTransaction();
+                tr.begin();
+                em.persist(newMessage);
+                tr.commit();
+                System.out.println(newMessage);
             });
     }
 
