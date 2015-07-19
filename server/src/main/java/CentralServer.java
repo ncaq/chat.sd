@@ -58,7 +58,7 @@ public class CentralServer {
         val messages = this.em.createQuery(q).setMaxResults(10).getResultList();
         Collections.reverse(messages); // 新しい順 -> 古い順
 
-        messages.stream().map(Message::toTimeLine).forEach(readiedSession::put);
+        messages.stream().map(ChatMessage::toOldChat).forEach(readiedSession::put);
 
         sessions.add(readiedSession);
     }

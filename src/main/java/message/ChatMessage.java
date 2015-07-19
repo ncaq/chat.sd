@@ -18,4 +18,11 @@ public class ChatMessage extends Message {
     public String toTimeLineBody() {
         return String.join(" ", new String[]{getPoster().getName(), getBody()});
     }
+
+    /**
+     * 新規接続者向けのログ形式
+     */
+    public String toOldChat() {
+        return String.join(" ", new String[]{getPoster().getName(), getId().toString(), messageDateFormat.format(getSubmit()), getBody()});
+    }
 }
