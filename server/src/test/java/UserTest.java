@@ -1,4 +1,4 @@
-package net.ncaq.chat.sd;
+package net.ncaq.chat.sd.server;
 
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.*;

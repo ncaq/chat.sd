@@ -1,4 +1,4 @@
-package net.ncaq.chat.sd;
+package net.ncaq.chat.sd.server;
 
 import net.ncaq.chat.sd.message.*;
 import org.junit.*;
