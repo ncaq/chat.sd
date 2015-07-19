@@ -15,49 +15,36 @@ import static org.hamcrest.Matchers.*;
 
 public class AuthTest {
     @Test
-    public void existUserIs0() throws Exception {
-        final Auth a = new Auth();
-        a.addUser(new User("sampleUser", "pass"));
-        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(LoginMessage.class)));
-    }
-
-    @Test
-    public void anonymousLogin() throws Exception {
-        val a = new Auth();
-        val u = new User("anonymous", "");
-        a.addUser(u);
-        val m = a.login(u);
-        assertThat(m, is(instanceOf(LoginMessage.class)));
-        assertThat(m.status(), is("0 login succeed"));
+    public void anonymousLoginIs0() throws Exception {
+        val s = new Auth().login(new User("anonymous", ""));
+        assertThat(s, is(LOGIN_SUCCEED));
+        assertThat(s.toString(), is("0 login succeed"));
     }
 
     @Test
     public void nothingUserIs100() throws Exception {
-        final Auth a = new Auth();
-        assertThat(a.login(new User("nothingUser", "nonono")), is(instanceOf(PasswordInvalidMessage.class)));
+        assertThat(new Auth().login(new User("nothingUser", "nonono")), is(PASSWORD_INVALID));
     }
 
     @Test
     public void multipleLoginIs101() throws Exception {
-        final Auth a = new Auth();
-        a.addUser(new User("sampleUser", "pass"));
-        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(LoginMessage.class)));
-        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(MultipleLoginMessage.class)));
+        assertThat(new Auth().login(new User("anonymous", "")), is(LOGIN_SUCCEED));
+        assertThat(new Auth().login(new User("anonymous", "")), is(MULTIPLE_LOGIN));
     }
 
     @Test
     public void loginAndLogoutAndLogin() {
-        final Auth a = new Auth();
-        a.addUser(new User("sampleUser", "pass"));
-        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(LoginMessage.class)));
-        assertThat(a.logout(new User("sampleUser", "pass")), is(instanceOf(LogoutMessage.class)));
-        assertThat(a.login(new User("sampleUser", "pass")), is(instanceOf(LoginMessage.class)));
+        val u = new User("anonymous", "");
+        a.addUser(u);
+        assertThat(a.login(u), is(LOGIN_SUCCEED));
+        assertThat(a.logout(u), is(LOGOUT_SUCCEED));
+        assertThat(a.login(u), is(LOGIN_SUCCEED));
     }
 
     @Test
     public void multiThreadLoginAndLogout() throws Exception {
         final Auth a = new Auth();
-        final User u = new User("sampleUser", "pass");
+        final User u = new User("anonymous", "");
         a.addUser(u);
 
         final int threads = 100;
@@ -92,8 +79,8 @@ public class AuthTest {
             }).collect(Collectors.toList());
 
         assertThat("status list: " + Arrays.deepToString(sl.toArray()),
-                   sl.stream().filter(s -> s instanceof LoginMessage).count() -
-                   sl.stream().filter(s -> s instanceof LogoutMessage).count(),
+                   sl.stream().filter(s -> s.equals(LOGIN_SUCCEED)).count() -
+                   sl.stream().filter(s -> s.equals(LOGOUT_SUCCEED)).count(),
                    is(0L));
     }
 }
