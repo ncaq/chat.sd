@@ -1,4 +1,4 @@
-package net.ncaq.chat.sd.server.message;
+package net.ncaq.chat.sd.message;
 
 import java.io.*;
 import java.net.*;
@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.*;
 import javax.persistence.*;
 import lombok.*;
-import net.ncaq.chat.sd.server.*;
+import net.ncaq.chat.sd.*;
 
 /**
  * 汎用メッセージ.

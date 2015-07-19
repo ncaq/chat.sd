@@ -7,7 +7,7 @@ import java.util.concurrent.*;
 import javax.inject.*;
 import javax.persistence.*;
 import lombok.*;
-import net.ncaq.chat.sd.server.message.*;
+import net.ncaq.chat.sd.message.*;
 
 public class CentralServer {
     public CentralServer(final Integer port) {

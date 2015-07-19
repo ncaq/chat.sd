@@ -1,4 +1,4 @@
-package net.ncaq.chat.sd.server;
+package net.ncaq.chat.sd;
 
 import java.io.*;
 import java.net.*;
@@ -11,7 +11,7 @@ import javax.crypto.spec.*;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
 import lombok.*;
-import net.ncaq.chat.sd.server.message.*;
+import net.ncaq.chat.sd.message.*;
 
 /**
  * ユーザー情報保存クラス.
