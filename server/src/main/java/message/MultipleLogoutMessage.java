@@ -1,27 +1,27 @@
-package net.ncaq.chat.sd.message;
+package net.ncaq.chat.sd.server.message;
 
 import java.sql.*;
 import javax.persistence.*;
 import lombok.*;
 
 /**
- * パスワードが不一致
+ * 多重ログアウト
  */
 @Entity
-public class PasswordInvalidMessage extends Message {
+public class MultipleLogoutMessage extends Message {
     @Override
     public String type() {
-        return "password invalid";
+        return "multiple logout";
     }
 
     @Override
     public Integer code() {
-        return 100;
+        return 601;
     }
 
     @Override
     public String description() {
-        return "";
+        return "(extension)";
     }
 
     @Override
