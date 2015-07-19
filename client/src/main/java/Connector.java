@@ -25,7 +25,8 @@ public class Connector {
         this.readCallback = readCallback;
 
         try {
-            switch(this.login(username, rawPassword)) {
+            val s = this.login(username, rawPassword);
+            switch(s) {
             case LOGIN_SUCCEED:
                 break;
             default:
