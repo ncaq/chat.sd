@@ -23,7 +23,7 @@ public abstract class Message {
     private Long id;
 
     /** メッセージの投稿時間. */
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date submit = new Date(System.currentTimeMillis());
 
     /** メッセージの投稿者. */
