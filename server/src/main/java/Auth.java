@@ -7,7 +7,6 @@ import java.util.concurrent.*;
 import javax.persistence.*;
 import lombok.*;
 import net.ncaq.chat.sd.*;
-import net.ncaq.chat.sd.server.message.*;
 
 /**
  * 存在しないユーザのログイン,多重ログインを防ぎます.
@@ -22,24 +21,20 @@ public class Auth {
         this.addUser(new User("guest3", "3"));
     }
 
-    public Message login(final User u) {
-        Message m = !this.correctUser(u) ?
-            new PasswordInvalidMessage() :
+    public Status login(final User u) {
+        return !this.correctUser(u) ?
+            PASSWORD_INVALID :
             logined.contains(u) || !logined.add(u) ? // add
-            new MultipleLoginMessage() :
-            new LoginMessage();
-        m.setPoster(u);
-        return m;
+            MULTIPLE_LOGIN :
+            LOGIN_SUCCEED;
     };
 
-    public Message logout(final User u) {
-        Message m = !this.correctUser(u) ?
-            new PasswordInvalidMessage() :
+    public Status logout(final User u) {
+        return !this.correctUser(u) ?
+            PASSWORD_INVALID :
             !this.logined.remove(u) ? // remove
-            new MultipleLogoutMessage() :
-            new LogoutMessage();
-        m.setPoster(u);
-        return m;
+            MULTIPLE_LOGOUT :
+            LOGOUT_SUCCEED;
     }
 
     /**
