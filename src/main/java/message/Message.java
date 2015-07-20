@@ -51,5 +51,6 @@ public abstract class Message {
     /**
      * このクラスで使う日付表現.
      */
-    protected static final DateFormat messageDateFormat = new SimpleDateFormat("yyyy/LL/dd HH:mm:ss");
+    @Transient
+    protected final DateFormat messageDateFormat = new SimpleDateFormat("yyyy/LL/dd HH:mm:ss");
 }
