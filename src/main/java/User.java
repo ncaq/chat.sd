@@ -104,8 +104,7 @@ public class User implements Comparable<User> {
         val cb = em.getCriteriaBuilder();
         val q = cb.createQuery(Long.class);
         val root = q.from(ChatMessage.class);
-        q.select(cb.count(root))
-            .where(cb.equal(root.get(ChatMessage_.poster), this));
+        q.select(cb.count(root)).where(cb.equal(root.get(ChatMessage_.poster), this));
         return em.createQuery(q).getSingleResult();
     }
 }
