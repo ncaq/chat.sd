@@ -34,8 +34,8 @@ public class CentralServer {
     /**
      * 全てのセッションに新規メッセージを配信します.
      */
-    public void broadcast(final Message newMessage) {
-        threadPool.execute(() -> {
+    public Future<?> broadcast(final Message newMessage) {
+        return threadPool.submit(() -> {
                 final String toTimeLine = newMessage.toTimeLine();
                 sessions.parallelStream().forEach(s -> s.put(toTimeLine));
 
@@ -61,10 +61,14 @@ public class CentralServer {
 
         sessions.add(readiedSession);
 
-        val lm = new LoginMessage();
-        lm.setPoster(readiedSession.getUser());
-        this.broadcast(lm);
-
+        try {
+            val lm = new LoginMessage();
+            lm.setPoster(readiedSession.getUser());
+            this.broadcast(lm).get();
+        }
+        catch(InterruptedException|ExecutionException exc) {
+            System.err.println(exc);
+        }
         readiedSession.put(auth.loginedUsersInfo());
     }
 
