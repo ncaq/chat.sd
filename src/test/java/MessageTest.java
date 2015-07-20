@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.*;
 
 public class MessageTest {
     @Test
-    public void ChatMessage() throws Exception {
+    public void chatMessage() throws Exception {
         final Message cm = new ChatMessage();
         cm.setPoster(new User("hoge", "huga"));
         cm.setBody("foo");
@@ -16,7 +16,7 @@ public class MessageTest {
     }
 
     @Test
-    public void LoginMessage() throws Exception {
+    public void loginMessage() throws Exception {
         final Message lm = new LoginMessage();
         lm.setPoster(new User("hoge", "huga"));
         assertThat(lm.type(), is("login"));
