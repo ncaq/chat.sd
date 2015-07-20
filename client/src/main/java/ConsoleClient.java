@@ -16,8 +16,8 @@ public class ConsoleClient {
      */
     public ConsoleClient(final String hostname, final String username, final String rawPassword) {
         try {
-            final Connector server = new Connector(hostname, username, rawPassword, (newMessage) -> System.out.println(newMessage));
-            Executors.newSingleThreadExecutor().execute(postStdInToServer(server));
+            server = new Connector(hostname, username, rawPassword, (newMessage) -> System.out.println(newMessage));
+            Executors.newSingleThreadExecutor().execute(this::postStdInToServer);
         }
         catch(final Exception err) {
             System.err.println(err);
@@ -38,8 +38,8 @@ public class ConsoleClient {
             System.out.println("password:");
             final String rawPassword = sc.next();
 
-            final Connector server = new Connector(hostname, username, rawPassword, (newMessage) -> System.out.println(newMessage));
-            Executors.newSingleThreadExecutor().execute(postStdInToServer(server));
+            server = new Connector(hostname, username, rawPassword, (newMessage) -> System.out.println(newMessage));
+            Executors.newSingleThreadExecutor().execute(this::postStdInToServer);
         }
         catch(final Exception err) {
             System.err.println(err);
@@ -48,18 +48,20 @@ public class ConsoleClient {
     }
 
     /**
-     * 標準入力をサーバに入力する関数.
+     * 標準入力をサーバに入力する.
      */
-    private Runnable postStdInToServer(final Connector server) {
+    private void postStdInToServer() {
         final Scanner sc = new Scanner(System.in);
-        return (() -> {
-                while(sc.hasNext()) {
-                    try {
-                        server.writeln(sc.next());
-                    }
-                    catch(IOException|InterruptedException err) {
-                        System.err.println(err);
-                        break;
-                    }}});
+        while(sc.hasNext()) {
+            try {
+                server.writeln(sc.next());
+            }
+            catch(IOException|InterruptedException err) {
+                System.err.println(err);
+                break;
+            }
+        }
     }
+
+    private Connector server;
 }

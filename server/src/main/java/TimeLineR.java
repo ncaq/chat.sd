@@ -33,8 +33,8 @@ public class TimeLineR implements Runnable {
 
                 try {
                     final ExecutorService getThread = Executors.newSingleThreadExecutor();
-                    getThread.execute(getTimeLineR()); // getは非同期実行
-                    postTimeLineR().run();     // postは｢同期｣実行
+                    getThread.execute(this::getTimeLineR); // getは非同期実行
+                    postTimeLineR();     // postは｢同期｣実行
                     getThread.shutdown();      // getは自動で終了しない
                 }
                 finally {
@@ -81,33 +81,29 @@ public class TimeLineR implements Runnable {
      * これは終了しない.
      * 強制終了すること.
      */
-    private final Runnable getTimeLineR() {
-        return () -> {
-            try {
-                for(String m = newMessageTextBox.take(); m != null; m = newMessageTextBox.take()) {
-                    get.println(m);
-                }
+    private void getTimeLineR() {
+        try {
+            for(String m = newMessageTextBox.take(); m != null; m = newMessageTextBox.take()) {
+                get.println(m);
             }
-            catch(final InterruptedException exc) {
-                System.err.println(exc);
-            }
-        };
+        }
+        catch(final InterruptedException exc) {
+            System.err.println(exc);
+        }
     }
 
-    private final Runnable postTimeLineR() {
-        return () -> {
-            try {
-                for(String l = post.readLine(); l != null; l = post.readLine()) {
-                    ChatMessage m = new ChatMessage();
-                    m.setPoster(user);
-                    m.setBody(l);
-                    server.broadcast(m);
-                }
+    private void postTimeLineR() {
+        try {
+            for(String l = post.readLine(); l != null; l = post.readLine()) {
+                ChatMessage m = new ChatMessage();
+                m.setPoster(user);
+                m.setBody(l);
+                server.broadcast(m);
             }
-            catch(final IOException exc) {
-                System.err.println(exc);
-            }
-        };
+        }
+        catch(final IOException exc) {
+            System.err.println(exc);
+        }
     }
 
     private final LinkedBlockingQueue<String> newMessageTextBox = new LinkedBlockingQueue<>();
