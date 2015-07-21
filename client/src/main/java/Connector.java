@@ -53,7 +53,10 @@ public class Connector {
         final ArrayList<Exception> errStash = new ArrayList<>();
         for(final Integer p : ports) {
             try {
-                return new Socket(serverAddress, p);
+                val isa = new InetSocketAddress(serverAddress, p);
+                val s = new Socket();
+                s.connect(isa, 1000);
+                return s;
             }
             catch(final Exception err) {
                 errStash.add(err);
