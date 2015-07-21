@@ -47,7 +47,7 @@ public class User implements Comparable<User> {
      * ログイン文字列から構成.
      */
     public User(final String loginQuery) throws IllegalStateException {
-        final Matcher m = Pattern.compile("user\\s*([^ ]+)\\s*pass\\s*([^ ]*)").matcher(loginQuery);
+        final Matcher m = Pattern.compile("user\\s*(\\S*)\\s*pass\\s*(\\S*)").matcher(loginQuery);
         m.matches();
         setName(m.group(1));
         setPassword(m.group(2));
