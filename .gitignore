@@ -14,7 +14,7 @@ tmp
 
 # database
 
-*.sqlite3
+*.db
 
 # gtags
 
