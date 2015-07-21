@@ -60,7 +60,6 @@ public class JavaFxClient extends Application {
         this.submit.setDefaultButton(true);
 
         Platform.runLater(() -> {
-                timeline.scrollTo(Integer.MAX_VALUE); // 初期値は特別に不整合なのでスクロールでinitする必要がある.
                 message.requestFocus();
             });
     }
@@ -81,9 +80,6 @@ public class JavaFxClient extends Application {
                 for(final Node n : timeline.lookupAll(".scroll-bar")) {
                     if(n instanceof ScrollBar) {
                         final ScrollBar s = (ScrollBar)n;
-                        System.out.println("min:" + s.getMin());
-                        System.out.println("max:" + s.getMax());
-                        System.out.println("val:" + s.getValue());
                         if(s.getOrientation() == Orientation.VERTICAL && s.getMax() == s.getValue()) {
                             scrollWasEnd = true;
                         }
