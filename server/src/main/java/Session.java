@@ -12,8 +12,8 @@ import static java.util.concurrent.TimeUnit.*;
 import static net.ncaq.chat.sd.Status.*;
 
 @ToString
-public class TimeLineR implements Runnable {
-    public TimeLineR(final CentralServer server, final Socket client, final Auth auth) throws IOException {
+public class Session implements Runnable {
+    public Session(final CentralServer server, final Socket client, final Auth auth) throws IOException {
         this.server = server;
         this.client = client;
         this.auth = auth;
