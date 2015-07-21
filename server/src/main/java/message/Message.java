@@ -25,11 +25,11 @@ public abstract class Message {
     @Temporal(TemporalType.TIMESTAMP)
     private Date submit = new Date(System.currentTimeMillis());
 
-    /** メッセージの投稿者. */
-    private User poster;
-
     /** メッセージ本文. */
     private String body;
+
+    /** メッセージの投稿者. */
+    private User poster;
 
     /**
      * メッセージの種類表示.
