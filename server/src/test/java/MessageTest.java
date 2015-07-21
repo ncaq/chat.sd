@@ -1,6 +1,7 @@
 package net.ncaq.chat.sd.server;
 
-import net.ncaq.chat.sd.message.*;
+import lombok.*;
+import net.ncaq.chat.sd.server.message.*;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
