@@ -21,7 +21,7 @@ public class CentralServer {
                         try {
                             threadPool.execute(new Session(this, socket.accept(), auth));
                         }
-                        catch(final IOException err) {
+                        catch(final Exception err) {
                             System.err.println(err);
                         }
                     }

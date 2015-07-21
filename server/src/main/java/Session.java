@@ -13,17 +13,18 @@ import static net.ncaq.chat.sd.Status.*;
 
 @ToString
 public class Session implements Runnable {
-    public Session(final CentralServer server, final Socket client, final Auth auth) throws IOException {
+    public Session(final CentralServer server, final Socket client, final Auth auth) {
         this.server = server;
         this.client = client;
         this.auth = auth;
-        this.get = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.client.getOutputStream())), true);
-        this.post = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
-        this.user = new User(post.readLine());
     }
 
     public void run() {
         try {
+            this.get = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.client.getOutputStream())), true);
+            this.post = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
+            this.user = new User(post.readLine());
+
             val loginedUser = auth.loginedUsersInfo(); //ログインする前に,ログイン中ユーザ情報を取得.
 
             val loginStatus = auth.login(this.user);
@@ -58,18 +59,8 @@ public class Session implements Runnable {
             exc.printStackTrace();
             get.println(PASSWORD_INVALID.getDescription());
         }
-        finally {               // 早期開放のため明示的に開放
-            try {
-                get.close();
-                post.close();
-                client.close();
-            }
-            catch(final IOException exc) { // もし例外が出ても,開放が遅れるだけで自動開放はされるはず
-                System.err.println(exc);
-            }
-            finally {
-                server.removeClosedSession(this); // サーバにセッションの終了を通知
-            }
+        finally {
+            server.removeClosedSession(this); // サーバにセッションの終了を通知
         }
     }
 
@@ -81,7 +72,7 @@ public class Session implements Runnable {
             this.newMessageTextBox.put(newMessage);
         }
         catch(final InterruptedException exc) {
-            System.err.println(exc);
+            exc.printStackTrace();
         }
     }
 
@@ -97,7 +88,7 @@ public class Session implements Runnable {
             }
         }
         catch(final InterruptedException exc) {
-            System.err.println(exc);
+            exc.printStackTrace();
         }
     }
 
@@ -111,7 +102,7 @@ public class Session implements Runnable {
             }
         }
         catch(final IOException exc) {
-            System.err.println(exc);
+            exc.printStackTrace();
         }
     }
 
@@ -121,9 +112,8 @@ public class Session implements Runnable {
     private final Socket client;
     private final Auth auth;
 
-    private final PrintWriter get;
-    private final BufferedReader post;
-
-    @Getter
-    private final User user;
+    // init by run()
+    private PrintWriter get;
+    private BufferedReader post;
+    private User user;
 }
