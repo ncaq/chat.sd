@@ -26,9 +26,11 @@ public class MessageTranslation {
 }
 
 enum MessagePattern {
-    Chat("chat", "chat (\\S+) (\\S+)", "$1さん>$2"),
-    Login("login", "login user (\\S+) (\\S+ \\S+)", "$1さんがログインしました。前回のログインは$2です"),
-    Logout("logout", "logout user (\\S+) (\\S+ \\S+) (\\d+)", "$1さんがログアウトしました。$2にログインして以来,$3個の発言をしました。");
+    Chat("chat", "chat (\\S+)\\s*(\\S*)", "$1さん>$2"),
+    OldChat("oldchat", "oldchat (\\S+) (\\d+) (\\S+ \\S+)\\s*(\\S*)", "$2: $1さん>$4 ($3)"),
+    Login("login", "login user (\\S+)\\s*(\\S*\\s*\\S*)", "$1さんがログインしました。前回のログイン: $2"),
+    Logout("logout", "logout user (\\S+) (\\S+ \\S+) (\\d+)", "$1さんがログアウトしました。$2にログインして以来,$3個の発言をしました。"),
+    CurUser("curuser", "curuser (\\d+) (.*)", "ログイン数: $1, ユーザ: $2");
 
     MessagePattern(final String type, final String patternStr, final String replace) {
         this.type = type;
