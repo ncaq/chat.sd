@@ -8,11 +8,13 @@ import static org.hamcrest.Matchers.*;
 public class MessageTest {
     @Test
     public void chatMessage() throws Exception {
-        final Message cm = new ChatMessage();
+        val cr = "chat hoge foo";
+
+        val cm = new ChatMessage();
         cm.setPoster(new User("hoge", "huga"));
         cm.setBody("foo");
         assertThat(cm.type(), is("chat"));
-        assertThat(cm.toTimeLine(), is("chat hoge foo"));
+        assertThat(cm.toTimeLine(), is(cr));
     }
 
     @Test

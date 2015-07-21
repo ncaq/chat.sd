@@ -1,9 +1,10 @@
-package net.ncaq.chat.sd.message;
+package net.ncaq.chat.sd.server.message;
 
 import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
+import java.util.regex.*;
 import java.util.stream.*;
 import javax.persistence.*;
 import lombok.*;
@@ -31,22 +32,15 @@ public abstract class Message {
     private String body;
 
     /**
-     * タイムライン向け通知.
-     */
-    public String toTimeLine() {
-        return String.join(" ", new String[]{this.type(), this.toTimeLineBody()}).trim();
-    }
-
-    /**
-     * メッセージの種類.
+     * メッセージの種類表示.
      * 通知やステータスの説明に繋げます.
      */
     abstract public String type();
 
     /**
-     * 通知Body.
+     * タイムライン向け通知.
      */
-    abstract public String toTimeLineBody();
+    abstract public String toTimeLine();
 
     /**
      * このクラスで使う日付表現.

@@ -1,6 +1,7 @@
-package net.ncaq.chat.sd.message;
+package net.ncaq.chat.sd.server.message;
 
 import java.sql.*;
+import java.util.regex.*;
 import javax.persistence.*;
 import lombok.*;
 
@@ -15,7 +16,7 @@ public class ChatMessage extends Message {
     }
 
     @Override
-    public String toTimeLineBody() {
-        return String.join(" ", new String[]{getPoster().getName(), getBody()});
+    public String toTimeLine() {
+        return String.join(" ", new String[]{this.type(), getPoster().getName(), getBody()}).trim();
     }
 }

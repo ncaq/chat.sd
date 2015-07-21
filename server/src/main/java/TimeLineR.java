@@ -7,7 +7,7 @@ import java.util.concurrent.*;
 import java.util.stream.*;
 import lombok.*;
 import net.ncaq.chat.sd.*;
-import net.ncaq.chat.sd.message.*;
+import net.ncaq.chat.sd.server.message.*;
 import static java.util.concurrent.TimeUnit.*;
 import static net.ncaq.chat.sd.Status.*;
 

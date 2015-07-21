@@ -1,4 +1,4 @@
-package net.ncaq.chat.sd.message;
+package net.ncaq.chat.sd.server.message;
 
 import java.sql.*;
 import javax.persistence.*;
@@ -15,8 +15,8 @@ public class OldMessage extends ChatMessage {
     }
 
     @Override
-    public String toTimeLineBody() {
-        return String.join(" ", new String[]{getPoster().getName(), getId().toString(), messageDateFormat.format(getSubmit()), getBody()});
+    public String toTimeLine() {
+        return String.join(" ", new String[]{this.type(), getPoster().getName(), getId().toString(), messageDateFormat.format(getSubmit()), getBody()}).trim();
     }
 
     public static OldChatMessage of(final ChatMessage m) {
