@@ -32,7 +32,7 @@ public class Session implements Runnable {
             System.out.println(loginStatus.toString());
 
             if(loginStatus == LOGIN_SUCCEED) {
-                server.chatLog(10).stream().map(OldChatMessage::toTimeLine).forEach(this::put);
+                server.chatLog(10).stream().map(ChatMessage::toOldTimeLine).forEach(this::put);
                 this.put(loginedUser);
 
                 val lm = new LoginMessage();

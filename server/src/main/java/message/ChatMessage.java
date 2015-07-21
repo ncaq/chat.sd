@@ -19,4 +19,8 @@ public class ChatMessage extends Message {
     public String toTimeLine() {
         return String.join(" ", new String[]{this.type(), getPoster().getName(), getBody()}).trim();
     }
+
+    public String toOldTimeLine() {
+        return String.join(" ", new String[]{"oldchat", getPoster().getName(), getId().toString(), messageDateFormat.format(getSubmit()), getBody()}).trim();
+    }
 }
