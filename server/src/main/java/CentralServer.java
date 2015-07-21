@@ -48,28 +48,10 @@ public class CentralServer {
     }
 
     /**
-     * 最近のチャットメッセージを10件送信し,現在のログインユーザを送信し,配信準備が完了したセッションをメッセージの配信対象にします.
+     * 配信準備が完了したセッションをメッセージの配信対象にします.
      */
     public void addReadiedSession(final TimeLineR readiedSession) {
-        val cb = this.em.getCriteriaBuilder();
-        val q = cb.createQuery(ChatMessage.class);
-        val root = q.from(ChatMessage.class);
-        q.select(root).orderBy(cb.desc(root.get(ChatMessage_.submit)));
-        val messages = this.em.createQuery(q).setMaxResults(10).getResultList();
-        Collections.reverse(messages); // 新しい順 -> 古い順
-        messages.stream().map(ChatMessage::toOldChat).forEach(readiedSession::put);
-
         sessions.add(readiedSession);
-
-        try {
-            val lm = new LoginMessage();
-            lm.setPoster(readiedSession.getUser());
-            this.broadcast(lm).get();
-        }
-        catch(InterruptedException|ExecutionException exc) {
-            System.err.println(exc);
-        }
-        readiedSession.put(auth.loginedUsersInfo());
     }
 
     /**
@@ -80,6 +62,19 @@ public class CentralServer {
                 sessions.remove(closedSession);
                 System.out.println("close session: " + closedSession);
             });
+    }
+
+    /**
+     * 最近のチャットログを返します.
+     */
+    public List<ChatMessage> chatLog(final Integer limit) {
+        val cb = this.em.getCriteriaBuilder();
+        val q = cb.createQuery(ChatMessage.class);
+        val root = q.from(ChatMessage.class);
+        q.select(root).orderBy(cb.desc(root.get(ChatMessage_.submit)));
+        val messages = this.em.createQuery(q).setMaxResults(limit).getResultList();
+        Collections.reverse(messages); // 新しい順 -> 古い順
+        return messages;
     }
 
     private final ExecutorService threadPool = Executors.newCachedThreadPool();

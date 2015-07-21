@@ -24,11 +24,20 @@ public class TimeLineR implements Runnable {
 
     public void run() {
         try {
+            val loginedUser = auth.loginedUsersInfo(); //ログインする前に,ログイン中ユーザ情報を取得.
+
             val loginStatus = auth.login(this.user);
             get.println(loginStatus.toString());
             System.out.println(loginStatus.toString());
 
             if(loginStatus == LOGIN_SUCCEED) {
+                server.chatLog(10).stream().map(ChatMessage::toOldChat).forEach(this::put);
+                this.put(loginedUser);
+
+                val lm = new LoginMessage();
+                lm.setPoster(this.user);
+                server.broadcast(lm);
+
                 server.addReadiedSession(this);
 
                 try {
