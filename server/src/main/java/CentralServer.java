@@ -67,14 +67,14 @@ public class CentralServer {
     /**
      * 最近のチャットログを返します.
      */
-    public List<ChatMessage> chatLog(final Integer limit) {
+    public List<OldChatMessage> chatLog(final Integer limit) {
         val cb = this.em.getCriteriaBuilder();
         val q = cb.createQuery(ChatMessage.class);
         val root = q.from(ChatMessage.class);
         q.select(root).orderBy(cb.desc(root.get(ChatMessage_.submit)));
         val messages = this.em.createQuery(q).setMaxResults(limit).getResultList();
         Collections.reverse(messages); // 新しい順 -> 古い順
-        return messages;
+        return messages.stream().map(OldChatMessage::of);
     }
 
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
