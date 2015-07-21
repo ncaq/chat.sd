@@ -18,23 +18,18 @@ public class Connector {
      * ソケット生成.
      * 失敗すると例外吐くので再試行するかプログラム落とすこと.
      */
-    public Connector(final String address, final String username, final String rawPassword, final Consumer<String> readCallback) throws Exception {
+    public Connector(final String address, final String username, final String rawPassword, final Consumer<String> readCallback) throws IOException, ConnectException {
         this.server = this.makeSocket(InetAddress.getByName(address), new Integer[]{12345, 15000, 50000});
         this.reader = new BufferedReader(new InputStreamReader(this.server.getInputStream()));
         this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.server.getOutputStream())), true);
         this.readCallback = readCallback;
 
-        try {
-            val s = this.login(username, rawPassword);
-            switch(s) {
-            case LOGIN_SUCCEED:
-                break;
-            default:
-                throw new RuntimeException(s.toString());
-            }
-        }
-        catch(final Exception err) {
-            throw err;
+        val s = this.login(username, rawPassword);
+        switch(s) {
+        case LOGIN_SUCCEED:
+            break;
+        default:
+            throw new ConnectException(s.toString());
         }
 
         // 正常時のみ
@@ -65,7 +60,7 @@ public class Connector {
         throw new ConnectException(errStash.stream().map(e -> e.toString()).reduce("", (a, t) -> a + t));
     }
 
-    private Status login(final String username, final String rawPassword) throws Exception {
+    private Status login(final String username, final String rawPassword) throws IOException {
         this.writer.println("user " + username + " pass " + rawPassword);
         return Status.of(this.reader.readLine());
     }

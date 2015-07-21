@@ -38,20 +38,31 @@ public class JavaFxClient extends Application {
                 l.showAndWait();
                 this.connector = new Connector(l.getHostname(), l.getUsername(), l.getPassword(), this::receive);
             }
-            catch(final Exception err) {
-                System.err.println(err);
-
+            catch(final ConnectException exc) {
+                exc.printStackTrace();
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("ERROR");
-                alert.setContentText(err.getMessage());
+                alert.setContentText(exc.toString());
                 alert.showAndWait();
+            }
+            catch(final Exception exc) {
+                exc.printStackTrace();
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setContentText(exc.toString());
+                alert.showAndWait();
+                System.exit(-1);
             }
         }
         while(this.connector == null);
 
         this.message.setOnAction(this::send);
         this.submit.setDefaultButton(true);
-        Platform.runLater(() -> message.requestFocus());
+
+        Platform.runLater(() -> {
+                timeline.scrollTo(Integer.MAX_VALUE); // 初期値は特別に不整合なのでスクロールでinitする必要がある.
+                message.requestFocus();
+            });
     }
 
     public void send(final ActionEvent evt) {
@@ -65,7 +76,24 @@ public class JavaFxClient extends Application {
     }
 
     public void receive(final String newMessage) {
-        Platform.runLater(() -> this.timeline.getItems().add(new HBox(new Label(newMessage)))); // runLaterでJavaFXのスレッドで実行させないと例外
+        Platform.runLater(() -> { // runLaterでJavaFXのスレッドで実行させないと例外
+                Boolean scrollWasEnd = false; // スクロールが最後まで達していたか
+                for(final Node n : timeline.lookupAll(".scroll-bar")) {
+                    if(n instanceof ScrollBar) {
+                        final ScrollBar s = (ScrollBar)n;
+                        System.out.println("min:" + s.getMin());
+                        System.out.println("max:" + s.getMax());
+                        System.out.println("val:" + s.getValue());
+                        if(s.getOrientation() == Orientation.VERTICAL && s.getMax() == s.getValue()) {
+                            scrollWasEnd = true;
+                        }
+                    }
+                }
+                this.timeline.getItems().add(new HBox(new Label(newMessage)));
+                if(scrollWasEnd) {
+                    this.timeline.scrollTo(Integer.MAX_VALUE);
+                }
+            });
     }
 
     @FXML
