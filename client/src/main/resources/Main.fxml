@@ -16,5 +16,4 @@
   <Button fx:id="submit">
     発言
   </Button>
-
 </VBox>

@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.*;
 import javax.inject.*;
 import javax.persistence.*;
 import lombok.*;
@@ -74,7 +75,7 @@ public class CentralServer {
         q.select(root).orderBy(cb.desc(root.get(ChatMessage_.submit)));
         val messages = this.em.createQuery(q).setMaxResults(limit).getResultList();
         Collections.reverse(messages); // 新しい順 -> 古い順
-        return messages.stream().map(OldChatMessage::of);
+        return messages.stream().map(m -> OldChatMessage.of(m)).collect(Collectors.toList());
     }
 
     private final ExecutorService threadPool = Executors.newCachedThreadPool();

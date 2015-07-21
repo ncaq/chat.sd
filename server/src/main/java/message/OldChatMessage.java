@@ -8,7 +8,7 @@ import lombok.*;
  * チャットのログ形式
  */
 @Entity
-public class OldMessage extends ChatMessage {
+public class OldChatMessage extends ChatMessage {
     @Override
     public String type() {
         return "oldchat";
@@ -22,7 +22,7 @@ public class OldMessage extends ChatMessage {
     public static OldChatMessage of(final ChatMessage m) {
         val result = new OldChatMessage();
         result.setSubmit(m.getSubmit());
-        result.setPoster(m.setPoster());
+        result.setPoster(m.getPoster());
         result.setBody(m.getBody());
         return result;
     }

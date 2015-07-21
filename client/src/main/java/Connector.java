@@ -38,27 +38,8 @@ public class Connector {
         }
 
         // 正常時のみ
-
-        daemons.execute(() -> {
-                try {
-                    for(String l = reader.readLine(); l != null; l = reader.readLine()) {
-                        readCallback.accept(l);
-                    }
-                }
-                catch(final IOException err) {
-                    System.err.println(err);
-                }
-            });
-        daemons.execute(() -> {
-                try {
-                    for(String m = newMessageBox.take(); m != null; m = newMessageBox.take()) {
-                        writer.println(m);
-                    }
-                }
-                catch(final InterruptedException err) {
-                    System.err.println(err);
-                }
-            });
+        daemons.execute(this::readLoop);
+        daemons.execute(this::writeLoop);
     }
 
     /**
@@ -84,6 +65,28 @@ public class Connector {
     private Status login(final String username, final String rawPassword) throws Exception {
         this.writer.println("user " + username + " pass " + rawPassword);
         return Status.of(this.reader.readLine());
+    }
+
+    private void readLoop() {
+        try {
+            for(String l = reader.readLine(); l != null; l = reader.readLine()) {
+                readCallback.accept(l);
+            }
+        }
+        catch(final IOException err) {
+            System.err.println(err);
+        }
+    }
+
+    private void writeLoop() {
+        try {
+            for(String m = newMessageBox.take(); m != null; m = newMessageBox.take()) {
+                writer.println(m);
+            }
+        }
+        catch(final InterruptedException err) {
+            System.err.println(err);
+        }
     }
 
     private final Socket server;
