@@ -55,7 +55,7 @@ public class TimeLineR implements Runnable {
             }
         }
         catch(final Exception exc) { // 正規表現例外などに対処
-            System.err.println(exc);
+            exc.printStackTrace();
             get.println(PASSWORD_INVALID.getDescription());
         }
         finally {               // 早期開放のため明示的に開放

@@ -21,6 +21,7 @@ public class OldChatMessage extends ChatMessage {
 
     public static OldChatMessage of(final ChatMessage m) {
         val result = new OldChatMessage();
+        result.setId(m.getId());
         result.setSubmit(m.getSubmit());
         result.setPoster(m.getPoster());
         result.setBody(m.getBody());
