@@ -37,7 +37,7 @@ public enum Status {
      * @param code 3桁までのステータスコード
      */
     public static Status of(final Integer code) {
-        return codeTable.get(code);
+        return codeMap.get(code);
     }
 
     /**
@@ -50,9 +50,8 @@ public enum Status {
         return Status.of(Integer.parseInt(m.group(1)));
     }
 
-    private final static Map<Integer, Status> codeTable = new HashMap<Integer, Status>() {
-        {
-            Arrays.stream(Status.values()).forEach(s -> put(s.getCode(), s));
-        }
-    };
+    private final static ConcurrentHashMap<Integer, Status> codeMap = new ConcurrentHashMap<>();
+    static {
+        Arrays.stream(Status.values()).forEach(s -> codeMap.put(s.getCode(), s));
+    }
 }

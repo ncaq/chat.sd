@@ -31,11 +31,21 @@ public class MessageTranslator {
 }
 
 enum MessagePattern {
-    Chat("chat", "chat\\s*(\\S+)\\s*(\\S*)", "$1さん>$2"),
-    OldChat("oldchat", "oldchat\\s*(\\S+)\\s*(\\d+)\\s*(\\S+ \\S+)\\s*(\\S*)", "$2: $1さん>$4 ($3)"),
-    Login("login", "login\\s*user\\s*(\\S+)\\s*(\\S*\\s*\\S*)", "$1さんがログインしました。前回のログイン: $2"),
-    Logout("logout", "logout\\s*user\\s*(\\S+)\\s*(\\S+ \\S+)\\s*(\\d+)", "$1さんがログアウトしました。$2にログインして以来,$3個の発言をしました。"),
-    CurUser("curuser", "curuser\\s*(\\d+)\\s*(.*)", "ログイン数: $1, ユーザ: $2");
+    Chat("chat",
+         "chat\\s*(\\S+)\\s*(\\S*)",
+         "$1さん>$2"),
+    OldChat("oldchat",
+            "oldchat\\s*(\\S+)\\s*(\\d+)\\s*(\\S+ \\S+)\\s*(\\S*)",
+            "$2: $1さん>$4 ($3)"),
+    Login("login",
+          "login\\s*user\\s*(\\S+)\\s*(\\S*\\s*\\S*)",
+          "$1さんがログインしました。前回のログイン: $2"),
+    Logout("logout",
+           "logout\\s*user\\s*(\\S+)\\s*(\\S+ \\S+)\\s*(\\d+)",
+           "$1さんがログアウトしました。$2にログインして以来、$3個の発言をしました。"),
+    CurUser("curuser",
+            "curuser\\s*(\\d+)\\s*(.*)",
+            "ログイン数: $1, ユーザ: $2");
 
     MessagePattern(final String type, final String patternStr, final String replace) {
         this.type = type;
@@ -44,14 +54,13 @@ enum MessagePattern {
     }
 
     public static MessagePattern of(final String type) {
-        return typeTable.get(type);
+        return typeMap.get(type);
     }
 
-    private final static Map<String, MessagePattern> typeTable = new HashMap<String, MessagePattern>() {
-        {
-            Arrays.stream(MessagePattern.values()).forEach(p -> put(p.getType(), p));
-        }
-    };
+    private final static ConcurrentHashMap<String, MessagePattern> typeMap = new ConcurrentHashMap<>();
+    static {
+        Arrays.stream(MessagePattern.values()).forEach(p -> typeMap.put(p.getType(), p));
+    }
 
     @Getter
     private final String type;

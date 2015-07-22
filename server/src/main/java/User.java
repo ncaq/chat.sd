@@ -31,7 +31,7 @@ public class User implements Comparable<User> {
      * 平文パスワードをハッシュ化して格納.
      */
     public void setPassword(final String rawPassword) {
-        this.password = this.cryptoPassword(this.name, rawPassword);
+        this.password = User.cryptoPassword(this.name, rawPassword);
     }
 
     /**

@@ -22,7 +22,7 @@ import javafx.util.*;
  * ログイン用ダイアログ.
  * Dialogの機能が本格的に使用できるのはJDK9からなので,その場凌ぎが多いです
  */
-public class LoginDialog extends Dialog {
+public class LoginDialog extends Dialog<Void> {
     public LoginDialog() {
         this.setTitle("Login Dialog");
 

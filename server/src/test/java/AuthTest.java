@@ -9,10 +9,9 @@ import lombok.*;
 import net.ncaq.chat.sd.*;
 import net.ncaq.chat.sd.server.*;
 import org.junit.*;
-import static junit.framework.Assert.*;
 import static net.ncaq.chat.sd.Status.*;
-import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 public class AuthTest {
     @Test
