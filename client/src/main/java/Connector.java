@@ -68,7 +68,7 @@ public class Connector {
     private void readLoop() {
         try {
             for(String l = reader.readLine(); l != null; l = reader.readLine()) {
-                readCallback.accept(MessageTranslation.toJapanese(l));
+                readCallback.accept(MessageTranslation.toHuman("ja", l));
             }
         }
         catch(final IOException err) {

@@ -12,11 +12,16 @@ import lombok.*;
  * メッセージを規約通りに整形する.
  */
 public class MessageTranslation {
-    public static String toJapanese(final String message) {
+    /**
+     * 人間が読むような形式に変換します.
+     * @param lang 言語選択ですが,現在は機能していません."ja"限定です.
+     * @param message 変換対象のメッセージ.
+     */
+    public static String toHuman(final String lang, final String message) {
         final Matcher m = Pattern.compile("(\\S+).*").matcher(message);
         m.matches();
         val p = MessagePattern.of(m.group(1));
-        if(p == null) {
+        if(p == null || !lang.equals("ja")) {
             return message;
         }
         else {
