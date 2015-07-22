@@ -14,7 +14,7 @@ import net.ncaq.chat.sd.server.*;
  * 抽象メッセージ型.
  */
 @Data
-@Entity
+@MappedSuperclass
 public abstract class Message {
     /** 自動生成id. */
     @Id
@@ -25,14 +25,11 @@ public abstract class Message {
     @Temporal(TemporalType.TIMESTAMP)
     private Date submit = new Date(System.currentTimeMillis());
 
-    /** メッセージ本文. */
-    private String body;
-
     /** メッセージの投稿者. */
     private User poster;
 
     /**
-     * タイムライン向け通知.
+     * タイムライン向け表現.
      */
     abstract public String toTimeLine();
 

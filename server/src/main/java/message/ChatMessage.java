@@ -11,6 +11,10 @@ import lombok.*;
  */
 @Entity
 public class ChatMessage extends Message {
+    @Getter
+    @Setter
+    private String body;
+
     @Override
     public String toTimeLine() {
         return String.join(" ", new String[]{"chat", getPoster().getName(), getBody()}).trim();

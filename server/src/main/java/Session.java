@@ -103,7 +103,7 @@ public class Session implements Runnable {
     private void postTimeLineR() {
         try {
             for(String l = post.readLine(); l != null; l = post.readLine()) {
-                ChatMessage m = new ChatMessage();
+                val m = new ChatMessage();
                 m.setPoster(user);
                 m.setBody(l);
                 server.broadcast(m);
