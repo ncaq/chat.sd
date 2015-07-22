@@ -11,25 +11,10 @@ import lombok.*;
 import net.ncaq.chat.sd.server.message.*;
 
 public class CentralServer {
-    public CentralServer(final Integer port) {
-        try {
-            final ServerSocket socket = new ServerSocket(port);
-            System.out.println("create socket");
-
-            threadPool.execute(() -> {
-                    for(;;) {
-                        try {
-                            threadPool.execute(new Session(this, socket.accept(), auth));
-                        }
-                        catch(final Exception err) {
-                            System.err.println(err);
-                        }
-                    }
-                });
-        }
-        catch(final IOException err) {
-            System.err.println(err);
-        }
+    public CentralServer(final Integer port) throws IOException {
+        this.socket = new ServerSocket(port);
+        System.out.println("create socket");
+        threadPool.execute(this::addNewSesssions);
     }
 
     /**
@@ -46,13 +31,6 @@ public class CentralServer {
                 tr.commit();
                 System.out.println(newMessage);
             });
-    }
-
-    /**
-     * 配信準備が完了したセッションをメッセージの配信対象にします.
-     */
-    public void addReadiedSession(final Session readiedSession) {
-        sessions.add(readiedSession);
     }
 
     /**
@@ -78,9 +56,27 @@ public class CentralServer {
         return messages;
     }
 
+    /**
+     * 新規セッションを待ち受けて追加し続けます.
+     * 終了しません.
+     */
+    private void addNewSesssions() {
+        for(;;) {
+            try {
+                val s = new Session(this, this.socket.accept(), auth);
+                threadPool.execute(s);
+                sessions.add(s);
+            }
+            catch(final Exception err) {
+                System.err.println(err);
+            }
+        }
+    }
+
+    private final ServerSocket socket;
+
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Queue<Session> sessions = new ConcurrentLinkedQueue<>();
     private final Auth auth = new Auth();
-
     private final EntityManager em = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence").createEntityManager();
 }

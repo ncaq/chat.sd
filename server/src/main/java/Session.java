@@ -32,14 +32,12 @@ public class Session implements Runnable {
             System.out.println(loginStatus.toString());
 
             if(loginStatus == LOGIN_SUCCEED) {
-                server.chatLog(10).stream().map(ChatMessage::toOldTimeLine).forEach(this::put);
-                this.put(loginedUser);
+                server.chatLog(10).stream().map(ChatMessage::toOldTimeLine).forEach(get::println);
+                get.println(loginedUser);
 
                 val lm = new LoginMessage();
                 lm.setPoster(this.user);
                 server.broadcast(lm);
-
-                server.addReadiedSession(this);
 
                 try {
                     final ExecutorService getThread = Executors.newSingleThreadExecutor();
