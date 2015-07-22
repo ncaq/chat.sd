@@ -11,7 +11,7 @@ import lombok.*;
 /**
  * メッセージを規約通りに整形する.
  */
-public class MessageTranslation {
+public class MessageTranslator {
     /**
      * 人間が読むような形式に変換します.
      * @param lang 言語選択ですが,現在は機能していません."ja"限定です.
