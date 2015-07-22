@@ -14,37 +14,25 @@ public class ConsoleClient {
     /**
      * 主にテスト用.
      */
-    public ConsoleClient(final String hostname, final String username, final String rawPassword) {
-        try {
-            server = new Connector(hostname, username, rawPassword, (newMessage) -> System.out.println(newMessage));
-            Executors.newSingleThreadExecutor().execute(this::postStdInToServer);
-        }
-        catch(final Exception err) {
-            System.err.println(err);
-            System.exit(-1);
-        }
+    public ConsoleClient(final String hostname, final String username, final String rawPassword) throws IOException {
+        server = new Connector(hostname, username, rawPassword, (newMessage) -> System.out.println(newMessage));
+        Executors.newSingleThreadExecutor().execute(this::postStdInToServer);
     }
 
     /**
      * gradleのコマンドライン引数の取り扱いが面倒なので対話的に問い合わせます.
      */
-    public ConsoleClient() {
-        try {
-            final Scanner sc = new Scanner(System.in);
-            System.out.println("hostname:");
-            final String hostname = sc.next();
-            System.out.println("username:");
-            final String username = sc.next();
-            System.out.println("password:");
-            final String rawPassword = sc.next();
+    public ConsoleClient() throws IOException {
+        final Scanner sc = new Scanner(System.in);
+        System.out.println("hostname:");
+        final String hostname = sc.next();
+        System.out.println("username:");
+        final String username = sc.next();
+        System.out.println("password:");
+        final String rawPassword = sc.next();
 
-            server = new Connector(hostname, username, rawPassword, (newMessage) -> System.out.println(newMessage));
-            Executors.newSingleThreadExecutor().execute(this::postStdInToServer);
-        }
-        catch(final Exception err) {
-            System.err.println(err);
-            System.exit(-1);
-        }
+        server = new Connector(hostname, username, rawPassword, (newMessage) -> System.out.println(newMessage));
+        Executors.newSingleThreadExecutor().execute(this::postStdInToServer);
     }
 
     /**
