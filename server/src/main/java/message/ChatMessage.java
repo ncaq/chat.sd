@@ -12,13 +12,8 @@ import lombok.*;
 @Entity
 public class ChatMessage extends Message {
     @Override
-    public String type() {
-        return "chat";
-    }
-
-    @Override
     public String toTimeLine() {
-        return String.join(" ", new String[]{this.type(), getPoster().getName(), getBody()}).trim();
+        return String.join(" ", new String[]{"chat", getPoster().getName(), getBody()}).trim();
     }
 
     public String toOldTimeLine() {

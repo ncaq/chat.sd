@@ -10,12 +10,7 @@ import lombok.*;
 @Entity
 public class LoginMessage extends Message {
     @Override
-    public String type() {
-        return "login";
-    }
-
-    @Override
     public String toTimeLine() {
-        return String.join(" ", new String[]{this.type(), "user", getPoster().getName(), getPoster().recentLogin().map(d -> messageDateFormat.format(d)).orElse("")}).trim();
+        return String.join(" ", new String[]{"login", "user", getPoster().getName(), getPoster().recentLogin().map(d -> messageDateFormat.format(d)).orElse("")}).trim();
     }
 }

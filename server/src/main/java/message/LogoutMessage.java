@@ -10,12 +10,7 @@ import lombok.*;
 @Entity
 public class LogoutMessage extends Message {
     @Override
-    public String type() {
-        return "logout";
-    }
-
-    @Override
     public String toTimeLine() {
-        return String.join(" ", new String[]{this.type(), "user", getPoster().getName(), messageDateFormat.format(getPoster().recentLogin().get()), getPoster().postingCountOfSession().toString()}).trim();
+        return String.join(" ", new String[]{"logout", "user", getPoster().getName(), messageDateFormat.format(getPoster().recentLogin().get()), getPoster().postingCountOfSession().toString()}).trim();
     }
 }

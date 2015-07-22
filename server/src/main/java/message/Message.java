@@ -32,12 +32,6 @@ public abstract class Message {
     private User poster;
 
     /**
-     * メッセージの種類表示.
-     * 通知やステータスの説明に繋げます.
-     */
-    abstract public String type();
-
-    /**
      * タイムライン向け通知.
      */
     abstract public String toTimeLine();
