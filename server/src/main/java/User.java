@@ -62,8 +62,6 @@ public class User implements Comparable<User> {
                     new PBEKeySpec(rawPassword.toCharArray(), name.getBytes("UTF-8"), 44873, 512)).getEncoded());
         }
         catch(UnsupportedEncodingException|NoSuchAlgorithmException|IllegalArgumentException|InvalidKeySpecException err) {
-            System.err.println(err);
-            System.exit(-1);
             return null;
         }
     }
