@@ -99,7 +99,7 @@ public class User implements Comparable<User> {
     }
 
     /**
-     * 発言回数.
+     * 全体の発言回数.
      */
     public Long postingCount() {
         val em = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence").createEntityManager();
@@ -107,6 +107,21 @@ public class User implements Comparable<User> {
         val q = cb.createQuery(Long.class);
         val root = q.from(ChatMessage.class);
         q.select(cb.count(root)).where(cb.equal(root.get(ChatMessage_.poster), this));
+        return em.createQuery(q).getSingleResult();
+    }
+
+    /**
+     * このセッションでの発言回数.
+     * ログインしたことのないUserでは例外.
+     */
+    public Long postingCountOfSession() {
+        val recentLogin = this.recentLogin().get(); // ログインは少なくとも1回しているはず
+        val em = Persistence.createEntityManagerFactory("net.ncaq.chat.sd.persistence").createEntityManager();
+        val cb = em.getCriteriaBuilder();
+        val q = cb.createQuery(Long.class);
+        val root = q.from(ChatMessage.class);
+        q.select(cb.count(root)).where(cb.equal(root.get(ChatMessage_.poster), this),
+                                       cb.greaterThan(root.get(ChatMessage_.submit), recentLogin));
         return em.createQuery(q).getSingleResult();
     }
 }
