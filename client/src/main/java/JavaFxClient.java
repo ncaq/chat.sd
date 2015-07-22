@@ -50,20 +50,12 @@ public class JavaFxClient extends Application {
                 l.showAndWait();
                 this.connector = new Connector(l.getHostname(), l.getUsername(), l.getPassword(), this::receive);
             }
-            catch(final ConnectException exc) {
-                exc.printStackTrace();
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("ERROR");
-                alert.setContentText(exc.toString());
-                alert.showAndWait();
-            }
             catch(final Exception exc) {
                 exc.printStackTrace();
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("ERROR");
                 alert.setContentText(exc.toString());
                 alert.showAndWait();
-                System.exit(-1);
             }
         }
         while(this.connector == null);
