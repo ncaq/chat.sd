@@ -17,6 +17,18 @@ import static net.ncaq.chat.sd.Status.*;
 public class Auth {
     public Auth() {
         this.addUser(new User("anonymous", ""));
+
+        this.addUser(new User("user0", "0"));
+        this.addUser(new User("user1", "1"));
+        this.addUser(new User("user2", "2"));
+        this.addUser(new User("user3", "3"));
+        this.addUser(new User("user4", "4"));
+        this.addUser(new User("user5", "5"));
+        this.addUser(new User("user6", "6"));
+        this.addUser(new User("user7", "7"));
+        this.addUser(new User("user8", "8"));
+        this.addUser(new User("user9", "9"));
+
         this.addUser(new User("guest0", "0"));
         this.addUser(new User("guest1", "1"));
         this.addUser(new User("guest2", "2"));
