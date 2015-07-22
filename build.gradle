@@ -19,6 +19,10 @@ allprojects {
         testCompile project(':server')
     }
 
+    compileJava {
+        options.compilerArgs.addAll '-Xlint:all', '-Xdiags:verbose'
+    }
+
     test.ignoreFailures = true
 
     apply plugin: 'pmd'
