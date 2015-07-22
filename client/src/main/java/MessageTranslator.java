@@ -32,10 +32,10 @@ public class MessageTranslator {
 
 enum MessagePattern {
     Chat("chat",
-         "chat\\s*(\\S+)\\s*(\\S*)",
+         "chat\\s*(\\S+)\\s*(.*)",
          "$1さん>$2"),
     OldChat("oldchat",
-            "oldchat\\s*(\\S+)\\s*(\\d+)\\s*(\\S+ \\S+)\\s*(\\S*)",
+            "oldchat\\s*(\\S+)\\s*(\\d+)\\s*(\\S+ \\S+)\\s*(.*)",
             "$2: $1さん>$4 ($3)"),
     Login("login",
           "login\\s*user\\s*(\\S+)\\s*(\\S*\\s*\\S*)",
