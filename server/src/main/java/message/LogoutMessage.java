@@ -8,6 +8,7 @@ import lombok.*;
  * ログアウトした時のメッセージ.
  */
 @Entity
+@ToString(callSuper = true)
 public class LogoutMessage extends Message {
     @Override
     public String toTimeLine() {

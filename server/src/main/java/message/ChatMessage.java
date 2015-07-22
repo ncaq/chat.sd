@@ -10,6 +10,7 @@ import lombok.*;
  * oldchat形式もサポートします.
  */
 @Entity
+@ToString(callSuper = true)
 public class ChatMessage extends Message {
     @Getter
     @Setter

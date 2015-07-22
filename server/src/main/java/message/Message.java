@@ -15,6 +15,7 @@ import net.ncaq.chat.sd.server.*;
  */
 @Data
 @MappedSuperclass
+@ToString(exclude = "messageDateFormat")
 public abstract class Message {
     /** 自動生成id. */
     @Id
