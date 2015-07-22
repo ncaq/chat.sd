@@ -11,6 +11,11 @@ import net.ncaq.chat.sd.server.message.*;
 import static java.util.concurrent.TimeUnit.*;
 import static net.ncaq.chat.sd.Status.*;
 
+/**
+ * 各ユーザのセッション.
+ * CentralServerからメッセージ文字列を受け取って送信する.
+ * ユーザのメッセージをCentralServerに送信する.
+ */
 @ToString
 public class Session implements Runnable {
     public Session(final CentralServer server, final Socket client, final Auth auth) {
@@ -42,8 +47,8 @@ public class Session implements Runnable {
                 try {
                     final ExecutorService getThread = Executors.newSingleThreadExecutor();
                     getThread.execute(this::getTimeLineR); // getは非同期実行
-                    postTimeLineR();     // postは｢同期｣実行
-                    getThread.shutdown();      // getは自動で終了しない
+                    this.postTimeLineR();                  // postは｢同期｣実行
+                    getThread.shutdown();                  // getは自動で終了しない
                 }
                 finally {
                     auth.logout(user); // 確実にログアウト
@@ -64,10 +69,12 @@ public class Session implements Runnable {
 
     /**
      * 新規メッセージの配信を準備します.
+     * PrintWriterはスレッドセーフではないため,一度ブロッキングキューを経由します.
+     * そのため,即座には配信されない可能性があります.
      */
     public void put(final String newMessage) {
         try {
-            this.newMessageTextBox.put(newMessage);
+            this.newMessageBox.put(newMessage);
         }
         catch(final InterruptedException exc) {
             exc.printStackTrace();
@@ -76,12 +83,12 @@ public class Session implements Runnable {
 
     /**
      * PrintWriterはスレッドセーフではないため,一度ブロッキングキューを経由します.
-     * これは終了しない.
+     * これは通常は終了しません.
      * 強制終了すること.
      */
     private void getTimeLineR() {
         try {
-            for(String m = newMessageTextBox.take(); m != null; m = newMessageTextBox.take()) {
+            for(String m = newMessageBox.take(); m != null; m = newMessageBox.take()) {
                 get.println(m);
             }
         }
@@ -90,6 +97,9 @@ public class Session implements Runnable {
         }
     }
 
+    /**
+     * CentralServerにユーザのメッセージを送信します.
+     */
     private void postTimeLineR() {
         try {
             for(String l = post.readLine(); l != null; l = post.readLine()) {
@@ -104,7 +114,7 @@ public class Session implements Runnable {
         }
     }
 
-    private final LinkedBlockingQueue<String> newMessageTextBox = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<String> newMessageBox = new LinkedBlockingQueue<>();
 
     private final CentralServer server;
     private final Socket client;

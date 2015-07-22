@@ -11,7 +11,7 @@ import lombok.*;
 import net.ncaq.chat.sd.server.*;
 
 /**
- * 汎用メッセージ.
+ * 抽象メッセージ型.
  */
 @Data
 @Entity
@@ -44,6 +44,7 @@ public abstract class Message {
 
     /**
      * このクラスで使う日付表現.
+     * SimpleDateFormatはスレッドセーフではありませんので,インスタンスごとに保持するのが簡単な対策です.
      */
     @Transient
     protected final DateFormat messageDateFormat = new SimpleDateFormat("yyyy/LL/dd HH:mm:ss");

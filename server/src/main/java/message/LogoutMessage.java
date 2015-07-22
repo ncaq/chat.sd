@@ -5,7 +5,7 @@ import javax.persistence.*;
 import lombok.*;
 
 /**
- * ログアウト.
+ * ログアウトした時のメッセージ.
  */
 @Entity
 public class LogoutMessage extends Message {

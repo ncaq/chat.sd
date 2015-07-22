@@ -6,7 +6,8 @@ import javax.persistence.*;
 import lombok.*;
 
 /**
- * チャットによる会話メッセージ
+ * チャットによる会話メッセージ.
+ * oldchat形式もサポートします.
  */
 @Entity
 public class ChatMessage extends Message {

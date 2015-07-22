@@ -10,6 +10,11 @@ import javax.persistence.*;
 import lombok.*;
 import net.ncaq.chat.sd.server.message.*;
 
+/**
+ * 中央サーバ.
+ * Sessionの作成,管理.
+ * Sessionから新規メッセージを待ち受けてブロードキャストする.
+ */
 public class CentralServer {
     public CentralServer(final Integer port) throws IOException {
         this.socket = new ServerSocket(port);
