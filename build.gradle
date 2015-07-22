@@ -19,10 +19,9 @@ allprojects {
         testCompile project(':server')
     }
 
-    compileJava {
-        options.compilerArgs.addAll '-Xlint:all', '-Xdiags:verbose'
-    }
+    compileJava.options.compilerArgs << '-Xlint:all' << '-Xdiags:verbose'
 
+    compileTestJava.options.compilerArgs << '-Xlint:all' << '-Xdiags:verbose'
     test.ignoreFailures = true
 
     apply plugin: 'pmd'
@@ -37,6 +36,7 @@ subprojects {
 
 project(':server') {
     apply plugin: 'application'
+
     dependencies {
         compile project(':')
         compile 'com.h2database:h2:1.4.187'
@@ -44,25 +44,22 @@ project(':server') {
         compile 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:2.6.0'
         compile 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.0'
     }
-    compileJava {
-        options.compilerArgs.addAll '-Aeclipselink.persistencexml=' + file('src/main/resources/META-INF/persistence.xml').absolutePath
-    }
+
+    compileJava.options.compilerArgs << '-Aeclipselink.persistencexml=' + file('src/main/resources/META-INF/persistence.xml').absolutePath
     sourceSets.main.output.resourcesDir = 'build/classes/main'
 
-    run {
-        mainClassName = 'net.ncaq.chat.sd.server.Main'
-    }
+    mainClassName = 'net.ncaq.chat.sd.server.Main'
 }
 
 project(':client') {
     apply plugin: 'application'
+
     dependencies {
         compile project(':')
         compile 'gnu.getopt:java-getopt:1.0.13'
     }
-    run {
-        mainClassName = 'net.ncaq.chat.sd.client.Main'
-    }
+
+    mainClassName = 'net.ncaq.chat.sd.client.Main'
 }
 
 javadoc {
