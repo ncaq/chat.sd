@@ -21,6 +21,9 @@ import javafx.stage.*;
 import javafx.util.*;
 import net.ncaq.chat.sd.*;
 
+/**
+ * JavaFXによるチャットのGUIフロントエンド.
+ */
 public class JavaFxClient extends Application {
     @Override
     public void start(final Stage stage) throws IOException {
