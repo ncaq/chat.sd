@@ -33,8 +33,8 @@ public class Connector {
         }
 
         // 正常時のみ
-        daemons.execute(this::readLoop);
-        daemons.execute(this::writeLoop);
+        this.daemons.execute(this::readLoop);
+        this.daemons.execute(this::writeLoop);
     }
 
     /**
@@ -63,6 +63,14 @@ public class Connector {
     private Status login(final String username, final String rawPassword) throws IOException {
         this.writer.println("user " + username + " pass " + rawPassword);
         return Status.of(this.reader.readLine());
+    }
+
+    /**
+     * 読み込みを終了してログアウトします.
+     */
+    public void logout() {
+        this.daemons.shutdown();
+        this.writer.println("logout");
     }
 
     private void readLoop() {

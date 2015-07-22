@@ -19,6 +19,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import javafx.util.*;
+import lombok.*;
 import net.ncaq.chat.sd.*;
 
 /**
@@ -27,8 +28,16 @@ import net.ncaq.chat.sd.*;
 public class JavaFxClient extends Application {
     @Override
     public void start(final Stage stage) throws IOException {
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/Main.fxml"))));
+        val fl = new FXMLLoader(getClass().getResource("/Main.fxml"));
+        val p = (Parent)fl.load();
+        val controller = (JavaFxClient)fl.getController();
+
+        stage.setScene(new Scene(p));
         stage.show();
+
+        stage.setOnCloseRequest(evt -> {
+                controller.connector.logout();
+            });
     }
 
     @FXML
@@ -94,6 +103,8 @@ public class JavaFxClient extends Application {
                 }
             });
     }
+
+    private Stage stage;
 
     @FXML
     private ListView<HBox> timeline;
