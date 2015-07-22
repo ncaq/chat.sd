@@ -61,7 +61,12 @@ public class User implements Comparable<User> {
                 SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256").generateSecret(
                     new PBEKeySpec(rawPassword.toCharArray(), name.getBytes("UTF-8"), 44873, 512)).getEncoded());
         }
-        catch(UnsupportedEncodingException|NoSuchAlgorithmException|IllegalArgumentException|InvalidKeySpecException err) {
+        catch(UnsupportedEncodingException|NoSuchAlgorithmException exc) {
+            System.err.println(exc);
+            System.exit(-1);
+            return null;
+        }
+        catch(IllegalArgumentException|InvalidKeySpecException exc) {
             return null;
         }
     }
