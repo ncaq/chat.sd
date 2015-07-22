@@ -50,7 +50,7 @@ public class Connector {
             try {
                 val isa = new InetSocketAddress(serverAddress, p);
                 val s = new Socket();
-                s.connect(isa, 5000);
+                s.connect(isa, 2000);
                 return s;
             }
             catch(final Exception err) {
