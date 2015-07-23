@@ -27,6 +27,11 @@ public class AuthTest {
     }
 
     @Test
+    public void existUserMistakePassIs100() throws Exception {
+        assertThat(new Auth().login(new User("anonymous", "not password")), is(PASSWORD_INVALID));
+    }
+
+    @Test
     public void multipleLoginIs101() throws Exception {
         val a = new Auth();
         assertThat(a.login(new User("anonymous", "")), is(LOGIN_SUCCEED));
