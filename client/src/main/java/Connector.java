@@ -19,7 +19,7 @@ public class Connector {
      * 失敗すると例外吐くので再試行するかプログラム落とすこと.
      */
     public Connector(final String address, final String username, final String rawPassword, final Consumer<String> readCallback) throws IOException, ConnectException {
-        this.server = this.makeSocket(InetAddress.getByName(address), new Integer[]{50000, 12345, 15000});
+        this.server = this.makeSocket(InetAddress.getByName(address), new Integer[]{50000, 12345, 15000, 42000});
         this.reader = new BufferedReader(new InputStreamReader(this.server.getInputStream()));
         this.writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.server.getOutputStream())), true);
         this.readCallback = readCallback;
