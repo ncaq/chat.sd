@@ -65,14 +65,6 @@ public class Connector {
         return Status.of(this.reader.readLine());
     }
 
-    /**
-     * 読み込みを終了してログアウトします.
-     */
-    public void logout() {
-        this.daemons.shutdown();
-        this.writer.println("logout");
-    }
-
     private void readLoop() {
         try {
             for(String l = reader.readLine(); l != null; l = reader.readLine()) {

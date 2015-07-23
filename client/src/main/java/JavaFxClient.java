@@ -34,10 +34,6 @@ public class JavaFxClient extends Application {
 
         stage.setScene(new Scene(p));
         stage.show();
-
-        stage.setOnCloseRequest(evt -> {
-                controller.connector.logout();
-            });
     }
 
     @FXML
