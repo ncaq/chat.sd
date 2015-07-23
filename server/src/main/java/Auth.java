@@ -78,8 +78,9 @@ public class Auth {
     public boolean correctUser(final User u) {
         val cbuilder = this.em.getCriteriaBuilder();
         val q = cbuilder.createQuery(User.class);
-        val userRoot = q.from(User.class);
-        q.select(userRoot).where(cbuilder.equal(userRoot, u));
+        val root = q.from(User.class);
+        q.select(root).where(cbuilder.equal(root, u),
+                             cbuilder.equal(root.get(User_.password), u.getPassword()));
         return this.em.createQuery(q).getResultList().size() == 1;
     }
 
